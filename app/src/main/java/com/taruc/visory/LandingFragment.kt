@@ -27,10 +27,10 @@ class LandingFragment : Fragment(), View.OnClickListener {
         buttonVolunteer.setOnClickListener(this)
     }
 
-    override fun onClick(v: View?) {
-        when(v!!.id){
-            R.id.buttonVolunteer -> navController!!.navigate(R.id.action_landingFragment_to_volunteerLandingFragment)
-            R.id.buttonBlind -> navController!!.navigate(R.id.action_landingFragment_to_blindLandingFragment)
+    override fun onClick(view: View) {
+        when(view.id){
+            R.id.buttonVolunteer -> navController.navigate(R.id.action_landingFragment_to_volunteerLandingFragment)
+            R.id.buttonBlind -> navController.navigate(R.id.action_landingFragment_to_blindLandingFragment)
         }
     }
 }

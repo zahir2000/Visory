@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/button_rounded"
             android:contentDescription="@string/button_blind_cd"
             android:text="@string/button_blind"
             app:layout_constraintBottom_toTopOf="@+id/buttonVolunteer"
@@ -28,6 +29,7 @@
             android:id="@+id/buttonVolunteer"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
+            android:background="@drawable/button_rounded"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
@@ -37,6 +39,34 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewIntroduction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="50dp"
+            android:text="@string/introduction_text"
+            android:textAlignment="center"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonBlind"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageViewIntroduction"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/introduction_image"
+            android:src="@drawable/introduction_image"
+            app:layout_constraintBottom_toTopOf="@+id/textViewIntroduction"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

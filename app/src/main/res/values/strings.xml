@@ -8,4 +8,6 @@
     <string name="button_blind">I am blind or visually impaired</string>
     <string name="button_volunteer_cd">Click this if you are a volunteer</string>
     <string name="button_blind_cd">Click this if you are visually impaired or blind</string>
+    <string name="introduction_text">Small acts of kindness with global impact</string>
+    <string name="introduction_image">Image of children standing around the globe</string>
 </resources>
