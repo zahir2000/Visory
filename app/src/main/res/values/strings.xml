@@ -4,4 +4,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="landing">This is Main Landing Page</string>
+    <string name="button_volunteer">I am a volunteer</string>
+    <string name="button_blind">I am blind or visually impaired</string>
+    <string name="button_volunteer_cd">Click this if you are a volunteer</string>
+    <string name="button_blind_cd">Click this if you are visually impaired or blind</string>
 </resources>
