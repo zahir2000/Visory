@@ -9,34 +9,35 @@
     android:background="@color/colorWhite">
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/imageLandingActions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:adjustViewBounds="true"
         android:cropToPadding="false"
-        android:maxWidth="200dip"
+        android:maxWidth="300dip"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@id/header"
+        app:layout_constraintBottom_toTopOf="@id/headerLandingActions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/header"
-        style="@style/TextHeader"
+        android:id="@+id/headerLandingActions"
+        style="@style/WelcomeTextHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/text"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/textLandingActions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@id/text"
+        android:id="@+id/textLandingActions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@id/header"
+        style="@style/WelcomeTextBody"
+        app:layout_constraintBottom_toTopOf="@id/headerLandingActions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

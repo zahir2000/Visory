@@ -33,6 +33,10 @@
         android:name="com.taruc.visory.LandingFragment"
         android:label="fragment_landing"
         tools:layout="@layout/fragment_landing">
+        <argument
+            android:name="clicked_button"
+            android:defaultValue="None"
+            />
         <action
             android:id="@+id/action_landingFragment_to_landingActionsFragment"
             app:destination="@id/landingActionsFragment"

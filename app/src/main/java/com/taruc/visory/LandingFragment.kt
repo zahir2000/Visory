@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_landing.*
@@ -30,8 +31,14 @@ class LandingFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when(view.id){
-            R.id.buttonVolunteer -> navController.navigate(R.id.action_landingFragment_to_landingActionsFragment)
-            R.id.buttonBlind -> navController.navigate(R.id.action_landingFragment_to_landingActionsFragment)
+            R.id.buttonVolunteer -> {
+                val bundle = bundleOf("clicked_button" to 1)
+                navController.navigate(R.id.action_landingFragment_to_landingActionsFragment, bundle)
+            }
+            R.id.buttonBlind -> {
+                val bundle = bundleOf("clicked_button" to 2)
+                navController.navigate(R.id.action_landingFragment_to_landingActionsFragment, bundle)
+            }
         }
     }
 }

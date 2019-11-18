@@ -15,10 +15,19 @@
         <item name="android:paddingBottom">16.0dip</item>
     </style>
 
-    <style name="TextHeader" parent="@style/TextAppearance.AppCompat">
+    <style name="WelcomeTextHeader" parent="@style/TextAppearance.AppCompat">
         <item name="android:textSize">24.0sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="WelcomeTextBody" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">normal</item>
     </style>
 </resources>
