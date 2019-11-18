@@ -8,4 +8,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ViewGroup">
+        <item name="android:paddingLeft">16.0dip</item>
+        <item name="android:paddingTop">16.0dip</item>
+        <item name="android:paddingRight">16.0dip</item>
+        <item name="android:paddingBottom">16.0dip</item>
+    </style>
+
+    <style name="TextHeader" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textSize">24.0sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
 </resources>

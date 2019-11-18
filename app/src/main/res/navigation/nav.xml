@@ -34,35 +34,8 @@
         android:label="fragment_landing"
         tools:layout="@layout/fragment_landing">
         <action
-            android:id="@+id/action_landingFragment_to_blindLandingFragment"
-            app:destination="@id/blindLandingFragment" />
-        <action
-            android:id="@+id/action_landingFragment_to_volunteerLandingFragment"
-            app:destination="@id/volunteerLandingFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/blindLandingFragment"
-        android:name="com.taruc.visory.blind.BlindLandingFragment"
-        android:label="fragment_blind_landing"
-        tools:layout="@layout/fragment_blind_landing" >
-        <action
-            android:id="@+id/action_blindLandingFragment_to_blindRegisterFragment"
-            app:destination="@id/blindRegisterFragment" />
-        <action
-            android:id="@+id/action_blindLandingFragment_to_blindLoginFragment"
-            app:destination="@id/blindLoginFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/volunteerLandingFragment"
-        android:name="com.taruc.visory.volunteer.VolunteerLandingFragment"
-        android:label="fragment_volunteer_landing"
-        tools:layout="@layout/fragment_volunteer_landing" >
-        <action
-            android:id="@+id/action_volunteerLandingFragment_to_volunteerRegisterFragment"
-            app:destination="@id/volunteerRegisterFragment" />
-        <action
-            android:id="@+id/action_volunteerLandingFragment_to_volunteerLoginFragment"
-            app:destination="@id/volunteerLoginFragment" />
+            android:id="@+id/action_landingFragment_to_landingActionsFragment"
+            app:destination="@id/landingActionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/blindRegisterFragment"
@@ -229,4 +202,9 @@
         android:name="com.taruc.visory.volunteer.VolunteerTutorialFragment"
         android:label="fragment_volunteer_tutorial"
         tools:layout="@layout/fragment_volunteer_tutorial" />
+    <fragment
+        android:id="@+id/landingActionsFragment"
+        android:name="com.taruc.visory.LandingActionsFragment"
+        android:label="fragment_landing_actions"
+        tools:layout="@layout/fragment_landing_actions" />
 </navigation>

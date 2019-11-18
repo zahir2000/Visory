@@ -17,6 +17,7 @@ class LandingFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // TODO : make a introduction text list and shuffle during each visit
         return inflater.inflate(R.layout.fragment_landing, container, false)
     }
 
@@ -29,8 +30,8 @@ class LandingFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when(view.id){
-            R.id.buttonVolunteer -> navController.navigate(R.id.action_landingFragment_to_volunteerLandingFragment)
-            R.id.buttonBlind -> navController.navigate(R.id.action_landingFragment_to_blindLandingFragment)
+            R.id.buttonVolunteer -> navController.navigate(R.id.action_landingFragment_to_landingActionsFragment)
+            R.id.buttonBlind -> navController.navigate(R.id.action_landingFragment_to_landingActionsFragment)
         }
     }
 }
