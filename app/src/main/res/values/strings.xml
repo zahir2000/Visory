@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Visory</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="landing">This is Main Landing Page</string>
     <string name="button_volunteer">I am a volunteer</string>
@@ -10,4 +9,14 @@
     <string name="button_blind_cd">Click this if you are visually impaired or blind</string>
     <string name="introduction_text">Small acts of kindness with global impact</string>
     <string name="introduction_image">Image of children standing around the globe</string>
+
+    <string name="welcome_blind_text">The Be My Eyes app connects you with a sighted volunteer or company representative. Using live video chat, this person can assist with visual tasks or describe things that you’d like to see.</string>
+    <string name="welcome_volunteer_text">Be My Eyes lets you lend your eyesight to people who need it. Sign up, join our global network and make a big difference in the everyday lives of people without sight all over the world.</string>
+    <string name="welcome_blind_header">Visually Impaired</string>
+    <string name="welcome_volunteer_header">Sighted Volunteer</string>
+
+    <string name="button_login">Login</string>
+    <string name="button_register">Register</string>
+    <string name="button_login_cd">Click this to login with your existing account</string>
+    <string name="button_register_cd">Click this to register a new account</string>
 </resources>

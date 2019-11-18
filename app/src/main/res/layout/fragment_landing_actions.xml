@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     style="@style/ViewGroup"
@@ -9,10 +10,14 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="248dp"
-        android:layout_height="284dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:maxWidth="200dip"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_blind_intro"
+        app:layout_constraintBottom_toTopOf="@id/header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,42 +27,41 @@
         style="@style/TextHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Visually Impaired"
+        app:layout_constraintBottom_toTopOf="@id/text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="The Be My Eyes app connects you with a sighted volunteer, who will help you with tasks that require visual assistance from a sighted person through a live video call."
         android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@id/header"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.45"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_register"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_sm"
-        android:text="Register"
+        android:background="@drawable/button_rounded"
+        android:contentDescription="@string/button_register_cd"
+        android:text="@string/button_register"
+        android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toTopOf="@id/button_login"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/button_rounded" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_login"
         android:layout_width="0.0dip"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:background="@drawable/button_rounded"
+        android:contentDescription="@string/button_login_cd"
+        android:text="@string/button_login"
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/button_rounded" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
