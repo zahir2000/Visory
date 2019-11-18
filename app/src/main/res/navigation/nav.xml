@@ -5,30 +5,6 @@
     android:id="@+id/nav"
     app:startDestination="@id/landingFragment">
     <fragment
-        android:id="@+id/blindHomeFragment"
-        android:name="com.taruc.visory.blind.BlindHomeFragment"
-        android:label="fragment_blind_home"
-        tools:layout="@layout/fragment_blind_home" >
-        <action
-            android:id="@+id/action_blindHomeFragment_to_blindSettingsFragment"
-            app:destination="@id/blindSettingsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/volunteerHomeFragment"
-        android:name="com.taruc.visory.volunteer.VolunteerHomeFragment"
-        android:label="fragment_volunteer_home"
-        tools:layout="@layout/fragment_volunteer_home" >
-        <action
-            android:id="@+id/action_volunteerHomeFragment_to_volunteerTutorialFragment"
-            app:destination="@id/volunteerTutorialFragment" />
-        <action
-            android:id="@+id/action_volunteerHomeFragment_to_volunteerSettingsFragment"
-            app:destination="@id/volunteerSettingsFragment" />
-        <action
-            android:id="@+id/action_volunteerHomeFragment_to_storiesFragment"
-            app:destination="@id/storiesFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/landingFragment"
         android:name="com.taruc.visory.LandingFragment"
         android:label="fragment_landing"
@@ -47,94 +23,67 @@
             />
     </fragment>
     <fragment
-        android:id="@+id/blindRegisterFragment"
-        android:name="com.taruc.visory.blind.BlindRegisterFragment"
-        android:label="fragment_blind_register"
-        tools:layout="@layout/fragment_blind_register" >
+        android:id="@+id/landingActionsFragment"
+        android:name="com.taruc.visory.LandingActionsFragment"
+        android:label="fragment_landing_actions"
+        tools:layout="@layout/fragment_landing_actions" >
         <action
-            android:id="@+id/action_blindRegisterFragment_to_blindLoginFragment"
-            app:destination="@id/blindLoginFragment" />
+            android:id="@+id/action_landingActionsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_landingActionsFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/blindLoginFragment"
-        android:name="com.taruc.visory.blind.BlindLoginFragment"
-        android:label="fragment_blind_login"
-        tools:layout="@layout/fragment_blind_login" >
+        android:id="@+id/loginFragment"
+        android:name="com.taruc.visory.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_blindLoginFragment_to_blindForgotPassFragment"
-            app:destination="@id/blindForgotPassFragment" />
+            android:id="@+id/action_loginFragment_to_forgotPassFragment"
+            app:destination="@id/forgotPassFragment" />
         <action
-            android:id="@+id/action_blindLoginFragment_to_blindLanguageFragment"
-            app:destination="@id/blindLanguageFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/volunteerLoginFragment"
-        android:name="com.taruc.visory.volunteer.VolunteerLoginFragment"
-        android:label="fragment_volunteer_login"
-        tools:layout="@layout/fragment_volunteer_login" >
-        <action
-            android:id="@+id/action_volunteerLoginFragment_to_volunteerForgotPassFragment"
-            app:destination="@id/volunteerForgotPassFragment" />
-        <action
-            android:id="@+id/action_volunteerLoginFragment_to_permissionFragment"
+            android:id="@+id/action_loginFragment_to_permissionFragment"
             app:destination="@id/permissionFragment" />
     </fragment>
     <fragment
-        android:id="@+id/volunteerRegisterFragment"
-        android:name="com.taruc.visory.volunteer.VolunteerRegisterFragment"
-        android:label="fragment_volunteer_register"
-        tools:layout="@layout/fragment_volunteer_register" >
+        android:id="@+id/registerFragment"
+        android:name="com.taruc.visory.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
         <action
-            android:id="@+id/action_volunteerRegisterFragment_to_volunteerVerifyFragment"
-            app:destination="@id/volunteerVerifyFragment" />
+            android:id="@+id/action_registerFragment_to_verifyFragment"
+            app:destination="@id/verifyFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_languageFragment"
+            app:destination="@id/languageFragment" />
     </fragment>
     <fragment
-        android:id="@+id/blindForgotPassFragment"
-        android:name="com.taruc.visory.blind.BlindForgotPassFragment"
-        android:label="fragment_blind_forgot_pass"
-        tools:layout="@layout/fragment_blind_forgot_pass" >
+        android:id="@+id/forgotPassFragment"
+        android:name="com.taruc.visory.ForgotPassFragment"
+        android:label="fragment_forgot_pass"
+        tools:layout="@layout/fragment_forgot_pass" >
         <action
-            android:id="@+id/action_blindForgotPassFragment_to_blindLoginFragment"
-            app:destination="@id/blindLoginFragment" />
+            android:id="@+id/action_forgotPassFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
-        android:id="@+id/volunteerForgotPassFragment"
-        android:name="com.taruc.visory.volunteer.VolunteerForgotPassFragment"
-        android:label="fragment_volunteer_forgot_pass"
-        tools:layout="@layout/fragment_volunteer_forgot_pass" >
+        android:id="@+id/verifyFragment"
+        android:name="com.taruc.visory.VerifyFragment"
+        android:label="fragment_verify"
+        tools:layout="@layout/fragment_verify" >
         <action
-            android:id="@+id/action_volunteerForgotPassFragment_to_volunteerLoginFragment"
-            app:destination="@id/volunteerLoginFragment" />
+            android:id="@+id/action_verifyFragment_to_languageFragment"
+            app:destination="@id/languageFragment" />
     </fragment>
     <fragment
-        android:id="@+id/volunteerVerifyFragment"
-        android:name="com.taruc.visory.volunteer.VolunteerVerifyFragment"
-        android:label="fragment_volunteer_verify"
-        tools:layout="@layout/fragment_volunteer_verify" >
+        android:id="@+id/languageFragment"
+        android:name="com.taruc.visory.LanguageFragment"
+        android:label="fragment_language"
+        tools:layout="@layout/fragment_language" >
         <action
-            android:id="@+id/action_volunteerVerifyFragment_to_volunteerLanguageFragment"
-            app:destination="@id/volunteerLanguageFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/volunteerLanguageFragment"
-        android:name="com.taruc.visory.volunteer.VolunteerLanguageFragment"
-        android:label="fragment_volunteer_language"
-        tools:layout="@layout/fragment_volunteer_language" >
-        <action
-            android:id="@+id/action_volunteerLanguageFragment_to_permissionFragment"
+            android:id="@+id/action_languageFragment_to_permissionFragment"
             app:destination="@id/permissionFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/permissionFragment"
-        android:name="com.taruc.visory.PermissionFragment"
-        android:label="fragment_permission"
-        tools:layout="@layout/fragment_permission" >
-        <action
-            android:id="@+id/action_permissionFragment_to_welcomeFragment"
-            app:destination="@id/welcomeFragment" />
-        <action
-            android:id="@+id/action_permissionFragment_to_subscribeFragment"
-            app:destination="@id/subscribeFragment" />
     </fragment>
     <fragment
         android:id="@+id/welcomeFragment"
@@ -149,13 +98,43 @@
             app:destination="@id/volunteerHomeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/blindLanguageFragment"
-        android:name="com.taruc.visory.blind.BlindLanguageFragment"
-        android:label="fragment_blind_language"
-        tools:layout="@layout/fragment_blind_language" >
+        android:id="@+id/permissionFragment"
+        android:name="com.taruc.visory.PermissionFragment"
+        android:label="fragment_permission"
+        tools:layout="@layout/fragment_permission" >
         <action
-            android:id="@+id/action_blindLanguageFragment_to_permissionFragment"
-            app:destination="@id/permissionFragment" />
+            android:id="@+id/action_permissionFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
+        <action
+            android:id="@+id/action_permissionFragment_to_subscribeFragment"
+            app:destination="@id/subscribeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/blindHomeFragment"
+        android:name="com.taruc.visory.blind.BlindHomeFragment"
+        android:label="fragment_blind_home"
+        tools:layout="@layout/fragment_blind_home" >
+        <action
+            android:id="@+id/action_blindHomeFragment_to_blindSettingsFragment"
+            app:destination="@id/blindSettingsFragment" />
+        <action
+            android:id="@+id/action_blindHomeFragment_to_storiesFragment"
+            app:destination="@id/storiesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/volunteerHomeFragment"
+        android:name="com.taruc.visory.volunteer.VolunteerHomeFragment"
+        android:label="fragment_volunteer_home"
+        tools:layout="@layout/fragment_volunteer_home" >
+        <action
+            android:id="@+id/action_volunteerHomeFragment_to_volunteerTutorialFragment"
+            app:destination="@id/volunteerTutorialFragment" />
+        <action
+            android:id="@+id/action_volunteerHomeFragment_to_volunteerSettingsFragment"
+            app:destination="@id/volunteerSettingsFragment" />
+        <action
+            android:id="@+id/action_volunteerHomeFragment_to_storiesFragment"
+            app:destination="@id/storiesFragment" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
@@ -173,11 +152,11 @@
         android:label="fragment_stories"
         tools:layout="@layout/fragment_stories" >
         <action
-            android:id="@+id/action_storiesFragment_to_aboutFragment"
-            app:destination="@id/aboutFragment" />
-        <action
             android:id="@+id/action_storiesFragment_to_contactUsFragment"
             app:destination="@id/contactUsFragment" />
+        <action
+            android:id="@+id/action_storiesFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
     </fragment>
     <fragment
         android:id="@+id/subscribeFragment"
@@ -211,9 +190,4 @@
         android:name="com.taruc.visory.volunteer.VolunteerTutorialFragment"
         android:label="fragment_volunteer_tutorial"
         tools:layout="@layout/fragment_volunteer_tutorial" />
-    <fragment
-        android:id="@+id/landingActionsFragment"
-        android:name="com.taruc.visory.LandingActionsFragment"
-        android:label="fragment_landing_actions"
-        tools:layout="@layout/fragment_landing_actions" />
 </navigation>
