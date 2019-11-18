@@ -50,7 +50,8 @@
             android:layout_marginBottom="50dp"
             android:text="@string/introduction_text"
             android:textAlignment="center"
-            android:textSize="28sp"
+            android:textSize="24sp"
+            android:textColor="@color/colorBlack"
             app:layout_constraintBottom_toTopOf="@+id/buttonBlind"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
