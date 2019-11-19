@@ -8,15 +8,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_landing_actions.*
 import java.lang.Exception
 
-class LandingActionsFragment : Fragment() {
+class LandingActionsFragment : Fragment(), View.OnClickListener {
 
     private lateinit var navController: NavController
     private var clickedButton: Int = 0
+    private var userType: String = "null"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,17 +38,33 @@ class LandingActionsFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
         if(clickedButton == 1){
+            userType = "Volunteer"
             (activity as AppCompatActivity).supportActionBar?.title = "Volunteer"
             imageLandingActions.setImageResource(R.drawable.ic_volunteer_intro)
             headerLandingActions.setText(R.string.welcome_volunteer_header)
             textLandingActions.setText(R.string.welcome_volunteer_text)
         }else{
+            userType = "Visually Impaired"
             (activity as AppCompatActivity).supportActionBar?.title = "Visually Impaired"
             imageLandingActions.setImageResource(R.drawable.ic_blind_intro)
             headerLandingActions.setText(R.string.welcome_blind_header)
             textLandingActions.setText(R.string.welcome_blind_text)
         }
+
+        button_register.setOnClickListener(this)
+        button_login.setOnClickListener(this)
     }
 
-
+    override fun onClick(view: View) {
+        when(view.id){
+            R.id.button_register -> {
+                val bundle = bundleOf("userType" to userType)
+                navController.navigate(R.id.action_landingActionsFragment_to_registerFragment, bundle)
+            }
+            R.id.button_login -> {
+                val bundle = bundleOf("userType" to userType)
+                navController.navigate(R.id.action_landingActionsFragment_to_loginFragment, bundle)
+            }
+        }
+    }
 }

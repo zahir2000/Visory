@@ -1,14 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".LoginFragment">
+<RelativeLayout
+    android:focusableInTouchMode="true"
+    android:descendantFocusability="beforeDescendants"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
 
-</FrameLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/login_form"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/ScrollViewChild">
+            <Button
+                android:id="@+id/button_facebook"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/login_login_facebook"
+                style="@style/ButtonStyle.Primary" />
+
+            <Button
+                android:id="@+id/button_google"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/login_login_google"
+                style="@style/ButtonStyle.Primary" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/text_or"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:layout_marginBottom="@dimen/spacing_md"
+                android:text="@string/login_or_use_email"
+                android:textSize="14.0sp"
+                android:textColor="@color/colorBlack"/>
+
+            <EditText
+                android:id="@+id/email_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/login_email"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/password_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/login_password"
+                android:inputType="textPassword"
+                android:imeOptions="actionGo" />
+
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                android:text="@string/login_button"
+                style="@style/ButtonStyle.Primary" />
+
+            <Button
+                android:id="@+id/forgot_password_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/forgot_password_button"
+                style="@style/ButtonStyle.Secondary" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

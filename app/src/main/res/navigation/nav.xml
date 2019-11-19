@@ -27,12 +27,24 @@
         android:name="com.taruc.visory.LandingActionsFragment"
         android:label="fragment_landing_actions"
         tools:layout="@layout/fragment_landing_actions" >
+        <argument
+            android:name="userType"
+            android:defaultValue="None"
+            />
         <action
             android:id="@+id/action_landingActionsFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_landingActionsFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
+            app:destination="@id/registerFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"

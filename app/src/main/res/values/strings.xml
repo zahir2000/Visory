@@ -19,4 +19,11 @@
     <string name="button_register">Register</string>
     <string name="button_login_cd">Click this to login with your existing account</string>
     <string name="button_register_cd">Click this to register a new account</string>
+    <string name="login_or_use_email">or login using email and password</string>
+    <string name="login_login_facebook">Continue with Facebook</string>
+    <string name="login_login_google">Continue with Google</string>
+    <string name="login_button">Login</string>
+    <string name="forgot_password_button">Forgot your password?</string>
+    <string name="login_password">Password</string>
+    <string name="login_email">Email</string>
 </resources>
