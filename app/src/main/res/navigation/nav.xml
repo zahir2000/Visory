@@ -21,6 +21,12 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             />
+        <action
+            android:id="@+id/action_landingFragment_to_blindHomeFragment"
+            app:destination="@id/blindHomeFragment" />
+        <action
+            android:id="@+id/action_landingFragment_to_volunteerHomeFragment"
+            app:destination="@id/volunteerHomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/landingActionsFragment"

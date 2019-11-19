@@ -5,8 +5,8 @@
     <string name="landing">This is Main Landing Page</string>
     <string name="button_volunteer">I am a volunteer</string>
     <string name="button_blind">I am blind or visually impaired</string>
-    <string name="button_volunteer_cd">Sign up for as a volunteer</string>
-    <string name="button_blind_cd">Sign up for a visually impaired or blind</string>
+    <string name="button_volunteer_cd">Sign up as a volunteer</string>
+    <string name="button_blind_cd">Sign up as a visually impaired or blind</string>
     <string name="introduction_text">Small acts of kindness with global impact</string>
     <string name="introduction_image">Image of children standing around the globe</string>
 
@@ -18,7 +18,7 @@
     <string name="button_login">Login</string>
     <string name="button_register">Register</string>
     <string name="button_login_cd">Login with your existing account</string>
-    <string name="button_register_cd">Register a new account</string>
+    <string name="button_register_cd">Create a new account</string>
     <string name="text_or">OR</string>
     <string name="text_continue_facebook">Continue with Facebook</string>
     <string name="text_continue_google">Continue with Google</string>
