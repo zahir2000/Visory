@@ -5,8 +5,8 @@
     <string name="landing">This is Main Landing Page</string>
     <string name="button_volunteer">I am a volunteer</string>
     <string name="button_blind">I am blind or visually impaired</string>
-    <string name="button_volunteer_cd">Click this if you are a volunteer</string>
-    <string name="button_blind_cd">Click this if you are visually impaired or blind</string>
+    <string name="button_volunteer_cd">Sign up for as a volunteer</string>
+    <string name="button_blind_cd">Sign up for a visually impaired or blind</string>
     <string name="introduction_text">Small acts of kindness with global impact</string>
     <string name="introduction_image">Image of children standing around the globe</string>
 
@@ -17,8 +17,8 @@
 
     <string name="button_login">Login</string>
     <string name="button_register">Register</string>
-    <string name="button_login_cd">Click this to login with your existing account</string>
-    <string name="button_register_cd">Click this to register a new account</string>
+    <string name="button_login_cd">Login with your existing account</string>
+    <string name="button_register_cd">Register a new account</string>
     <string name="text_or">OR</string>
     <string name="text_continue_facebook">Continue with Facebook</string>
     <string name="text_continue_google">Continue with Google</string>
@@ -40,7 +40,7 @@
     <string name="text_check_email">Check your email for verification link.</string>
     <string name="image_landing_actions">Image of a person holding a phone</string>
     <string name="image_closed_email">Closed Email</string>
-    <string name="make_call_cd">Make a call</string>
+    <string name="make_call_cd">Make a call to a volunteer</string>
     <string name="text_make_call">Call a volunteer</string>
     <string name="text_get_help">Get help</string>
 </resources>
