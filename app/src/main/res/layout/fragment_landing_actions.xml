@@ -42,14 +42,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button_register"
+        android:id="@+id/button_register_submit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_sm"
-        android:background="@drawable/button_rounded"
+        style="@style/ButtonStyle.Secondary"
         android:contentDescription="@string/button_register_cd"
         android:text="@string/button_register"
-        android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toTopOf="@id/button_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -58,10 +57,9 @@
         android:id="@+id/button_login"
         android:layout_width="0.0dip"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_rounded"
+        style="@style/ButtonStyle.Primary"
         android:contentDescription="@string/button_login_cd"
         android:text="@string/button_login"
-        android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

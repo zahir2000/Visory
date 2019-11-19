@@ -5,14 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_landing_actions.*
-import java.lang.Exception
 
 class LandingActionsFragment : Fragment(), View.OnClickListener {
 
@@ -51,13 +48,13 @@ class LandingActionsFragment : Fragment(), View.OnClickListener {
             textLandingActions.setText(R.string.welcome_blind_text)
         }
 
-        button_register.setOnClickListener(this)
+        button_register_submit.setOnClickListener(this)
         button_login.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
         when(view.id){
-            R.id.button_register -> {
+            R.id.button_register_submit -> {
                 val bundle = bundleOf("userType" to userType)
                 navController.navigate(R.id.action_landingActionsFragment_to_registerFragment, bundle)
             }
