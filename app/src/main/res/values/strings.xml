@@ -42,5 +42,7 @@
     <string name="image_closed_email">Closed Email</string>
     <string name="make_call_cd">Make a call</string>
     <string name="text_make_call">Call a volunteer</string>
-    <string name="text_get_help">Get help</string>
+    <string name="text_get_help">Get specialized help</string>
+
+    <string name="text_about_header">Communties Stories</string>
 </resources>
