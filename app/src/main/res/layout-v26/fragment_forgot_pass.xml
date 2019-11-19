@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:tools="http://schemas.android.com/tools"
+<androidx.core.widget.NestedScrollView
     android:focusableInTouchMode="true"
     android:descendantFocusability="beforeDescendants"
     android:layout_width="fill_parent"
@@ -27,8 +27,7 @@
             android:layout_marginTop="@dimen/spacing_md"
             android:hint="@string/hint_email"
             android:autofillHints="email"
-            android:inputType="textEmailAddress"
-            tools:targetApi="o" />
+            android:inputType="textEmailAddress" />
 
         <Button
             android:id="@+id/reset_pass_button"

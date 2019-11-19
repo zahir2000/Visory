@@ -20,7 +20,6 @@ class LandingActionsFragment : Fragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         clickedButton = arguments!!.getInt("clicked_button")
-        // TODO : back button
     }
 
     override fun onCreateView(
@@ -53,13 +52,12 @@ class LandingActionsFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(view: View) {
+        val bundle = bundleOf("userType" to userType)
         when(view.id){
             R.id.button_register_submit -> {
-                val bundle = bundleOf("userType" to userType)
                 navController.navigate(R.id.action_landingActionsFragment_to_registerFragment, bundle)
             }
             R.id.button_login -> {
-                val bundle = bundleOf("userType" to userType)
                 navController.navigate(R.id.action_landingActionsFragment_to_loginFragment, bundle)
             }
         }

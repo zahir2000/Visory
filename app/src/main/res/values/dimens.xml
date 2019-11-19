@@ -4,4 +4,5 @@
     <dimen name="spacing_sm">8.0dip</dimen>
     <dimen name="button_top_margin">3.0dip</dimen>
     <dimen name="button_bottom_margin">3.0dip</dimen>
+    <dimen name="spacing_lg">24.0dip</dimen>
 </resources>

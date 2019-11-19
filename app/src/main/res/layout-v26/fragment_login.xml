@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
     android:focusableInTouchMode="true"
     android:descendantFocusability="beforeDescendants"
     android:layout_width="fill_parent"
@@ -48,8 +48,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/login_email"
                 android:autofillHints="email"
-                android:inputType="textEmailAddress"
-                tools:targetApi="o" />
+                android:inputType="textEmailAddress" />
 
             <EditText
                 android:id="@+id/password_text"
@@ -58,8 +57,7 @@
                 android:hint="@string/login_password"
                 android:autofillHints="password"
                 android:inputType="textPassword"
-                android:imeOptions="actionGo"
-                tools:targetApi="o" />
+                android:imeOptions="actionGo" />
 
             <Button
                 android:id="@+id/login_button_submit"

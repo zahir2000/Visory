@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import kotlinx.android.synthetic.main.fragment_register.*
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : Fragment(), View.OnClickListener {
 
     private lateinit var navController: NavController
 
@@ -26,7 +27,16 @@ class RegisterFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
         (activity as AppCompatActivity).supportActionBar?.title = "Register"
+
+        button_register_submit.setOnClickListener(this)
     }
 
-
+    override fun onClick(view: View) {
+        when(view.id){
+            R.id.button_register_submit -> {
+                // TODO : necessary checking required
+                navController.navigate(R.id.action_registerFragment_to_verifyFragment)
+            }
+        }
+    }
 }

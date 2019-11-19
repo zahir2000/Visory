@@ -31,4 +31,13 @@
     <string name="hint_lname">Last Name</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
+    <string name="forgot_pass_button_submit">Reset Password</string>
+    <string name="text_forgot_pass">Enter your email below and we will send you a reset link to your email.</string>
+    <string name="forgot_back_button_submit">Back</string>
+    <string name="text_verify_email">Please verify your email to continue</string>
+    <string name="button_verify_resend">Resend Email</string>
+    <string name="button_verify">Completed</string>
+    <string name="text_check_email">Check your email for verification link.</string>
+    <string name="image_landing_actions">Image of a person holding a phone</string>
+    <string name="image_closed_email">Closed Email</string>
 </resources>
