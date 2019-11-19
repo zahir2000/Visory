@@ -28,7 +28,7 @@
         android:label="fragment_landing_actions"
         tools:layout="@layout/fragment_landing_actions" >
         <argument
-            android:name="userType"
+            android:name="user_type"
             android:defaultValue="None"
             />
         <action

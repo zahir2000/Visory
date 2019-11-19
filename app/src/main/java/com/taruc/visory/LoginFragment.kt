@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -13,12 +14,17 @@ import kotlinx.android.synthetic.main.fragment_login.*
 class LoginFragment : Fragment(), View.OnClickListener {
 
     private lateinit var navController: NavController
+    private var userType: Int = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        userType = arguments!!.getInt("user_type")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
@@ -26,7 +32,6 @@ class LoginFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
         (activity as AppCompatActivity).supportActionBar?.title = "Login"
-
         forgot_password_button.setOnClickListener(this)
     }
 
@@ -36,7 +41,14 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 navController.navigate(R.id.action_loginFragment_to_forgotPassFragment)
             }
             R.id.login_button_submit -> {
-                //TODO
+                when(userType){
+                    1 -> {
+                        //TODO : when user is volunteer
+                    }
+                    2 -> {
+                        //TODO : when user is blind
+                    }
+                }
             }
             R.id.button_facebook -> {
                 //TODO

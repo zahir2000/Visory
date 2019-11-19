@@ -40,4 +40,7 @@
     <string name="text_check_email">Check your email for verification link.</string>
     <string name="image_landing_actions">Image of a person holding a phone</string>
     <string name="image_closed_email">Closed Email</string>
+    <string name="make_call_cd">Make a call</string>
+    <string name="text_make_call">Call a volunteer</string>
+    <string name="text_get_help">Get help</string>
 </resources>

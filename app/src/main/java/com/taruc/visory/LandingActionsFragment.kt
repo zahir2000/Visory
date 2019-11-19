@@ -15,7 +15,7 @@ class LandingActionsFragment : Fragment(), View.OnClickListener {
 
     private lateinit var navController: NavController
     private var clickedButton: Int = 0
-    private var userType: String = "null"
+    private var userType: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +34,13 @@ class LandingActionsFragment : Fragment(), View.OnClickListener {
         navController = Navigation.findNavController(view)
 
         if(clickedButton == 1){
-            userType = "Volunteer"
+            userType = 1 //Volunteer
             (activity as AppCompatActivity).supportActionBar?.title = "Volunteer"
             imageLandingActions.setImageResource(R.drawable.ic_volunteer_intro)
             headerLandingActions.setText(R.string.welcome_volunteer_header)
             textLandingActions.setText(R.string.welcome_volunteer_text)
         }else{
-            userType = "Visually Impaired"
+            userType = 2 //Blind
             (activity as AppCompatActivity).supportActionBar?.title = "Visually Impaired"
             imageLandingActions.setImageResource(R.drawable.ic_blind_intro)
             headerLandingActions.setText(R.string.welcome_blind_header)
@@ -52,7 +52,7 @@ class LandingActionsFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(view: View) {
-        val bundle = bundleOf("userType" to userType)
+        val bundle = bundleOf("user_type" to userType)
         when(view.id){
             R.id.button_register_submit -> {
                 navController.navigate(R.id.action_landingActionsFragment_to_registerFragment, bundle)
