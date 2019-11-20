@@ -10,8 +10,8 @@
     <string name="introduction_text">Small acts of kindness with global impact</string>
     <string name="introduction_image">Image of children standing around the globe</string>
 
-    <string name="welcome_blind_text">The Be My Eyes app connects you with a sighted volunteer or company representative. Using live video chat, this person can assist with visual tasks or describe things that you’d like to see.</string>
-    <string name="welcome_volunteer_text">Be My Eyes lets you lend your eyesight to people who need it. Sign up, join our global network and make a big difference in the everyday lives of people without sight all over the world.</string>
+    <string name="welcome_blind_text">The Visory app connects you with a sighted volunteer or company representative. Using live video chat, this person can assist with visual tasks or describe things that you’d like to see.</string>
+    <string name="welcome_volunteer_text">The Visory lets you lend your eyesight to people who need it. Sign up, join our global network and make a big difference in the everyday lives of people without sight all over the world.</string>
     <string name="welcome_blind_header">Visually Impaired</string>
     <string name="welcome_volunteer_header">Sighted Volunteer</string>
 
