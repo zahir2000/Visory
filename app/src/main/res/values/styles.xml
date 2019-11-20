@@ -77,4 +77,9 @@
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textAlignment">center</item>
     </style>
+
+    <style name="Name" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 </resources>

@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EFEFF4"
     tools:context=".volunteer.VolunteerHomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/profileCardView"
+            layout="@layout/profile_card"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:layout_marginRight="@dimen/spacing_md" />
+
+        <TextView
+            android:id="@+id/textViewCallNotification"
+            style="@style/TextAppearance.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:layout_marginRight="@dimen/spacing_md"
+            android:background="@drawable/text_rounded_white"
+            android:paddingTop="@dimen/spacing_sm"
+            android:paddingBottom="@dimen/spacing_sm"
+            android:text="You will receive a notification when you get a call."
+            android:textColor="@color/colorGrey" />
+
+        <include
+            layout="@layout/empty_space"
+            android:layout_width="wrap_content"
+            android:layout_height="0.0dip"
+            android:layout_weight="0.1" />
+
+        <Button
+            android:id="@+id/button_tutorial"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Learn to answer calls"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:layout_marginLeft="@dimen/spacing_md"
+            android:layout_marginRight="@dimen/spacing_md"
+            style="@style/ButtonStyle.Primary"/>
+
+        <Button
+            android:id="@+id/button_trivia"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Trivia Game"
+            android:layout_marginBottom="@dimen/spacing_md"
+            android:layout_marginLeft="@dimen/spacing_md"
+            android:layout_marginRight="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_spoken_lang"
+            style="@style/ButtonStyle.Primary"/>
+    </LinearLayout>
 
 </FrameLayout>

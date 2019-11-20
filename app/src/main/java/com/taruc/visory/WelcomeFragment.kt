@@ -34,7 +34,7 @@ class WelcomeFragment : Fragment(), View.OnClickListener {
         when(view.id){
             R.id.button_welcome_submit -> {
                 // TODO: send to appropriate home screens
-                navController.navigate(R.id.action_welcomeFragment_to_blindHomeFragment)
+                navController.navigate(R.id.action_welcomeFragment_to_volunteerHomeFragment)
             }
         }
     }

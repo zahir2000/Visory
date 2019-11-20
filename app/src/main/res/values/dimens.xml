@@ -5,4 +5,5 @@
     <dimen name="button_top_margin">3.0dip</dimen>
     <dimen name="button_bottom_margin">3.0dip</dimen>
     <dimen name="spacing_lg">24.0dip</dimen>
+    <dimen name="spacing_spoken_lang">3.5dip</dimen>
 </resources>

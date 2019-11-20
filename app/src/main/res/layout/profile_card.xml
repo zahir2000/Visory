@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/card"
+    android:paddingTop="@dimen/spacing_md"
+    android:paddingLeft="@dimen/spacing_md"
+    android:paddingRight="@dimen/spacing_md"
+    android:paddingBottom="@dimen/spacing_md"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<ImageView
+        android:id="@+id/imageView"
+        android:layout_width="75.0dip"
+        android:layout_height="75.0dip"
+        android:background="@drawable/image_rounded"
+        tools:srcCompat="@tools:sample/avatars" />-->
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/boku"
+        app:civ_shadow="false"
+        app:civ_shadow_radius="10" />
+
+    <TextView
+        style="@style/Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/spacing_spoken_lang"
+        android:text="Zahir" />
+
+    <TextView
+        android:id="@+id/text_member_since"
+        style="@style/TextAppearance.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/spacing_spoken_lang"
+        android:text="Member since 17th November 2019"
+        android:textColor="#767676" />
+
+    <TextView
+        android:id="@+id/text_spoken_languages"
+        style="@style/TextAppearance.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:background="@drawable/text_rounded"
+        android:gravity="center"
+        android:paddingLeft="@dimen/spacing_md"
+        android:paddingTop="@dimen/spacing_spoken_lang"
+        android:paddingRight="@dimen/spacing_md"
+        android:paddingBottom="@dimen/spacing_spoken_lang"
+        android:text="Uzbek"
+        android:textColor="#767676" />
+
+</LinearLayout>
