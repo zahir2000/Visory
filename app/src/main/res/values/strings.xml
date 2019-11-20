@@ -45,6 +45,10 @@
     <string name="text_get_help">Get specialized help</string>
 
     <string name="text_about_header">Community Stories</string>
+    <string name="text_about_content">Compelling stories, in-depth interviews and more will be updated weekly in our new Stories section.
+                                        Here, we showcase the unique community of Visory and aim to inform, help and inspire community members.</string>
+    <string name="text_about_content1">Stories are currently only available in English.</string>
+
     <string name="text_permission_volunteer_body">To assist the blind or visually impaired, you will need microphone to respond.</string>
     <string name="text_permission_volunteer_header">Allow Microphone</string>
     <string name="button_grant_access">Grant Access</string>
