@@ -1,14 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".PermissionFragment">
+<FrameLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/FragmentBackground">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/ScrollViewChild">
+
+            <ImageView
+                android:id="@+id/image_permission"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/spacing_md"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/image_permission_cd"
+                android:cropToPadding="false"
+                android:maxWidth="200dip"
+                android:scaleType="fitCenter"
+                android:src="@drawable/push_notifications" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/text_permission_header"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                android:text="@string/text_permission_volunteer_header"
+                style="@style/TextAppearance.Header" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/text_permission_body"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_md"
+                android:text="@string/text_permission_volunteer_body" />
+
+            <include
+                layout="@layout/empty_space" />
+
+            <Button
+                android:id="@+id/button_give_access"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_grant_access"
+                style="@style/ButtonStyle.Primary" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

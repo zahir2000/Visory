@@ -1,14 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".WelcomeFragment">
+<FrameLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/FragmentBackground">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/ScrollViewChild">
+
+            <ImageView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="0.0dip"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                android:src="@drawable/welcome"
+                android:scaleType="fitCenter"
+                android:layout_weight="1.0" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/text_welcome_header"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Welcome Aboard"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                style="@style/TextAppearance.Header" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/text_welcome_body1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="I love my job"
+                style="@style/TextAppearance.Small"
+                android:layout_marginBottom="@dimen/spacing_sm" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/text_welcome_body2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Small"
+                android:text="Helping is easy. Start by learning the tutorials!"
+                android:layout_marginBottom="@dimen/spacing_md" />
+
+            <include layout="@layout/empty_space" />
+
+            <Button
+                android:id="@+id/button_welcome_submit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="true"
+                android:text="@string/button_welcome_continue"
+                style="@style/ButtonStyle.Primary" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

@@ -33,6 +33,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         navController = Navigation.findNavController(view)
         (activity as AppCompatActivity).supportActionBar?.title = "Login"
         forgot_password_button.setOnClickListener(this)
+        login_button_submit.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
@@ -44,9 +45,11 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 when(userType){
                     1 -> {
                         //TODO : when user is volunteer
+                        navController.navigate(R.id.action_loginFragment_to_permissionFragment)
                     }
                     2 -> {
                         //TODO : when user is blind
+                        navController.navigate(R.id.action_loginFragment_to_permissionFragment)
                     }
                 }
             }

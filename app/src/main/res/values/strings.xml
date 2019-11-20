@@ -44,5 +44,10 @@
     <string name="text_make_call">Call a volunteer</string>
     <string name="text_get_help">Get specialized help</string>
 
-    <string name="text_about_header">Community Stories bla bla bla</string>
+    <string name="text_about_header">Community Stories</string>
+    <string name="text_permission_volunteer_body">To assist the blind or visually impaired, you will need microphone to respond.</string>
+    <string name="text_permission_volunteer_header">Allow Microphone</string>
+    <string name="button_grant_access">Grant Access</string>
+    <string name="image_permission_cd">Allow video &amp; microphone access</string>
+    <string name="button_welcome_continue">Continue</string>
 </resources>
