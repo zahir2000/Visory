@@ -58,7 +58,6 @@
                 android:id="@+id/button_welcome_submit"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAllCaps="true"
                 android:text="@string/button_welcome_continue"
                 style="@style/ButtonStyle.Primary" />
         </LinearLayout>
