@@ -6,4 +6,7 @@
     <dimen name="button_bottom_margin">3.0dip</dimen>
     <dimen name="spacing_lg">24.0dip</dimen>
     <dimen name="spacing_spoken_lang">3.5dip</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 </resources>

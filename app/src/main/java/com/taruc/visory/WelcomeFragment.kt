@@ -1,11 +1,13 @@
 package com.taruc.visory
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_welcome.*
@@ -18,7 +20,6 @@ class WelcomeFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_welcome, container, false)
     }
 
@@ -27,7 +28,13 @@ class WelcomeFragment : Fragment(), View.OnClickListener {
         navController = Navigation.findNavController(view)
         (activity as AppCompatActivity).supportActionBar?.title = "Welcome"
 
-        button_welcome_submit.setOnClickListener(this)
+        //button_welcome_submit.setOnClickListener(this)
+        button_welcome_submit.setOnClickListener{
+            activity?.let{
+                val intent = Intent (it, BottomActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
     }
 
     override fun onClick(view: View) {

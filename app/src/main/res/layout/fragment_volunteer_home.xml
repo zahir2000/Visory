@@ -57,11 +57,18 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Trivia Game"
-            android:layout_marginBottom="@dimen/spacing_md"
+            android:layout_marginBottom="65.0dip"
             android:layout_marginLeft="@dimen/spacing_md"
             android:layout_marginRight="@dimen/spacing_md"
             android:layout_marginTop="@dimen/spacing_spoken_lang"
             style="@style/ButtonStyle.Primary"/>
+
+        <!--<com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/bottom_nav"
+            android:background="@color/colorWhite"
+            app:menu="@menu/bottom_nav"/>-->
     </LinearLayout>
 
 </FrameLayout>

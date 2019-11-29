@@ -15,6 +15,9 @@
     <string name="welcome_blind_header">Visually Impaired</string>
     <string name="welcome_volunteer_header">Sighted Volunteer</string>
 
+    <string name="label_volunteer">Volunteer</string>
+    <string name="label_bvi">Visually Impaired</string>
+
     <string name="button_login">Login</string>
     <string name="button_register">Register</string>
     <string name="button_login_cd">Login with your existing account</string>
@@ -54,4 +57,15 @@
     <string name="button_grant_access">Grant Access</string>
     <string name="image_permission_cd">Allow video &amp; microphone access</string>
     <string name="button_welcome_continue">Continue</string>
+    <string name="title_activity_bottom_nav">BottomNavActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_stories">Stories</string>
+    <string name="label_volunteer_login">Volunteer Login</string>
+    <string name="label_bvi_login">Visually Impaired Login</string>
+    <string name="label_login">Login</string>
+    <string name="label_register">Register</string>
+    <string name="bottom_nav_text_home">Home</string>
+    <string name="bottom_nav_text_stories">Stories</string>
 </resources>
