@@ -3,6 +3,7 @@ package com.taruc.visory.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.taruc.visory.R
+import com.taruc.visory.UserType
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -16,7 +17,9 @@ class RegisterActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar?.setDisplayHomeAsUpEnabled(true)
 
-        userType = intent.getIntExtra("userType", 0)
+        //userType = intent.getIntExtra("userType", 0)
+        val userTypePref = UserType(this)
+        userType = userTypePref.getUserType()
 
         setTitle(R.string.label_register)
 

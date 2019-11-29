@@ -12,15 +12,19 @@ class LandingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing)
 
+        val userTypePreferences = UserType(this)
+
         buttonVolunteer.setOnClickListener{
             val intent = Intent(this,LandingActionsActivity::class.java)
-            intent.putExtra("userType",1)
+            userTypePreferences.setUserType(1)
+            //intent.putExtra("userType",1)
             startActivity(intent)
         }
 
         buttonBlind.setOnClickListener{
             val intent = Intent(this,LandingActionsActivity::class.java)
-            intent.putExtra("userType",2)
+            //intent.putExtra("userType",2)
+            userTypePreferences.setUserType(2)
             startActivity(intent)
         }
     }
