@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.google.firebase.auth.FirebaseAuth
 import com.taruc.visory.R
 import com.taruc.visory.UserType
 import kotlinx.android.synthetic.main.activity_landing_actions.*
@@ -11,10 +12,13 @@ import kotlinx.android.synthetic.main.activity_landing_actions.*
 class LandingActionsActivity : AppCompatActivity(), View.OnClickListener {
 
     private var userType: Int = 0
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing_actions)
+
+        auth = FirebaseAuth.getInstance()
 
         //implement back button
         val actionbar = supportActionBar
@@ -71,6 +75,25 @@ class LandingActionsActivity : AppCompatActivity(), View.OnClickListener {
                 //intent.putExtra("userType", userType)
                 startActivity(intent)
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if(auth.currentUser != null){
+            if(auth.currentUser!!.isEmailVerified){
+                val intent = Intent(this, WelcomeActivity::class.java) // TODO: Change to Home activity
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                overridePendingTransition(0, 0)
+            }else{
+                val intent = Intent(this, VerifyEmailActivity::class.java) // TODO: Change to Home activity
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                overridePendingTransition(0, 0)
+            }
+            finish()
         }
     }
 }
