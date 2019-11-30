@@ -11,5 +11,7 @@ class WelcomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_welcome)
 
         setTitle(R.string.label_welcome)
+
+        // TODO: based on userType from db user role, open respective home screen
     }
 }
