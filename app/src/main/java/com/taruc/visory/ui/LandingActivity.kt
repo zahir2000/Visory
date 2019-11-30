@@ -1,12 +1,14 @@
 package com.taruc.visory.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.facebook.AccessToken
 import com.google.firebase.auth.FirebaseAuth
-import com.taruc.visory.*
+import com.taruc.visory.R
+import com.taruc.visory.UserType
 import kotlinx.android.synthetic.main.activity_landing.*
+
 
 class LandingActivity : AppCompatActivity() {
 
@@ -17,8 +19,6 @@ class LandingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_landing)
 
         val userTypePref = UserType(this)
-
-        auth = FirebaseAuth.getInstance()
 
         buttonVolunteer.setOnClickListener{
             val intent = Intent(this,LandingActionsActivity::class.java)
@@ -37,8 +37,17 @@ class LandingActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
+        auth = FirebaseAuth.getInstance()
+        updateUI()
+    }
+
+    private fun updateUI() {
+        val accessToken = AccessToken.getCurrentAccessToken()
+        val isLoggedIn = accessToken != null && !accessToken.isExpired
+
         if(auth.currentUser != null){
-            if(auth.currentUser!!.isEmailVerified){
+            if(auth.currentUser!!.isEmailVerified || isLoggedIn){
                 val intent = Intent(this, WelcomeActivity::class.java) // TODO: Change to Home activity
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)

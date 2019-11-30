@@ -90,5 +90,5 @@
                 android:text="@string/button_register_submit" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    <!-- TODO: IndicatorView, Facebook&Google button styles -->
+    <!-- TODO: IndicatorView!!, Facebook&Google button styles -->
 </RelativeLayout>

@@ -17,6 +17,8 @@ class VerifyEmailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verify_email)
 
+        setTitle(R.string.label_verify_email)
+
         auth = FirebaseAuth.getInstance()
         val user: FirebaseUser = auth.currentUser!!
 

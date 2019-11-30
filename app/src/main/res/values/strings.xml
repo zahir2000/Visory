@@ -69,4 +69,9 @@
     <string name="bottom_nav_text_home">Home</string>
     <string name="bottom_nav_text_stories">Stories</string>
     <string name="text_check_email_instructions">Open the link in your email and click the Completed button.</string>
+    <string name="label_welcome">Welcome</string>
+    <string name="label_verify_email">Verify Email</string>
+
+    <string name="facebook_application_id" translatable="false">2166494143644760</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb2166494143644760</string>
 </resources>

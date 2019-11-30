@@ -1,5 +1,6 @@
 package com.taruc.visory.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -12,12 +13,16 @@ import com.taruc.visory.R
 import com.taruc.visory.User
 import com.taruc.visory.UserType
 import kotlinx.android.synthetic.main.activity_register.*
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
 
 
 class RegisterActivity : AppCompatActivity() {
 
+    val RC_SIGN_IN: Int = 2420
     private var userType: Int = 0
     private lateinit var auth: FirebaseAuth
+    private lateinit var providers: List<AuthUI.IdpConfig>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +40,9 @@ class RegisterActivity : AppCompatActivity() {
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
+
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.FacebookBuilder().build())
 
         button_register_submit.setOnClickListener{
             val fName = edit_text_fname.text.toString()
@@ -80,6 +88,16 @@ class RegisterActivity : AppCompatActivity() {
                 }
         }
 
+        button_facebook.setOnClickListener{
+            startActivityForResult(
+                AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(providers)
+                    .setIsSmartLockEnabled(false)
+                    .build(),
+                RC_SIGN_IN)
+        }
+
         when(userType){
             1 -> {
                 //
@@ -92,18 +110,42 @@ class RegisterActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
-    }
-
-    private fun updateUI(currentUser: FirebaseUser?) {
-        //
     }
 
     override fun onSupportNavigateUp(): Boolean {
         //return to previous activity
         onBackPressed()
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val response = IdpResponse.fromResultIntent(data)
+
+            if (resultCode == Activity.RESULT_OK) {
+                // Successfully signed in
+                val user = FirebaseAuth.getInstance().currentUser
+                val database = FirebaseDatabase.getInstance()
+                val myRef = database.getReference("users")
+
+                val name:String = user!!.displayName!!
+                val key = FirebaseAuth.getInstance().currentUser!!.uid
+                val firstSpace: Int = name.indexOf(" ")
+                val firstName = name.substring(0, firstSpace)
+                val lastName = name.substring(firstSpace).trim()
+
+                val newUser = User(firstName, lastName, user.email!!, userType)
+                myRef.child(key).setValue(newUser)
+                //Toast.makeText(applicationContext, " $lastName", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, WelcomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(applicationContext, "" + response!!.error!!.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
