@@ -1,6 +1,5 @@
 package com.taruc.visory
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,7 +30,7 @@ class WelcomeFragment : Fragment(), View.OnClickListener {
         //button_welcome_submit.setOnClickListener(this)
         button_welcome_submit.setOnClickListener{
             activity?.let{
-                val intent = Intent (it, BottomActivity::class.java)
+                val intent = Intent (it, VolunteerHomeActivity::class.java)
                 it.startActivity(intent)
             }
         }

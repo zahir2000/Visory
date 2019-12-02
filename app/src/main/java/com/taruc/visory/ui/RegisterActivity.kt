@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.taruc.visory.R
-import com.taruc.visory.User
-import com.taruc.visory.UserType
 import kotlinx.android.synthetic.main.activity_register.*
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -21,12 +19,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
+import com.taruc.visory.utils.*
 
 
 class RegisterActivity : AppCompatActivity() {
 
-    val RC_SIGN_IN: Int = 2420
-    val RC_SIGN_IN_GOOGLE: Int = 2024
+    private val RC_SIGN_IN: Int = 2420
+    private val RC_SIGN_IN_GOOGLE: Int = 2024
     private var userType: Int = 0
     private lateinit var auth: FirebaseAuth
     private lateinit var providers: List<AuthUI.IdpConfig>
@@ -60,7 +59,7 @@ class RegisterActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         button_register_submit.setOnClickListener{
-            SignUp()
+            register()
         }
 
         button_facebook.setOnClickListener{
@@ -77,18 +76,9 @@ class RegisterActivity : AppCompatActivity() {
             val signInIntent = googleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN_GOOGLE)
         }
-
-        when(userType){
-            1 -> {
-                //
-            }
-            2 -> {
-                //
-            }
-        }
     }
 
-    private fun SignUp() {
+    private fun register() {
         var fName = edit_text_fname.text.toString()
         var lName = edit_text_lname.text.toString()
         val email = edit_text_email.text.toString()
@@ -124,16 +114,28 @@ class RegisterActivity : AppCompatActivity() {
                     val database = FirebaseDatabase.getInstance()
                     val myRef = database.getReference("users")
                     val key = FirebaseAuth.getInstance().currentUser!!.uid
-                    val newUser = User(fName, lName, email, userType)
+                    val newUser = User(
+                        fName,
+                        lName,
+                        email,
+                        userType,
+                        getCurrentDate(),
+                        "English" // TODO : User preferred language
+                    )
                     val user = auth.currentUser
                     user?.sendEmailVerification()
                         ?.addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Toast.makeText(applicationContext,  "Email sent.", Toast.LENGTH_SHORT).show()
                             }
+                            else {
+                                Toast.makeText(applicationContext,  "Email could not be sent.", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     myRef.child(key).setValue(newUser).addOnCompleteListener{
                         Toast.makeText(applicationContext, "Registration successful", Toast.LENGTH_SHORT).show()
+                        val loggedUserTypePref = LoggedUserType(this)
+                        loggedUserTypePref.setUserType(userType)
                         val intent = Intent(this, VerifyEmailActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
@@ -169,19 +171,26 @@ class RegisterActivity : AppCompatActivity() {
 
                 val name:String = user!!.displayName!!
                 val key = FirebaseAuth.getInstance().currentUser!!.uid
-                val firstSpace: Int = name.indexOf(" ")
-                val firstName = name.substring(0, firstSpace)
-                val lastName = name.substring(firstSpace).trim()
 
-                val newUser = User(firstName, lastName, user.email!!, userType)
-                myRef.child(key).setValue(newUser)
+                val newUser = User(
+                    getFirstName(name),
+                    getLastName(name),
+                    user.email!!,
+                    userType,
+                    getCurrentDate(),
+                    "English" // TODO : User preferred language
+                )
+                myRef.child(key).setValue(newUser).addOnCompleteListener{
+                    val loggedUserTypePref = LoggedUserType(this)
+                    loggedUserTypePref.setUserType(userType)
+                }
                 //Toast.makeText(applicationContext, " $lastName", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, WelcomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 finish()
             } else {
-                Toast.makeText(applicationContext, "" + response!!.error!!.errorCode, Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "" + response!!.error!!.message, Toast.LENGTH_SHORT).show()
                 //TODO : check if facebook email is not used before.
             }
         }
@@ -198,6 +207,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
+        //TODO: Check if user has registered before
+
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
@@ -207,16 +218,23 @@ class RegisterActivity : AppCompatActivity() {
                     val database = FirebaseDatabase.getInstance()
                     val myRef = database.getReference("users")
 
-                    val name:String = user!!.displayName!!
+                    val name = user!!.displayName!!
                     val key = FirebaseAuth.getInstance().currentUser!!.uid
-                    val firstSpace: Int = name.indexOf(" ")
-                    val firstName = name.substring(0, firstSpace)
-                    val lastName = name.substring(firstSpace).trim()
 
-                    val newUser = User(firstName, lastName, user.email!!, userType)
+                    val newUser = User(
+                        getFirstName(name),
+                        getLastName(name),
+                        user.email!!,
+                        userType,
+                        getCurrentDate(),
+                        "English" // TODO : User preferred language
+                    )
                     myRef.child(key).setValue(newUser)
 
                     Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+
+                    val loggedUserTypePref = LoggedUserType(this)
+                    loggedUserTypePref.setUserType(userType)
 
                     val intent = Intent(this, WelcomeActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

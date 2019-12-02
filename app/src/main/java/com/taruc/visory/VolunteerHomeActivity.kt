@@ -8,11 +8,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class BottomActivity : AppCompatActivity() {
+class VolunteerHomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bottom)
+        setContentView(R.layout.activity_volunteer_home)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -30,4 +30,6 @@ class BottomActivity : AppCompatActivity() {
     override fun onBackPressed() {
         moveTaskToBack(true)
     }
+    //TODO: MAKE BottomActivityVolunteer & BottomActivityBVI to show different Home screens.
+    //Then from Welcome screen, decide which activity to start ;)
 }

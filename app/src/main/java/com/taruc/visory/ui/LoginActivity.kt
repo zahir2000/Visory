@@ -6,7 +6,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.taruc.visory.R
-import com.taruc.visory.UserType
+import com.taruc.visory.utils.UserType
 import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
@@ -31,21 +31,7 @@ class LoginActivity : AppCompatActivity() {
 
         setTitle(R.string.label_login)
 
-        try{
-            val mypref = UserType(this)
-            Toast.makeText(applicationContext, userType.toString(), Toast.LENGTH_LONG).show()
-        }catch (ex: Exception){
-            Toast.makeText(applicationContext, ex.toString(), Toast.LENGTH_LONG).show()
-        }
 
-        when(userType){
-            1 -> {
-                //
-            }
-            2 -> {
-                //
-            }
-        }
     }
 
     public override fun onStart() {

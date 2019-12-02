@@ -1,6 +1,5 @@
 package com.taruc.visory.volunteer
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.taruc.visory.BottomActivity
 import com.taruc.visory.R
 
 

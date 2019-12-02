@@ -4,10 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.facebook.AccessToken
 import com.google.firebase.auth.FirebaseAuth
 import com.taruc.visory.R
-import com.taruc.visory.UserType
+import com.taruc.visory.utils.UserType
 import kotlinx.android.synthetic.main.activity_landing_actions.*
 
 class LandingActionsActivity : AppCompatActivity(), View.OnClickListener {
@@ -77,14 +76,14 @@ class LandingActionsActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onStart() {
+    /*override fun onStart() {
         super.onStart()
 
-        auth = FirebaseAuth.getInstance()
-        updateUI()
+//        auth = FirebaseAuth.getInstance()
+//        updateUI()
     }
 
-    private fun updateUI() {
+    *//*private fun updateUI() {
         val accessToken = AccessToken.getCurrentAccessToken()
         val isLoggedIn = accessToken != null && !accessToken.isExpired
 
@@ -102,5 +101,5 @@ class LandingActionsActivity : AppCompatActivity(), View.OnClickListener {
             }
             finish()
         }
-    }
+    }*/
 }

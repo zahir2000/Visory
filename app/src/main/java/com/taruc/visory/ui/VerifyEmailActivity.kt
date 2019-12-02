@@ -3,6 +3,7 @@ package com.taruc.visory.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -35,20 +36,26 @@ class VerifyEmailActivity : AppCompatActivity() {
         }
 
         confirm_email_button_submit.setOnClickListener{
-            //Toast.makeText(applicationContext, user.uid, Toast.LENGTH_SHORT).show()
+            //Reload user state to check if email is verified
             user.reload()
-            if(auth.currentUser != null){
-                if(user.isEmailVerified){
-                    Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(applicationContext, WelcomeActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }else{
-                    Toast.makeText(applicationContext, "Please verify your email", Toast.LENGTH_SHORT).show()
-                }
-            }else{
-                Toast.makeText(applicationContext, "Please login.", Toast.LENGTH_SHORT).show()
-            }
+
+            // wait 2 seconds before checking if the email is verified.
+            Handler().postDelayed({
+                try {
+                    if(auth.currentUser != null){
+                        if(user.isEmailVerified){
+                            Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(applicationContext, WelcomeActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }else{
+                            Toast.makeText(applicationContext, "Please verify your email", Toast.LENGTH_SHORT).show()
+                        }
+                    }else{
+                        Toast.makeText(applicationContext, "Please login.", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {}
+            }, 2000)
         }
     }
 }

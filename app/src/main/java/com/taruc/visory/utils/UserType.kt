@@ -1,4 +1,4 @@
-package com.taruc.visory
+package com.taruc.visory.utils
 
 import android.content.Context
 
