@@ -21,15 +21,25 @@
             <Button
                 android:id="@+id/button_facebook"
                 android:layout_width="fill_parent"
+                android:drawableStart="@drawable/facebook_icon"
+                android:paddingStart="20dip"
+                android:paddingEnd="20dip"
                 android:layout_height="wrap_content"
-                android:text="@string/text_continue_facebook"
+                android:layout_marginBottom="@dimen/spacing_xsm"
+                android:text="@string/text_signin_facebook"
+                android:background="@drawable/facebook_style"
                 style="@style/ButtonStyle.Primary" />
 
             <Button
                 android:id="@+id/button_google"
                 android:layout_width="fill_parent"
+                android:drawableStart="@drawable/google_icon"
                 android:layout_height="wrap_content"
-                android:text="@string/text_continue_google"
+                android:paddingStart="20dip"
+                android:paddingEnd="20dip"
+                android:textColor="#90000000"
+                android:text="@string/text_signup_google"
+                android:background="@drawable/google_style"
                 style="@style/ButtonStyle.Primary" />
 
             <TextView

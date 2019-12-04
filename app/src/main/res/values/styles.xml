@@ -65,6 +65,7 @@
         <item name="android:textSize">16.0sp</item>
         <item name="android:background">@drawable/button_default</item>
         <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:paddingTop">18.0dip</item>
         <item name="android:paddingBottom">18.0dip</item>
         <item name="android:fontFamily">@font/open_sans</item>
