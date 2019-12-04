@@ -11,10 +11,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.taruc.visory.BlindHomeActivity
 import com.taruc.visory.R
-import com.taruc.visory.VolunteerHomeActivity
-import com.taruc.visory.utils.LoggedUserType
+import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.UserType
 import kotlinx.android.synthetic.main.activity_login.*
 import java.lang.Exception
@@ -44,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
         login_button_submit.setOnClickListener{
             val email = email_text.text.toString()
             val password = password_text.text.toString()
-            val loggedUserTypePref = LoggedUserType(this)
+            val loggedUserTypePref = LoggedUser(this)
 
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
@@ -55,10 +53,24 @@ class LoginActivity : AppCompatActivity() {
 
                         val uid = FirebaseAuth.getInstance().currentUser!!.uid
                         val rootRef = FirebaseDatabase.getInstance().getReference("users")
-                        val uidRef = rootRef.child(String.format("%s/role", uid))
+                        //val uidRef = rootRef.child(String.format("%s/role", uid))
+                        val uidRef = rootRef.child(String.format("%s", uid))
                         val valueEventListener = object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                loggedUserTypePref.setUserType(Integer.parseInt(dataSnapshot.getValue()!!.toString()))
+                                val userName = dataSnapshot.child("fname").getValue().toString() + " " + dataSnapshot.child("lname").getValue().toString()
+                                val userEmail = dataSnapshot.child("email").getValue().toString()
+                                val userJoinDate = dataSnapshot.child("datejoined").getValue().toString()
+                                val role = Integer.parseInt(dataSnapshot.child("role").getValue()!!.toString())
+
+                                //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
+                                //if data is modified, it can directly be done using another activity.
+                                loggedUserTypePref.setUserData(
+                                    userName,
+                                    userEmail,
+                                    userJoinDate,
+                                    role
+                                )
+
                             }
                             override fun onCancelled(databaseError: DatabaseError) {
                             }
@@ -83,8 +95,6 @@ class LoginActivity : AppCompatActivity() {
                                 }
                             } catch (e: Exception) {}
                         }, 3000)
-
-                        // get user -> check for role ->
                 } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(applicationContext, "Login Failed", Toast.LENGTH_SHORT).show()
@@ -95,13 +105,6 @@ class LoginActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
-    }
-
-    private fun updateUI(currentUser: FirebaseUser?) {
-        //
     }
 
     override fun onSupportNavigateUp(): Boolean {

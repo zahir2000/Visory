@@ -6,7 +6,7 @@ import android.os.Bundle
 import com.taruc.visory.BlindHomeActivity
 import com.taruc.visory.R
 import com.taruc.visory.VolunteerHomeActivity
-import com.taruc.visory.utils.LoggedUserType
+import com.taruc.visory.utils.LoggedUser
 import kotlinx.android.synthetic.main.activity_welcome.*
 
 class WelcomeActivity : AppCompatActivity() {
@@ -17,7 +17,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         setTitle(R.string.label_welcome)
 
-        val loggedUserType = LoggedUserType(this)
+        val loggedUserType = LoggedUser(this)
 
         button_welcome_submit.setOnClickListener{
             if(loggedUserType.getUserType() == 1){

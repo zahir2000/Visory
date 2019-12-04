@@ -134,8 +134,15 @@ class RegisterActivity : AppCompatActivity() {
                         }
                     myRef.child(key).setValue(newUser).addOnCompleteListener{
                         Toast.makeText(applicationContext, "Registration successful", Toast.LENGTH_SHORT).show()
-                        val loggedUserTypePref = LoggedUserType(this)
-                        loggedUserTypePref.setUserType(userType)
+                        val loggedUserTypePref = LoggedUser(this)
+                        val userName = "$fName $lName"
+                        loggedUserTypePref.setUserData(
+                            userName,
+                            email,
+                            getCurrentDate(),
+                            userType
+                        )
+
                         val intent = Intent(this, VerifyEmailActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
@@ -181,8 +188,13 @@ class RegisterActivity : AppCompatActivity() {
                     "English" // TODO : User preferred language
                 )
                 myRef.child(key).setValue(newUser).addOnCompleteListener{
-                    val loggedUserTypePref = LoggedUserType(this)
-                    loggedUserTypePref.setUserType(userType)
+                    val loggedUserTypePref = LoggedUser(this)
+                    loggedUserTypePref.setUserData(
+                        name,
+                        user.email!!,
+                        getCurrentDate(),
+                        userType
+                    )
                 }
                 //Toast.makeText(applicationContext, " $lastName", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, WelcomeActivity::class.java)
@@ -233,8 +245,13 @@ class RegisterActivity : AppCompatActivity() {
 
                     Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
 
-                    val loggedUserTypePref = LoggedUserType(this)
-                    loggedUserTypePref.setUserType(userType)
+                    val loggedUserTypePref = LoggedUser(this)
+                    loggedUserTypePref.setUserData(
+                        name,
+                        user.email!!,
+                        getCurrentDate(),
+                        userType
+                    )
 
                     val intent = Intent(this, WelcomeActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

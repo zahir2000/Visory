@@ -2,20 +2,13 @@ package com.taruc.visory.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.AccessToken
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.BlindHomeActivity
 import com.taruc.visory.R
 import com.taruc.visory.VolunteerHomeActivity
-import com.taruc.visory.utils.LoggedUserType
-import com.taruc.visory.utils.User
+import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.UserType
 import kotlinx.android.synthetic.main.activity_landing.*
 
@@ -32,31 +25,14 @@ class LandingActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        /*if(auth.currentUser != null){
-            val uid = FirebaseAuth.getInstance().currentUser!!.uid
-            val rootRef = FirebaseDatabase.getInstance().getReference("users")
-            val uidRef = rootRef.child(String.format("%s/role", uid))
-            val valueEventListener = object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    role = dataSnapshot.getValue()!!
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                }
-            }
-            uidRef.addListenerForSingleValueEvent(valueEventListener)
-        }*/
-
         buttonVolunteer.setOnClickListener{
             val intent = Intent(this,LandingActionsActivity::class.java)
             userTypePref.setUserType(1)
-            //intent.putExtra("userType",1)
             startActivity(intent)
         }
 
         buttonBlind.setOnClickListener{
             val intent = Intent(this,LandingActionsActivity::class.java)
-            //intent.putExtra("userType",2)
             userTypePref.setUserType(2)
             startActivity(intent)
         }
@@ -70,10 +46,11 @@ class LandingActivity : AppCompatActivity() {
     private fun updateUI() {
         val accessToken = AccessToken.getCurrentAccessToken()
         val isLoggedIn = accessToken != null && !accessToken.isExpired
-        val loggedUserTypePref = LoggedUserType(this)
+        val loggedUserTypePref = LoggedUser(this)
 
         if(loggedUserTypePref.getUserType() == 0){
-            auth.signOut()
+            if(auth.currentUser != null)
+                auth.signOut()
         }
 
         if(auth.currentUser != null){
