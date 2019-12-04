@@ -2,6 +2,9 @@ package com.taruc.visory.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.AccessToken
 import com.google.firebase.auth.FirebaseAuth
@@ -76,5 +79,23 @@ class LandingActivity : AppCompatActivity() {
             }
             finish()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.landing_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.about_visory -> {
+                val intent = Intent(this, AboutActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

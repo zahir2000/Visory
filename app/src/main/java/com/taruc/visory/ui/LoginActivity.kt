@@ -14,7 +14,9 @@ import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.R
 import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.UserType
+import kotlinx.android.synthetic.main.activity_forgot_pass.*
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login.email_text
 import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
@@ -38,6 +40,11 @@ class LoginActivity : AppCompatActivity() {
         userType = userTypePref.getUserType()
 
         setTitle(R.string.label_login)
+
+        forgot_password_button.setOnClickListener {
+            val intent = Intent(this, ForgotPassActivity::class.java)
+            startActivity(intent)
+        }
 
         login_button_submit.setOnClickListener{
             val email = email_text.text.toString()

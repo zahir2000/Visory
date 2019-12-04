@@ -1,6 +1,7 @@
 package com.taruc.visory.utils
 
 import android.content.Context
+import java.lang.Exception
 
 class LoggedUser(context: Context){
     val SHARED_PREF = "sharedPrefs"
@@ -48,6 +49,14 @@ class LoggedUser(context: Context){
         val editor = preference.edit()
         editor.putString(USER_JOINDATE, userJoinDate)
         editor.apply()
+    }
+
+    fun getUserData(): String{
+        return try{
+            "${getUserName()}\n${getUserEmail()}\n${getUserJoinDate()}\n${getUserType()}"
+        } catch (e: Exception){
+            "Not all data is entered"
+        }
     }
 
     fun setUserData(userName: String, userEmail: String, userJoinDate: String, userType: Int){

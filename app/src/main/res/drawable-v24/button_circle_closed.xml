@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <corners android:radius="15.0dip"/>
+            <padding android:bottom="2dip" android:top="2dip" android:left="2dip" android:right="2dip"/>
+            <stroke android:color="@color/colorHome" android:width="1dip"/>
+            <size android:height="12.0dip" android:width="12.0dip" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/ic_close" />
+</layer-list>

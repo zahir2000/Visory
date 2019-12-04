@@ -1,0 +1,22 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/image_about"
+        android:src="@drawable/happy_kids" />
+
+    <Button
+        android:id="@+id/button_close_about"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="5.0dip"
+        android:layout_marginEnd="5.0dip"
+        android:background="@drawable/button_circle_closed"
+        android:textColor="#fff" />
+</FrameLayout>

@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BlindHomeActivity"></activity>
+        <activity android:name=".ui.AboutActivity"></activity>
+        <activity android:name=".ui.ForgotPassActivity" />
+        <activity android:name=".BlindHomeActivity" />
         <activity android:name=".volunteer.VolunteerHomeActivity" />
         <activity android:name=".ui.VerifyEmailActivity" />
         <activity android:name=".ui.RegisterActivity" />
