@@ -3,6 +3,7 @@ package com.taruc.visory.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Patterns
 import android.widget.Toast
@@ -19,7 +20,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.utils.*
+import java.lang.Exception
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -166,41 +171,76 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val loggedUserTypePref = LoggedUser(this)
 
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
 
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
-                val database = FirebaseDatabase.getInstance()
-                val myRef = database.getReference("users")
+                if(auth.currentUser != null){
+                    if(response?.isNewUser!!){
+                        val user = FirebaseAuth.getInstance().currentUser
+                        val database = FirebaseDatabase.getInstance()
+                        val myRef = database.getReference("users")
 
-                val name:String = user!!.displayName!!
-                val key = FirebaseAuth.getInstance().currentUser!!.uid
+                        val name:String = user!!.displayName!!
+                        val key = FirebaseAuth.getInstance().currentUser!!.uid
 
-                val newUser = User(
-                    getFirstName(name),
-                    getLastName(name),
-                    user.email!!,
-                    userType,
-                    getCurrentDate(),
-                    "English" // TODO : User preferred language
-                )
-                myRef.child(key).setValue(newUser).addOnCompleteListener{
-                    val loggedUserTypePref = LoggedUser(this)
-                    loggedUserTypePref.setUserData(
-                        name,
-                        user.email!!,
-                        getCurrentDate(),
-                        userType
-                    )
+                        val newUser = User(
+                            getFirstName(name),
+                            getLastName(name),
+                            user.email!!,
+                            userType,
+                            getCurrentDate(),
+                            "English" // TODO : User preferred language
+                        )
+                        myRef.child(key).setValue(newUser).addOnCompleteListener{
+                            loggedUserTypePref.setUserData(
+                                name,
+                                user.email!!,
+                                getCurrentDate(),
+                                userType
+                            )
+                        }
+                    }
+                    else{
+                        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+                        val rootRef = FirebaseDatabase.getInstance().getReference("users")
+                        //val uidRef = rootRef.child(String.format("%s/role", uid))
+                        val uidRef = rootRef.child(String.format("%s", uid))
+                        val valueEventListener = object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                val userName = dataSnapshot.child("fname").getValue().toString() + " " + dataSnapshot.child("lname").getValue().toString()
+                                val userEmail = dataSnapshot.child("email").getValue().toString()
+                                val userJoinDate = dataSnapshot.child("datejoined").getValue().toString()
+                                val role = Integer.parseInt(dataSnapshot.child("role").getValue()!!.toString())
+
+                                //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
+                                //if data is modified, it can directly be done using another activity.
+                                loggedUserTypePref.setUserData(
+                                    userName,
+                                    userEmail,
+                                    userJoinDate,
+                                    role
+                                )
+
+                            }
+                            override fun onCancelled(databaseError: DatabaseError) {
+                            }
+                        }
+                        uidRef.addListenerForSingleValueEvent(valueEventListener)
+                    }
                 }
-                //Toast.makeText(applicationContext, " $lastName", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, WelcomeActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finish()
+
+                Handler().postDelayed({
+                    try {
+                        val intent = Intent(this, WelcomeActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        finish()
+                    } catch (e: Exception) {}
+                }, 3000)
             } else {
                 Toast.makeText(applicationContext, "" + response!!.error!!.message, Toast.LENGTH_SHORT).show()
                 //TODO : check if facebook email is not used before.
@@ -220,43 +260,74 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         //TODO: Check if user has registered before
-
+        val loggedUserTypePref = LoggedUser(this)
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    val database = FirebaseDatabase.getInstance()
-                    val myRef = database.getReference("users")
+                    if(task.result?.additionalUserInfo?.isNewUser!!){
+                        val user = auth.currentUser
+                        val database = FirebaseDatabase.getInstance()
+                        val myRef = database.getReference("users")
 
-                    val name = user!!.displayName!!
-                    val key = FirebaseAuth.getInstance().currentUser!!.uid
+                        val name = user!!.displayName!!
+                        val key = FirebaseAuth.getInstance().currentUser!!.uid
 
-                    val newUser = User(
-                        getFirstName(name),
-                        getLastName(name),
-                        user.email!!,
-                        userType,
-                        getCurrentDate(),
-                        "English" // TODO : User preferred language
-                    )
-                    myRef.child(key).setValue(newUser)
+                        val newUser = User(
+                            getFirstName(name),
+                            getLastName(name),
+                            user.email!!,
+                            userType,
+                            getCurrentDate(),
+                            "English" // TODO : User preferred language
+                        )
+                        myRef.child(key).setValue(newUser)
+
+                        loggedUserTypePref.setUserData(
+                            name,
+                            user.email!!,
+                            getCurrentDate(),
+                            userType
+                        )
+                    }
+                    else{
+                        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+                        val rootRef = FirebaseDatabase.getInstance().getReference("users")
+                        //val uidRef = rootRef.child(String.format("%s/role", uid))
+                        val uidRef = rootRef.child(String.format("%s", uid))
+                        val valueEventListener = object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                val userName = dataSnapshot.child("fname").getValue().toString() + " " + dataSnapshot.child("lname").getValue().toString()
+                                val userEmail = dataSnapshot.child("email").getValue().toString()
+                                val userJoinDate = dataSnapshot.child("datejoined").getValue().toString()
+                                val role = Integer.parseInt(dataSnapshot.child("role").getValue()!!.toString())
+
+                                //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
+                                //if data is modified, it can directly be done using another activity.
+                                loggedUserTypePref.setUserData(
+                                    userName,
+                                    userEmail,
+                                    userJoinDate,
+                                    role
+                                )
+
+                            }
+                            override fun onCancelled(databaseError: DatabaseError) {
+                            }
+                        }
+                        uidRef.addListenerForSingleValueEvent(valueEventListener)
+                    }
 
                     Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
 
-                    val loggedUserTypePref = LoggedUser(this)
-                    loggedUserTypePref.setUserData(
-                        name,
-                        user.email!!,
-                        getCurrentDate(),
-                        userType
-                    )
-
-                    val intent = Intent(this, WelcomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    finish()
+                    Handler().postDelayed({
+                        try {
+                            val intent = Intent(this, WelcomeActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                            finish()
+                        } catch (e: Exception) {}
+                    }, 3000)
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(applicationContext, "Authentication failed", Toast.LENGTH_SHORT).show()

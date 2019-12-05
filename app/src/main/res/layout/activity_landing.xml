@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:focusableInTouchMode="true"
+    android:descendantFocusability="beforeDescendants"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    style="@style/FragmentBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- TODO : make a custom EditText -->
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/login_form"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/ScrollViewChild">
+
+            <ImageView
+                android:id="@+id/imageViewIntroduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_globe_big"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/introduction_image"
+                android:maxHeight="200.0dip"
+                android:scaleType="centerInside" />
+
+
+            <TextView
+                android:id="@+id/textViewIntroduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:paddingBottom="20dip"
+                android:layout_marginEnd="8dp"
+                android:text="@string/introduction_text"
+                style="@style/TextAppearance.Header" />
+
+
+            <include
+                layout="@layout/empty_space" />
+
+            <Button
+                android:id="@+id/buttonBlind"
+                style="@style/ButtonStyle.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dip"
+                android:contentDescription="@string/button_blind_cd"
+                android:text="@string/button_blind" />
+
+            <Button
+                android:id="@+id/buttonVolunteer"
+                style="@style/ButtonStyle.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/button_volunteer_cd"
+                android:text="@string/button_volunteer" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
