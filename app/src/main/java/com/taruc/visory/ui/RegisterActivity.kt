@@ -252,16 +252,14 @@ class RegisterActivity : AppCompatActivity() {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account!!)
-            } catch (e: ApiException) {
-
-            }
+            } catch (e: ApiException) {}
         }
     }
 
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
+    private fun firebaseAuthWithGoogle(acc: GoogleSignInAccount) {
         //TODO: Check if user has registered before
         val loggedUserTypePref = LoggedUser(this)
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
+        val credential = GoogleAuthProvider.getCredential(acc.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
