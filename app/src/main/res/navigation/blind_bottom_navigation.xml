@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/blind_bottom_navigation"
+    app:startDestination="@+id/navigation_blind_home">
+
+    <fragment
+        android:id="@+id/navigation_blind_home"
+        android:name="com.taruc.visory.blind.BlindHomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_blind_home"/>
+    <fragment
+        android:id="@+id/nav_stories_blind"
+        android:name="com.taruc.visory.StoriesFragment"
+        android:label="Stories"
+        tools:layout="@layout/fragment_stories"/>
+</navigation>

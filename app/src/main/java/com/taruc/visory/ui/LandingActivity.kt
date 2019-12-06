@@ -98,4 +98,8 @@ class LandingActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+
+    override fun onBackPressed() {
+        moveTaskToBack(true)
+    }
 }

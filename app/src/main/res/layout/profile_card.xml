@@ -19,12 +19,25 @@
         android:background="@drawable/image_rounded"
         tools:srcCompat="@tools:sample/avatars" />-->
 
-    <com.mikhaellopez.circularimageview.CircularImageView
+    <!--<com.mikhaellopez.circularimageview.CircularImageView
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:src="@drawable/boku"
+        android:id="@+id/profile_card_picture"
         app:civ_shadow="false"
-        app:civ_shadow_radius="10" />
+        app:civ_shadow_radius="10" />-->
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        app:cardCornerRadius="128dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:id="@+id/image_profile_profile"
+            android:src="@drawable/boku"/>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         style="@style/Name"

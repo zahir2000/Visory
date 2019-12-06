@@ -151,6 +151,7 @@ class RegisterActivity : AppCompatActivity() {
                         val intent = Intent(this, VerifyEmailActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
+                        overridePendingTransition(0, 0)
                         finish()
                     }
                 }else{
@@ -238,6 +239,7 @@ class RegisterActivity : AppCompatActivity() {
                         val intent = Intent(this, WelcomeActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
+                        overridePendingTransition(0, 0)
                         finish()
                     } catch (e: Exception) {}
                 }, 3000)
@@ -323,6 +325,7 @@ class RegisterActivity : AppCompatActivity() {
                             val intent = Intent(this, WelcomeActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
+                            overridePendingTransition(0, 0)
                             finish()
                         } catch (e: Exception) {}
                     }, 3000)

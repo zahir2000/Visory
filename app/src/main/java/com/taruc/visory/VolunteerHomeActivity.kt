@@ -20,7 +20,7 @@ class VolunteerHomeActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_stories
+                R.id.navigation_volunteer_home, R.id.navigation_stories
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

@@ -44,8 +44,8 @@
     <string name="image_landing_actions">Image of a person holding a phone</string>
     <string name="image_closed_email">Closed Email</string>
     <string name="make_call_cd">Make a call to a volunteer</string>
-    <string name="text_make_call">Call a volunteer</string>
-    <string name="text_get_help">Get specialized help</string>
+    <string name="button_make_call">Call a volunteer</string>
+    <string name="button_get_help">Get specialized help</string>
 
     <string name="text_about_header">Community Stories</string>
     <string name="text_about_content">Compelling stories, in-depth interviews and more will be updated weekly in our new Stories section.
@@ -80,4 +80,5 @@
     <string name="text_signup_facebook">Sign up with Facebook</string>
     <string name="text_signin_facebook">Sign in with Facebook</string>
     <string name="text_signin_google">Sign in with Google</string>
+    <string name="button_object_detector">Object Detector</string>
 </resources>

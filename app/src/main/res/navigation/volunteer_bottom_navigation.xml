@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/volunteer_bottom_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_volunteer_home">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_volunteer_home"
         android:name="com.taruc.visory.volunteer.VolunteerHomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_volunteer_home" />

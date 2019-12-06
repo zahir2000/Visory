@@ -14,7 +14,6 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:id="@+id/login_form"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             style="@style/ScrollViewChild">

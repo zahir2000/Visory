@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:background="#ffefeff4"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:focusableInTouchMode="true"
+    android:descendantFocusability="beforeDescendants"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
     style="@style/FragmentBackground"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- TODO : make a custom EditText -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/blind_home_view"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        style="@style/ViewGroup"
-        android:background="@color/colorWhite" >
-
-        <Button
-            android:textSize="45.0sp"
-            android:id="@+id/button_blind_make_call"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="0.0dip"
-            android:text="@string/text_make_call"
-            android:contentDescription="@string/make_call_cd"
-            android:layout_weight="3.0"
-            style="@style/ButtonStyle.Primary" />
+            android:layout_height="wrap_content"
+            style="@style/ScrollViewChild">
 
-        <!--<Button
-            android:textSize="22.0sp"
-            android:id="@+id/button_blind_help"
-            android:layout_width="fill_parent"
-            android:layout_height="0.0dip"
-            android:layout_marginTop="12.0dip"
-            android:text="@string/text_get_help"
-            android:layout_weight="1.0"
-            style="@style/ButtonStyle.Secondary" />-->
-    </LinearLayout>
+            <Button
+                android:id="@+id/button_blind_make_call"
+                style="@style/ButtonStyle.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/make_call_cd"
+                android:text="@string/button_make_call"
+                android:textSize="40.0sp" />
+
+            <Button
+                android:textSize="22.0sp"
+                android:id="@+id/button_blind_detect_object"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12.0dip"
+                android:text="@string/button_object_detector"
+                style="@style/ButtonStyle.Secondary" />
+
+            <Button
+                android:textSize="22.0sp"
+                android:id="@+id/button_blind_help"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12.0dip"
+                android:text="@string/button_get_help"
+                style="@style/ButtonStyle.Secondary" />
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
