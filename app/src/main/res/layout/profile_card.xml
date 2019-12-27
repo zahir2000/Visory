@@ -31,32 +31,35 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         app:cardCornerRadius="128dp">
+
         <ImageView
+            android:id="@+id/image_profile_profile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/profile_img_cd"
             android:scaleType="centerCrop"
-            android:id="@+id/image_profile_profile"
-            android:src="@drawable/boku"/>
+            android:src="@drawable/boku" />
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/profile_name"
         style="@style/Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/spacing_spoken_lang"
-        android:text="Zahir" />
+        android:text="@string/default_name" />
 
     <TextView
-        android:id="@+id/text_member_since"
+        android:id="@+id/profile_joindate"
         style="@style/TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/spacing_spoken_lang"
-        android:text="Member since 17th November 2019"
+        android:text="@string/default_date"
         android:textColor="#767676" />
 
     <TextView
-        android:id="@+id/text_spoken_languages"
+        android:id="@+id/profile_language"
         style="@style/TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,7 +70,7 @@
         android:paddingTop="@dimen/spacing_spoken_lang"
         android:paddingRight="@dimen/spacing_md"
         android:paddingBottom="@dimen/spacing_spoken_lang"
-        android:text="Uzbek"
+        android:text="@string/default_language"
         android:textColor="#767676" />
 
 </LinearLayout>

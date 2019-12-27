@@ -10,6 +10,8 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.taruc.visory.R
+import com.taruc.visory.utils.LoggedUser
+import kotlinx.android.synthetic.main.profile_card.*
 
 
 class VolunteerHomeFragment : Fragment() {
@@ -31,5 +33,14 @@ class VolunteerHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
         (activity as AppCompatActivity).supportActionBar?.title = "Home"
+
+        updateUI()
+    }
+
+    private fun updateUI() {
+        val loggedUserTypePref = LoggedUser(this.activity!!.baseContext)
+        profile_joindate.text = "Member since " + loggedUserTypePref.getUserJoinDate()
+        profile_name.text = loggedUserTypePref.getUserName()
+        //profile_language.text = loggedUserTypePref.getLanguage()
     }
 }

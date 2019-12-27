@@ -1,5 +1,6 @@
 package com.taruc.visory.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -62,7 +63,7 @@ class LandingActivity : AppCompatActivity() {
                     val intent = Intent(this, VolunteerHomeActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
-                    overridePendingTransition(0, 0)
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
                 else {
                     val intent = Intent(this, BlindHomeActivity::class.java)

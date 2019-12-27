@@ -33,7 +33,7 @@
             android:background="@drawable/text_rounded_white"
             android:paddingTop="@dimen/spacing_sm"
             android:paddingBottom="@dimen/spacing_sm"
-            android:text="You will receive a notification when you get a call."
+            android:text="@string/text_notification_call"
             android:textColor="@color/colorGrey" />
 
         <include
@@ -46,7 +46,7 @@
             android:id="@+id/button_tutorial"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Learn to answer calls"
+            android:text="@string/text_learn_to_answer_calls"
             android:layout_marginTop="@dimen/spacing_md"
             android:layout_marginLeft="@dimen/spacing_md"
             android:layout_marginRight="@dimen/spacing_md"
@@ -56,7 +56,7 @@
             android:id="@+id/button_trivia"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Trivia Game"
+            android:text="@string/text_trivia_game"
             android:layout_marginLeft="@dimen/spacing_md"
             android:layout_marginRight="@dimen/spacing_md"
             android:layout_marginTop="@dimen/spacing_spoken_lang"

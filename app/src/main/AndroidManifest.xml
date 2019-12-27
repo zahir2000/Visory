@@ -2,33 +2,48 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.taruc.visory">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-        android:allowBackup="true"
+        android:name=".quickblox.App"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.AboutActivity"></activity>
+        <activity android:name=".ui.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.AboutActivity" />
         <activity android:name=".ui.ForgotPassActivity" />
         <activity android:name=".BlindHomeActivity" />
-        <activity android:name=".volunteer.VolunteerHomeActivity" />
+        <activity android:name=".VolunteerHomeActivity" />
         <activity android:name=".ui.VerifyEmailActivity" />
         <activity android:name=".ui.RegisterActivity" />
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.LandingActionsActivity" />
-        <activity android:name=".ui.LandingActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ui.LandingActivity"/>
         <activity android:name=".ui.WelcomeActivity" />
-        <activity android:name=".VolunteerHomeActivity" />
         <activity android:name=".MainActivity" />
+
+        <activity
+            android:name=".quickblox.activities.CallActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <service android:name=".quickblox.services.LoginService"/>
+        <service android:name=".quickblox.services.CallService"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

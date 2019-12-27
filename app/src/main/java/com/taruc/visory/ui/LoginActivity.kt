@@ -115,18 +115,20 @@ class LoginActivity : AppCompatActivity() {
                     val uidRef = rootRef.child(String.format("%s", uid))
                     val valueEventListener = object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val userName = dataSnapshot.child("fname").getValue().toString() + " " + dataSnapshot.child("lname").getValue().toString()
-                            val userEmail = dataSnapshot.child("email").getValue().toString()
-                            val userJoinDate = dataSnapshot.child("datejoined").getValue().toString()
-                            val role = Integer.parseInt(dataSnapshot.child("role").getValue()!!.toString())
+                            val userName = dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child("lname").value.toString()
+                            val userEmail = dataSnapshot.child("email").value.toString()
+                            val userJoinDate = dataSnapshot.child("datejoined").value.toString()
+                            val role = Integer.parseInt(dataSnapshot.child("role").value!!.toString())
 
                             //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
                             //if data is modified, it can directly be done using another activity.
                             loggedUserTypePref.setUserData(
+                                uid,
                                 userName,
                                 userEmail,
                                 userJoinDate,
-                                role
+                                role,
+                                getString(R.string.provider_email)
                             )
 
                         }
@@ -200,10 +202,12 @@ class LoginActivity : AppCompatActivity() {
                         )
                         myRef.child(key).setValue(newUser).addOnCompleteListener{
                             loggedUserTypePref.setUserData(
+                                FirebaseAuth.getInstance().currentUser!!.uid,
                                 name,
                                 user.email!!,
                                 getCurrentDate(),
-                                userType
+                                userType,
+                                getString(R.string.provider_fb)
                             )
                         }
                     }
@@ -214,18 +218,20 @@ class LoginActivity : AppCompatActivity() {
                         val uidRef = rootRef.child(String.format("%s", uid))
                         val valueEventListener = object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                val userName = dataSnapshot.child("fname").getValue().toString() + " " + dataSnapshot.child("lname").getValue().toString()
-                                val userEmail = dataSnapshot.child("email").getValue().toString()
-                                val userJoinDate = dataSnapshot.child("datejoined").getValue().toString()
-                                val role = Integer.parseInt(dataSnapshot.child("role").getValue()!!.toString())
+                                val userName = dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child("lname").value.toString()
+                                val userEmail = dataSnapshot.child("email").value.toString()
+                                val userJoinDate = dataSnapshot.child("datejoined").value.toString()
+                                val role = Integer.parseInt(dataSnapshot.child("role").value.toString())
 
                                 //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
                                 //if data is modified, it can directly be done using another activity.
                                 loggedUserTypePref.setUserData(
+                                    FirebaseAuth.getInstance().currentUser!!.uid,
                                     userName,
                                     userEmail,
                                     userJoinDate,
-                                    role
+                                    role,
+                                    getString(R.string.provider_fb)
                                 )
 
                             }
@@ -286,10 +292,12 @@ class LoginActivity : AppCompatActivity() {
                         myRef.child(key).setValue(newUser)
 
                         loggedUserTypePref.setUserData(
+                            FirebaseAuth.getInstance().currentUser!!.uid,
                             name,
                             user.email!!,
                             getCurrentDate(),
-                            userType
+                            userType,
+                            getString(R.string.provider_google)
                         )
                     }
                     else{
@@ -299,18 +307,20 @@ class LoginActivity : AppCompatActivity() {
                         val uidRef = rootRef.child(String.format("%s", uid))
                         val valueEventListener = object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                val userName = dataSnapshot.child("fname").getValue().toString() + " " + dataSnapshot.child("lname").getValue().toString()
-                                val userEmail = dataSnapshot.child("email").getValue().toString()
-                                val userJoinDate = dataSnapshot.child("datejoined").getValue().toString()
-                                val role = Integer.parseInt(dataSnapshot.child("role").getValue()!!.toString())
+                                val userName = dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child("lname").value.toString()
+                                val userEmail = dataSnapshot.child("email").value.toString()
+                                val userJoinDate = dataSnapshot.child("datejoined").value.toString()
+                                val role = Integer.parseInt(dataSnapshot.child("role").value.toString())
 
                                 //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
                                 //if data is modified, it can directly be done using another activity.
                                 loggedUserTypePref.setUserData(
+                                    FirebaseAuth.getInstance().currentUser!!.uid,
                                     userName,
                                     userEmail,
                                     userJoinDate,
-                                    role
+                                    role,
+                                    getString(R.string.provider_google)
                                 )
 
                             }
