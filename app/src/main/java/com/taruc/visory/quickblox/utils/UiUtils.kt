@@ -1,32 +1,21 @@
 package com.taruc.visory.quickblox.utils
 
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import androidx.annotation.*
 import androidx.annotation.IntRange
 import com.taruc.visory.R
 import com.taruc.visory.quickblox.App
+import java.util.*
 
-private const val RANDOM_COLOR_START_RANGE = 0
-private const val RANDOM_COLOR_END_RANGE = 9
-
-fun getColorCircleDrawable(colorPosition: Int): Drawable {
-    return getColoredCircleDrawable(getCircleColor(colorPosition % RANDOM_COLOR_END_RANGE))
-}
-
-fun getColoredCircleDrawable(@ColorInt color: Int): Drawable {
+fun getColoredCircleDrawable(): Drawable {
+    val rand = Random()
+    val randColor = Color.argb(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256))
     val drawable = getDrawable(R.drawable.shape_circle) as GradientDrawable
-    drawable.setColor(color)
+    drawable.setColor(randColor)
     return drawable
-}
-
-fun getCircleColor(@IntRange(from = RANDOM_COLOR_START_RANGE.toLong(), to = RANDOM_COLOR_END_RANGE.toLong())
-                   colorPosition: Int): Int {
-    val colorIdName = String.format("random_color_%d", colorPosition + 1)
-    val colorId = App.getInstance().resources
-            .getIdentifier(colorIdName, "color", App.getInstance().packageName)
-
-    return getColor(colorId)
 }
 
 fun getString(@StringRes stringId: Int): String {
@@ -34,13 +23,9 @@ fun getString(@StringRes stringId: Int): String {
 }
 
 fun getDrawable(@DrawableRes drawableId: Int): Drawable {
-    return App.getInstance().resources.getDrawable(drawableId)
-}
-
-fun getColor(@ColorRes colorId: Int): Int {
-    return App.getInstance().resources.getColor(colorId)
-}
-
-fun getDimen(@DimenRes dimenId: Int): Int {
-    return App.getInstance().resources.getDimension(dimenId).toInt()
+    return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        App.getInstance().resources.getDrawable(drawableId)
+    } else {
+        App.getInstance().resources.getDrawable(drawableId, null)
+    }
 }

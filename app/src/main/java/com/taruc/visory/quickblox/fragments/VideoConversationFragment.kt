@@ -28,12 +28,14 @@ import com.quickblox.videochat.webrtc.view.QBRTCVideoTrack
 import com.taruc.visory.R
 import com.taruc.visory.quickblox.adapters.OpponentsFromCallAdapter
 import com.taruc.visory.quickblox.services.CallService
+import com.taruc.visory.quickblox.utils.EXTRA_IS_INCOMING_CALL
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.utils.shortToast
 import org.webrtc.CameraVideoCapturer
 import org.webrtc.RendererCommon
 import org.webrtc.SurfaceViewRenderer
 import java.io.Serializable
+import java.lang.Exception
 import java.util.*
 
 const val CAMERA_ENABLED = "is_camera_enabled"
@@ -161,15 +163,27 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
         if (view == null) {
             return
         }
-        opponentViewHolders = SparseArray(opponents.size)
-        isRemoteShown = false
-        isCurrentCameraFront = true
-        localVideoView = view.findViewById(R.id.local_video_view)
-        initCorrectSizeForLocalView()
-        localVideoView.setZOrderMediaOverlay(true)
 
-        remoteFullScreenVideoView = view.findViewById(R.id.remote_video_view)
-        remoteFullScreenVideoView?.setOnClickListener(localViewOnClickListener)
+        val isIncomingCall = Helper.get(EXTRA_IS_INCOMING_CALL, false)
+        if(isIncomingCall){
+            opponentViewHolders = SparseArray(opponents.size)
+            isRemoteShown = false
+            isCurrentCameraFront = true
+            remoteFullScreenVideoView = view.findViewById(R.id.remote_video_view)
+            remoteFullScreenVideoView?.setOnClickListener(localViewOnClickListener)
+            localVideoView = view.findViewById(R.id.local_video_view)
+            localVideoView.isEnabled = false
+        }else{
+            opponentViewHolders = SparseArray(opponents.size)
+            isRemoteShown = false
+            isCurrentCameraFront = true
+            localVideoView = view.findViewById(R.id.local_video_view)
+            initCorrectSizeForLocalView()
+            localVideoView.setZOrderMediaOverlay(true)
+
+            remoteFullScreenVideoView = view.findViewById(R.id.remote_video_view)
+            remoteFullScreenVideoView?.setOnClickListener(localViewOnClickListener)
+        }
 
         if (!isPeerToPeerCall) {
             recyclerView = view.findViewById(R.id.grid_opponents)
@@ -199,6 +213,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
         actionVideoButtonsLayout = view.findViewById(R.id.element_set_video_buttons)
 
         isCurrentCameraFront = Helper.get(IS_CURRENT_CAMERA_FRONT, true)
+
         if (!isCurrentCameraFront) {
             switchCamera(null)
         }
@@ -273,6 +288,9 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
     override fun onResume() {
         super.onResume()
         toggleCamera(cameraToggle.isChecked)
+        try{
+            switchCamera(null)
+        }catch (e: Exception){}
     }
 
     override fun onPause() {
@@ -376,8 +394,11 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
         localVideoTrack = videoTrack
         isLocalVideoFullScreen = true
 
-        localVideoTrack?.let {
-            fillVideoView(localVideoView, it, false)
+        val isIncomingCall = Helper.get(EXTRA_IS_INCOMING_CALL, false)
+        if(!isIncomingCall){
+            localVideoTrack?.let {
+                fillVideoView(localVideoView, it, false)
+            }
         }
 
         isLocalVideoFullScreen = false
@@ -624,6 +645,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
 
     override fun onCallAcceptByUser(session: QBRTCSession, userId: Int?, userInfo: Map<String, String>?) {
         setStatusForOpponent(userId, getString(R.string.accepted))
+        switchCamera(null)
     }
 
     override fun onReceiveHangUpFromUser(session: QBRTCSession, userId: Int?, userInfo: Map<String, String>?) {
@@ -667,12 +689,12 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.camera_switch -> {
                 switchCamera(item)
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

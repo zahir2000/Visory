@@ -12,7 +12,7 @@ import com.quickblox.videochat.webrtc.AppRTCAudioManager
 import com.taruc.visory.R
 import com.taruc.visory.quickblox.activities.CallActivity
 import com.taruc.visory.quickblox.utils.Helper
-import com.taruc.visory.quickblox.utils.getColorCircleDrawable
+import com.taruc.visory.quickblox.utils.getColoredCircleDrawable
 import java.util.ArrayList
 
 const val SPEAKER_ENABLED = "is_speaker_enabled"
@@ -56,7 +56,7 @@ class AudioConversationFragment : BaseConversationFragment(), CallActivity.OnCha
         timerCallText = view.findViewById(R.id.timer_call)
 
         val firstOpponentAvatarImageView = view.findViewById<ImageView>(R.id.image_caller_avatar)
-        firstOpponentAvatarImageView?.setBackgroundDrawable(getColorCircleDrawable(opponents[0].id))
+        firstOpponentAvatarImageView?.background = getColoredCircleDrawable()
 
         alsoOnCallText = view.findViewById(R.id.text_also_on_call)
         setVisibilityAlsoOnCallTextView()

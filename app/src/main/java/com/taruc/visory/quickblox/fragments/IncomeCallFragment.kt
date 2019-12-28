@@ -25,9 +25,7 @@ import com.quickblox.videochat.webrtc.QBRTCTypes
 import com.taruc.visory.R
 import com.taruc.visory.quickblox.db.QbUsersDbManager
 import com.taruc.visory.quickblox.util.loadUsersByPagedRequestBuilder
-import com.taruc.visory.quickblox.utils.RingtonePlayer
-import com.taruc.visory.quickblox.utils.WebRtcSessionManager
-import com.taruc.visory.quickblox.utils.getColorCircleDrawable
+import com.taruc.visory.quickblox.utils.*
 import java.io.Serializable
 import java.util.ArrayList
 import java.util.concurrent.TimeUnit
@@ -122,7 +120,7 @@ class IncomeCallFragment : Fragment(), Serializable, View.OnClickListener {
         takeButton = view.findViewById(R.id.image_button_accept_call)
 
         currentSession?.let {
-            callerAvatarImageView.setBackgroundDrawable(getBackgroundForCallerAvatar(it.callerID))
+            callerAvatarImageView.background = getColoredCircleDrawable()
         }
 
         val callerUser = QbUsersDbManager.getUserById(currentSession?.callerID)
@@ -170,10 +168,6 @@ class IncomeCallFragment : Fragment(), Serializable, View.OnClickListener {
                 alsoOnCallText.visibility = View.INVISIBLE
             }
         }
-    }
-
-    private fun getBackgroundForCallerAvatar(callerId: Int): Drawable {
-        return getColorCircleDrawable(callerId)
     }
 
     private fun startCallNotification() {
