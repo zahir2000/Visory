@@ -45,8 +45,6 @@ interface ConversationCallback {
 
     fun onHangUpCurrentSession()
 
-    fun onStartScreenSharing()
-
     fun onSwitchCamera(cameraSwitchHandler: CameraVideoCapturer.CameraSwitchHandler)
 
     fun acceptCall(userInfo: Map<String, String>)

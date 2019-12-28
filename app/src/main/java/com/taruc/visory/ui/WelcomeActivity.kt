@@ -6,6 +6,8 @@ import android.os.Bundle
 import com.taruc.visory.BlindHomeActivity
 import com.taruc.visory.R
 import com.taruc.visory.VolunteerHomeActivity
+import com.taruc.visory.quickblox.activities.PermissionsActivity
+import com.taruc.visory.quickblox.utils.PERMISSIONS
 import com.taruc.visory.utils.LoggedUser
 import kotlinx.android.synthetic.main.activity_welcome.*
 
@@ -14,6 +16,8 @@ class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
+
+        startPermissionsActivity(false)
 
         setTitle(R.string.label_welcome)
 
@@ -30,7 +34,9 @@ class WelcomeActivity : AppCompatActivity() {
             }
             finish()
         }
+    }
 
-        // TODO: based on userType from db user role, open respective home screen
+    private fun startPermissionsActivity(checkOnlyAudio: Boolean) {
+        PermissionsActivity.startForResult(this, checkOnlyAudio, PERMISSIONS)
     }
 }

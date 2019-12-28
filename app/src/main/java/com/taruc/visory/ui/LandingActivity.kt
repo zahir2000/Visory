@@ -15,6 +15,7 @@ import com.taruc.visory.VolunteerHomeActivity
 import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.UserType
 import kotlinx.android.synthetic.main.activity_landing.*
+import java.lang.Exception
 
 
 class LandingActivity : AppCompatActivity() {
@@ -44,7 +45,11 @@ class LandingActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        updateUI()
+        try{
+            updateUI()
+        }catch (e: Exception){
+
+        }
     }
 
     private fun updateUI() {

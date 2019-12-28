@@ -1,5 +1,8 @@
 package com.taruc.visory.blind
 
+import android.app.ActivityManager
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
+import com.quickblox.chat.QBChatService
 import com.quickblox.core.QBEntityCallback
 import com.quickblox.core.exception.QBResponseException
 import com.quickblox.core.helper.StringifyArrayList
@@ -20,18 +25,20 @@ import com.quickblox.users.QBUsers
 import com.quickblox.users.model.QBUser
 import com.quickblox.videochat.webrtc.QBRTCClient
 import com.quickblox.videochat.webrtc.QBRTCTypes
+import com.taruc.visory.BlindHomeActivity
 import com.taruc.visory.R
 import com.taruc.visory.quickblox.DEFAULT_USER_PASSWORD
 import com.taruc.visory.quickblox.activities.CallActivity
+import com.taruc.visory.quickblox.activities.PermissionsActivity
 import com.taruc.visory.quickblox.db.QbUsersDbManager
+import com.taruc.visory.quickblox.services.CallService
 import com.taruc.visory.quickblox.services.LoginService
 import com.taruc.visory.quickblox.util.loadUsersByPagedRequestBuilder
 import com.taruc.visory.quickblox.util.signInUser
 import com.taruc.visory.quickblox.util.signUp
-import com.taruc.visory.quickblox.utils.Helper
-import com.taruc.visory.quickblox.utils.WebRtcSessionManager
-import com.taruc.visory.quickblox.utils.sendPushMessage
+import com.taruc.visory.quickblox.utils.*
 import com.taruc.visory.utils.LoggedUser
+import com.taruc.visory.utils.shortToast
 import kotlinx.android.synthetic.main.fragment_blind_home.*
 
 
@@ -44,7 +51,6 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
     private lateinit var user: QBUser
-    private lateinit var currentUser: QBUser
     private var uid: String = ""
     private var fullName: String = ""
     private lateinit var volunteerUsers: ArrayList<QBUser>
@@ -68,21 +74,58 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         uid = loggedUserPrefs.getUserID()
         fullName = loggedUserPrefs.getUserName()
 
-        volunteerUsers = ArrayList()
-
-        loadUsers()
-        loadVolunteers()
-
         val user = createQBUser()
         signUpNewUser(user)
 
-        currentUser = Helper.getQbUser()
+        startLoginService()
 
         //Toast.makeText(context, volunteerUsers[0].fullName.toString(), Toast.LENGTH_SHORT).show()
 
         button_blind_detect_object.setOnClickListener(this)
         button_blind_help.setOnClickListener(this)
         button_blind_make_call.setOnClickListener(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if(checkIsLoggedInChat()){
+            volunteerUsers = ArrayList()
+            loadUsers()
+            loadVolunteers()
+        }else{
+            startLoginService()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val isIncomingCall = Helper.get(EXTRA_IS_INCOMING_CALL, false)
+        if (isCallServiceRunning(CallService::class.java)) {
+            CallActivity.start(this.activity!!.applicationContext, isIncomingCall)
+        }
+        clearAppNotifications()
+
+        volunteerUsers = ArrayList()
+        loadVolunteers()
+        loadUsers()
+    }
+
+    private fun isCallServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = activity!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val services = manager.getRunningServices(Integer.MAX_VALUE)
+        for (service in services) {
+            if (CallService::class.java.name == service.service.className) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun clearAppNotifications() {
+        val notificationManager = activity!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancelAll()
     }
 
     override fun onClick(view: View) {
@@ -102,7 +145,9 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.button_blind_make_call -> {
-                startCall(true)
+                if(checkIsLoggedInChat()) {
+                    startCall(true)
+                }
             }
         }
     }
@@ -111,6 +156,11 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         val usersCount = volunteerUsers.size
 
         //TODO: loop for each volunteer until a call is found
+
+        if(usersCount == 0){
+            loadUsers()
+            loadVolunteers()
+        }
 
         val opponentsList = ArrayList<Int>()
         opponentsList.add(volunteerUsers[0].id)
@@ -121,13 +171,17 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_AUDIO
         }
 
-        val qbRtcClient = QBRTCClient.getInstance(this.activity!!.applicationContext)
-        val newQbRtcSession = qbRtcClient.createNewSessionWithOpponents(opponentsList, conferenceType)
+        try {
+            val qbRtcClient = QBRTCClient.getInstance(this.activity!!.applicationContext)
+            val newQbRtcSession = qbRtcClient.createNewSessionWithOpponents(opponentsList, conferenceType)
 
-        WebRtcSessionManager.setCurrentSession(newQbRtcSession)
-        sendPushMessage(opponentsList, currentUser.fullName)
+            WebRtcSessionManager.setCurrentSession(newQbRtcSession)
+            sendPushMessage(opponentsList, fullName)
 
-        CallActivity.start(this.activity!!.applicationContext, false)
+            CallActivity.start(this.activity!!.applicationContext, false)
+        }catch (e: java.lang.Exception){
+            Toast.makeText(context, e.message.toString(), Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun loadVolunteers(){
@@ -158,6 +212,21 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
 
             override fun onError(responseException: QBResponseException) {}
         }, requestBuilder)
+    }
+
+    private fun checkIsLoggedInChat(): Boolean {
+        if (!QBChatService.getInstance().isLoggedIn) {
+            startLoginService()
+            //shortToast("Retrying to login")
+            return false
+        }
+        return true
+    }
+
+    private fun startLoginService() {
+        if (Helper.hasQbUser()) {
+            LoginService.start(this.activity!!.applicationContext, Helper.getQbUser())
+        }
     }
 
     private fun createQBUser(): QBUser {
@@ -244,7 +313,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         user.password = null
         QBUsers.updateUser(user).performAsync(object : QBEntityCallback<QBUser> {
             override fun onSuccess(updUser: QBUser?, params: Bundle?) {
-                Toast.makeText(context, "Finished creating user in server", Toast.LENGTH_LONG).show()
+                //Toast.makeText(context, "Finished creating user in server", Toast.LENGTH_LONG).show()
             }
 
             override fun onError(responseException: QBResponseException?) {

@@ -27,6 +27,7 @@ import com.taruc.visory.utils.shortToast
 import org.jivesoftware.smack.AbstractConnectionListener
 import org.jivesoftware.smack.ConnectionListener
 import org.webrtc.CameraVideoCapturer
+import com.taruc.visory.quickblox.fragments.*
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -131,9 +132,7 @@ class CallService : Service(){
         QBRTCConfig.setMaxOpponentsCount(2)
         QBRTCConfig.setDebugEnabled(true)
 
-        QBRTCConfig.setAnswerTimeInterval(60)
-        QBRTCConfig.setDisconnectTime(10)
-        QBRTCConfig.setDialingTimeInterval(5)
+        configRTCTimers(this)
 
         rtcClient.prepareToProcessCalls()
     }
@@ -175,7 +174,7 @@ class CallService : Service(){
         }
     }
 
-    private fun currentSessionExist(): Boolean {
+    fun currentSessionExist(): Boolean {
         return currentSession != null
     }
 
@@ -187,11 +186,11 @@ class CallService : Service(){
         currentSession = null
     }
 
-    private fun playRingtone() {
+    fun playRingtone() {
         ringtonePlayer.play(true)
     }
 
-    private fun stopRingtone() {
+    fun stopRingtone() {
         ringtonePlayer.stop()
     }
 
@@ -328,7 +327,7 @@ class CallService : Service(){
     }
 
     fun switchCamera(cameraSwitchHandler: CameraVideoCapturer.CameraSwitchHandler) {
-        val videoCapturer = currentSession?.mediaStreamManager?.videoCapturer as QBRTCCameraVideoCapturer
+        val videoCapturer = currentSession!!.mediaStreamManager!!.videoCapturer as QBRTCCameraVideoCapturer
         videoCapturer.switchCamera(cameraSwitchHandler)
     }
 

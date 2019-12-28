@@ -2,12 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.taruc.visory">
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.quickblox.sample.messages.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".quickblox.App"
@@ -20,6 +23,7 @@
         <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -31,19 +35,22 @@
         <activity android:name=".ui.RegisterActivity" />
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.LandingActionsActivity" />
-        <activity android:name=".ui.LandingActivity"/>
+        <activity android:name=".ui.LandingActivity" />
         <activity android:name=".ui.WelcomeActivity" />
         <activity android:name=".MainActivity" />
-
         <activity
             android:name=".quickblox.activities.CallActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseAppTheme" />
+        <activity
+            android:name=".quickblox.activities.PermissionsActivity"
             android:screenOrientation="portrait" />
 
-        <service android:name=".quickblox.services.LoginService"/>
-        <service android:name=".quickblox.services.CallService"/>
+        <service android:name=".quickblox.services.LoginService" />
+        <service android:name=".quickblox.services.CallService" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

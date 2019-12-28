@@ -44,6 +44,7 @@ class LoginService : Service(){
             context.stopService(intent)
         }
 
+        //todo: logout when user logout
         fun logout(context: Context) {
             val intent = Intent(context, LoginService::class.java)
             intent.putExtra(EXTRA_COMMAND_TO_SERVICE, COMMAND_LOGOUT)
@@ -64,7 +65,7 @@ class LoginService : Service(){
         parseIntentExtras(intent)
         startSuitableActions()
 
-        return Service.START_REDELIVER_INTENT
+        return START_REDELIVER_INTENT
     }
 
     private fun parseIntentExtras(intent: Intent?) {
@@ -143,9 +144,7 @@ class LoginService : Service(){
 
         // Configure
         QBRTCConfig.setDebugEnabled(true)
-        QBRTCConfig.setAnswerTimeInterval(60)
-        QBRTCConfig.setDisconnectTime(10)
-        QBRTCConfig.setDialingTimeInterval(5)
+        configRTCTimers(this)
 
         // Add service as callback to RTCClient
         rtcClient.addSessionCallbacksListener(WebRtcSessionManager)

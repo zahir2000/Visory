@@ -5,6 +5,23 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorBlue">#1FCECB</color>
     <color name="colorGrey">#5B5B5B</color>
     <color name="colorHome">#EFEFF4</color>
+    <color name="colorDarkerGrey">#6e6e6e</color>
+    <color name="text_color_other_inc_users">#1f1f1f</color>
+    <color name="white_green">#A9FF80</color>
+    <color name="button_end_call_pressed_color">#FC5876</color>
+    <color name="green">#45D100</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="black_transparent_50">#50000000</color>
+    <color name="grey_transparent_50">#50606060</color>
+    <color name="background_fragment_conversation">#2b2a2a</color>
+    <color name="text_color_call_type">#6e6e6e</color>
+    <color name="toolbar_title_color">#1f1f1f</color>
+    <color name="toolbar_subtitle_color">#6e6e6e</color>
+    <color name="text_color_outgoing_opponents_names_audio_call">#1f1f1f</color>
+    <color name="text_color_caller_name">#1f1f1f</color>
+    <color name="color_accent">#4ad24d</color>
+    <color name="grey_transparent_20">#20606060</color>
 </resources>
