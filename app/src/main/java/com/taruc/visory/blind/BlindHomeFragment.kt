@@ -5,12 +5,12 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -25,11 +25,9 @@ import com.quickblox.users.QBUsers
 import com.quickblox.users.model.QBUser
 import com.quickblox.videochat.webrtc.QBRTCClient
 import com.quickblox.videochat.webrtc.QBRTCTypes
-import com.taruc.visory.BlindHomeActivity
 import com.taruc.visory.R
 import com.taruc.visory.quickblox.DEFAULT_USER_PASSWORD
 import com.taruc.visory.quickblox.activities.CallActivity
-import com.taruc.visory.quickblox.activities.PermissionsActivity
 import com.taruc.visory.quickblox.db.QbUsersDbManager
 import com.taruc.visory.quickblox.services.CallService
 import com.taruc.visory.quickblox.services.LoginService
@@ -54,6 +52,9 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     private var uid: String = ""
     private var fullName: String = ""
     private lateinit var volunteerUsers: ArrayList<QBUser>
+    private var i = -1
+    lateinit var viewDialog: ViewDialog
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,6 +62,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     ): View? {
         // Inflate the layout for this fragment
         auth = FirebaseAuth.getInstance()
+
         return inflater.inflate(R.layout.fragment_blind_home, container, false)
     }
 
@@ -79,12 +81,16 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
 
         startLoginService()
 
+        //viewDialog = ViewDialog(this.context!!)
+
         //Toast.makeText(context, volunteerUsers[0].fullName.toString(), Toast.LENGTH_SHORT).show()
 
         button_blind_detect_object.setOnClickListener(this)
         button_blind_help.setOnClickListener(this)
         button_blind_make_call.setOnClickListener(this)
     }
+
+
 
     override fun onStart() {
         super.onStart()
@@ -145,17 +151,52 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.button_blind_make_call -> {
+                //calls last person who used the app
+
+                Helper.save(HANG_UP, false)
                 if(checkIsLoggedInChat()) {
-                    startCall(true)
+                    i = -1
+                    makeCall()
                 }
             }
         }
     }
 
-    private fun startCall(isVideoCall: Boolean) {
-        val usersCount = volunteerUsers.size
+    private fun makeCall(){
+        i += 1
 
-        //TODO: loop for each volunteer until a call is found
+        //viewDialog.showDialog()
+
+        if(i != 0){
+            Handler().postDelayed({
+
+            }, 3000)
+        }
+
+        startCall(true, i)
+
+        if(Helper[HANG_UP, false]){
+            return
+        }
+
+        Handler().postDelayed({
+            val callAccepted= Helper.get(STOP_CALLING, false)
+
+            if(!callAccepted){
+                if(i < (volunteerUsers.size - 1)){
+                    makeCall()
+                }
+                else if((i + 1) == volunteerUsers.size){
+                    //No response after calling everyone
+                    //viewDialog.hideDialog()
+                    shortToast("Please try calling again later")
+                }
+            }
+        }, 13000)
+    }
+
+    private fun startCall(isVideoCall: Boolean, callID: Int) {
+        val usersCount = volunteerUsers.size
 
         if(usersCount == 0){
             loadUsers()
@@ -163,7 +204,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         }
 
         val opponentsList = ArrayList<Int>()
-        opponentsList.add(volunteerUsers[0].id)
+        opponentsList.add(volunteerUsers[callID].id)
 
         val conferenceType = if (isVideoCall) {
             QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO

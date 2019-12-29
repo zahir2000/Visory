@@ -8,6 +8,10 @@ const val MAX_OPPONENTS_COUNT = 6
 
 const val EXTRA_LOGIN_RESULT = "login_result"
 
+const val STOP_CALLING = "stop_calling"
+
+const val HANG_UP = "hang_up"
+
 const val EXTRA_LOGIN_ERROR_MESSAGE = "login_error_message"
 
 const val EXTRA_LOGIN_RESULT_CODE = 1002

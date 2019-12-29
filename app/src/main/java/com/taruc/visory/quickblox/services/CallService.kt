@@ -76,8 +76,11 @@ class CallService : Service(){
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val notification = initNotification()
-        startForeground(SERVICE_ID, notification)
+        val isIncomingCall = Helper.get(EXTRA_IS_INCOMING_CALL, false)
+        if(isIncomingCall){
+            val notification = initNotification()
+            startForeground(SERVICE_ID, notification)
+        }
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -440,14 +443,14 @@ class CallService : Service(){
         builder.setContentTitle(notificationTitle)
         builder.setContentText(notificationText)
         builder.setWhen(System.currentTimeMillis())
-        builder.setSmallIcon(R.mipmap.ic_launcher)
-        val bitmapIcon = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+        builder.setSmallIcon(R.mipmap.ic_launcher_round)
+        val bitmapIcon = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher_round)
         builder.setLargeIcon(bitmapIcon)
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            builder.priority = NotificationManager.IMPORTANCE_LOW
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            builder.priority = NotificationManager.IMPORTANCE_DEFAULT
         } else {
-            builder.priority = Notification.PRIORITY_LOW
+            builder.priority = Notification.PRIORITY_DEFAULT
         }
         builder.apply {
             setContentIntent(notifyPendingIntent)
@@ -457,33 +460,35 @@ class CallService : Service(){
 
     private inner class CameraEventsListener : CameraVideoCapturer.CameraEventsHandler {
         override fun onCameraError(s: String) {
-            shortToast("Camera error: $s")
+            //shortToast("Camera error: $s")
         }
 
         override fun onCameraDisconnected() {
-            shortToast("Camera Disconnected: ")
+            //shortToast("Camera Disconnected: ")
         }
 
         override fun onCameraFreezed(s: String) {
-            shortToast("Camera freezed: $s")
+            //shortToast("Camera freezed: $s")
             hangUpCurrentSession(HashMap())
         }
 
         override fun onCameraOpening(s: String) {
-            shortToast("Camera opening: $s")
+            //shortToast("Camera opening: $s")
         }
 
         override fun onFirstFrameAvailable() {
-            shortToast("onFirstFrameAvailable: ")
+            //shortToast("onFirstFrameAvailable: ")
+
         }
 
         override fun onCameraClosed() {
-            shortToast("Camera closed: ")
+            //shortToast("Camera closed: ")
         }
     }
 
     private inner class SessionStateListener : QBRTCSessionStateCallback<QBRTCSession> {
         override fun onDisconnectedFromUser(session: QBRTCSession?, userId: Int?) {
+
         }
 
         override fun onConnectedToUser(session: QBRTCSession?, userId: Int?) {
@@ -552,6 +557,7 @@ class CallService : Service(){
     private inner class SessionEventsListener : QBRTCClientSessionCallbacks {
         override fun onUserNotAnswer(session: QBRTCSession?, userId: Int?) {
             stopRingtone()
+            Helper.save(STOP_CALLING, false)
         }
 
         override fun onSessionStartClose(session: QBRTCSession?) {
@@ -562,6 +568,7 @@ class CallService : Service(){
 
         override fun onReceiveHangUpFromUser(session: QBRTCSession?, userID: Int?, p2: MutableMap<String, String>?) {
             stopRingtone()
+            Helper.save(STOP_CALLING, false)
             if (session == WebRtcSessionManager.getCurrentSession()) {
                 if (userID == session?.callerID) {
                     currentSession?.let {
@@ -581,6 +588,7 @@ class CallService : Service(){
 
         override fun onCallAcceptByUser(session: QBRTCSession?, p1: Int?, p2: MutableMap<String, String>?) {
             stopRingtone()
+            Helper.save(STOP_CALLING, true)
             if (session != WebRtcSessionManager.getCurrentSession()) {
                 return
             }
@@ -605,6 +613,7 @@ class CallService : Service(){
 
         override fun onCallRejectByUser(session: QBRTCSession?, p1: Int?, p2: MutableMap<String, String>?) {
             stopRingtone()
+            Helper.save(STOP_CALLING, false)
             if (session != WebRtcSessionManager.getCurrentSession()) {
                 return
             }
