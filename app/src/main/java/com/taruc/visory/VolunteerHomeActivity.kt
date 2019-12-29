@@ -2,15 +2,22 @@ package com.taruc.visory
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.view.View
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.taruc.visory.quickblox.activities.PermissionsActivity
+import com.taruc.visory.quickblox.utils.CHECK_PERMISSIONS
+import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.quickblox.utils.PERMISSIONS
+import com.taruc.visory.quickblox.utils.ViewDialog
 
 class VolunteerHomeActivity : AppCompatActivity() {
+
+    lateinit var dialog: ViewDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +35,17 @@ class VolunteerHomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        PermissionsActivity.startForResult(this, false, PERMISSIONS)
+        dialog = ViewDialog(this)
+        dialog.showDialog()
+
+        val handler = Handler()
+        handler.postDelayed({
+            dialog.hideDialog()
+        }, 5000)
+
+        if(Helper[CHECK_PERMISSIONS, true]){
+            PermissionsActivity.startForResult(this, false, PERMISSIONS)
+        }
     }
 
     override fun onBackPressed() {

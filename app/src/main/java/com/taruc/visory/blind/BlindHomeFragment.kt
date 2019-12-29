@@ -62,7 +62,6 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     ): View? {
         // Inflate the layout for this fragment
         auth = FirebaseAuth.getInstance()
-
         return inflater.inflate(R.layout.fragment_blind_home, container, false)
     }
 
@@ -80,8 +79,6 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         signUpNewUser(user)
 
         startLoginService()
-
-        //viewDialog = ViewDialog(this.context!!)
 
         //Toast.makeText(context, volunteerUsers[0].fullName.toString(), Toast.LENGTH_SHORT).show()
 
@@ -163,13 +160,14 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun makeCall(){
+        viewDialog = ViewDialog(requireContext())
+        viewDialog.showDialogFor5Seconds()
+
         i += 1
 
         if(Helper[HANG_UP, false]){
             return
         }
-
-        //viewDialog.showDialog()
 
         if(i != 0){
             Handler().postDelayed({
@@ -183,6 +181,12 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             return
         }
 
+
+        Handler().postDelayed({
+            viewDialog = ViewDialog(requireContext())
+            viewDialog.showDialogFor5Seconds()
+        }, 10000)
+
         Handler().postDelayed({
             val callAccepted= Helper.get(STOP_CALLING, false)
 
@@ -192,7 +196,6 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
                 }
                 else if((i + 1) == volunteerUsers.size){
                     //No response after calling everyone
-                    //viewDialog.hideDialog()
                     shortToast("Please try calling again later")
                 }
             }

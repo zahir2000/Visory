@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityCompat
 import com.taruc.visory.R
+import com.taruc.visory.quickblox.utils.CHECK_PERMISSIONS
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.utils.longToast
 import kotlinx.android.synthetic.main.activity_permissions.*
@@ -49,6 +50,7 @@ class PermissionsActivity : BaseActivity(), View.OnClickListener {
 
             button_give_access.setOnClickListener(this)
         }else{
+            Helper.save(CHECK_PERMISSIONS, false)
             finish()
         }
     }
@@ -115,6 +117,7 @@ class PermissionsActivity : BaseActivity(), View.OnClickListener {
 
     private fun allPermissionsGranted() {
         setResult(Activity.RESULT_OK)
+        Helper.save(CHECK_PERMISSIONS, false)
         finish()
     }
 

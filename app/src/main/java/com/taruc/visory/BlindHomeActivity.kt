@@ -9,6 +9,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.taruc.visory.quickblox.activities.PermissionsActivity
+import com.taruc.visory.quickblox.utils.CHECK_PERMISSIONS
+import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.quickblox.utils.PERMISSIONS
 import com.taruc.visory.quickblox.utils.ViewDialog
 
@@ -32,11 +34,13 @@ class BlindHomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        //viewDialog = ViewDialog(this)
+        viewDialog = ViewDialog(this)
 
-        //showCustomLoadingDialog()
+        showCustomLoadingDialog()
 
-        PermissionsActivity.startForResult(this, false, PERMISSIONS)
+        if(Helper[CHECK_PERMISSIONS, true]){
+            PermissionsActivity.startForResult(this, false, PERMISSIONS)
+        }
     }
 
     override fun onBackPressed() {
