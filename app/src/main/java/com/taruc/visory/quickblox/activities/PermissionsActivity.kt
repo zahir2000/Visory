@@ -36,14 +36,21 @@ class PermissionsActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (intent == null || !intent.hasExtra(EXTRA_PERMISSIONS)) {
-            throw RuntimeException("This Activity needs to be launched using the static startActivityForResult() method.")
-        }
-        setContentView(R.layout.activity_permissions)
-        supportActionBar?.hide()
-        requiresCheck = true
 
-        button_give_access.setOnClickListener(this)
+        val permissions = getPermissions()
+
+        if(checkPermissions(permissions)){
+            if (intent == null || !intent.hasExtra(EXTRA_PERMISSIONS)) {
+                throw RuntimeException("This Activity needs to be launched using the static startActivityForResult() method.")
+            }
+            setContentView(R.layout.activity_permissions)
+            supportActionBar?.hide()
+            requiresCheck = true
+
+            button_give_access.setOnClickListener(this)
+        }else{
+            finish()
+        }
     }
     //right here, change it to button
     /*override fun onResume() {

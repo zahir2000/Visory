@@ -207,7 +207,13 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
         connectionStatusLocal = view.findViewById(R.id.connection_status_local)
 
         cameraToggle = view.findViewById(R.id.toggle_camera)
-        cameraToggle.visibility = View.VISIBLE
+
+        if(isIncomingCall){
+            cameraToggle.visibility = View.INVISIBLE
+        }else{
+            cameraToggle.visibility = View.VISIBLE
+        }
+
         cameraToggle.isChecked = Helper.get(CAMERA_ENABLED, true)
         toggleCamera(cameraToggle.isChecked)
         actionVideoButtonsLayout = view.findViewById(R.id.element_set_video_buttons)
@@ -255,12 +261,11 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
         val params = localVideoView.layoutParams
         val displaymetrics = resources.displayMetrics
 
-        val screenWidthPx = displaymetrics.widthPixels
-
-        val width = (screenWidthPx * 0.3).toInt()
-        val height = width / 2 * 3
+        val width = displaymetrics.widthPixels
+        val height = displaymetrics.heightPixels
         params?.width = width
         params?.height = height
+
         localVideoView.layoutParams = params
     }
 
@@ -683,9 +688,12 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.conversation_fragment, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-        optionsMenu = menu
+        val isIncomingCall = Helper[EXTRA_IS_INCOMING_CALL, false]
+        if(!isIncomingCall){
+            inflater.inflate(R.menu.conversation_fragment, menu)
+            super.onCreateOptionsMenu(menu, inflater)
+            optionsMenu = menu
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

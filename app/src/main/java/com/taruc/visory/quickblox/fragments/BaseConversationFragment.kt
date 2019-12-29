@@ -129,8 +129,14 @@ abstract class BaseConversationFragment : BaseToolBarFragment(), CallActivity.Cu
     }
 
     protected open fun initViews(view: View?) {
-        micToggleVideoCall = view?.findViewById<View>(R.id.toggle_mic) as ToggleButton
-        micToggleVideoCall.isChecked = Helper.get(MIC_ENABLED, true)
+        val isIncomingCall = Helper.get(EXTRA_IS_INCOMING_CALL, false)
+        if(!isIncomingCall){
+            micToggleVideoCall = view?.findViewById<View>(R.id.toggle_mic) as ToggleButton
+            micToggleVideoCall.isChecked = Helper.get(MIC_ENABLED, true)
+        }else{
+            micToggleVideoCall = view?.findViewById<View>(R.id.toggle_mic) as ToggleButton
+            micToggleVideoCall.visibility = View.INVISIBLE
+        }
         handUpVideoCall = view.findViewById<View>(R.id.button_hangup_call) as ImageButton
         outgoingOpponentsRelativeLayout = view.findViewById(R.id.layout_background_outgoing_screen)
         allOpponentsTextView = view.findViewById<View>(R.id.text_outgoing_opponents_names) as TextView

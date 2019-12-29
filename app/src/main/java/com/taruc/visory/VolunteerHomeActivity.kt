@@ -7,6 +7,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.taruc.visory.quickblox.activities.PermissionsActivity
+import com.taruc.visory.quickblox.utils.PERMISSIONS
 
 class VolunteerHomeActivity : AppCompatActivity() {
 
@@ -25,11 +27,11 @@ class VolunteerHomeActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        PermissionsActivity.startForResult(this, false, PERMISSIONS)
     }
 
     override fun onBackPressed() {
         moveTaskToBack(true)
     }
-    //TODO: MAKE BottomActivityVolunteer & BottomActivityBVI to show different Home screens.
-    //Then from Welcome screen, decide which activity to start ;)
 }
