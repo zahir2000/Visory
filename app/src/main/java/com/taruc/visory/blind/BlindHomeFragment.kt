@@ -165,6 +165,10 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     private fun makeCall(){
         i += 1
 
+        if(Helper[HANG_UP, false]){
+            return
+        }
+
         //viewDialog.showDialog()
 
         if(i != 0){
@@ -183,7 +187,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             val callAccepted= Helper.get(STOP_CALLING, false)
 
             if(!callAccepted){
-                if(i < (volunteerUsers.size - 1)){
+                if(i < (volunteerUsers.size - 1) && !Helper[HANG_UP, false]){
                     makeCall()
                 }
                 else if((i + 1) == volunteerUsers.size){
