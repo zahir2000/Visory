@@ -4,6 +4,9 @@ import android.app.ActivityManager
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -150,11 +153,15 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             R.id.button_blind_make_call -> {
                 //calls last person who used the app
 
-                Helper.save(HANG_UP, false)
-                Helper.save(CONNECTED_TO_USER, false)
-                if(checkIsLoggedInChat()) {
-                    i = -1
-                    makeCall()
+                if(isInternetAvailable(requireContext())){
+                    Helper.save(HANG_UP, false)
+                    Helper.save(CONNECTED_TO_USER, false)
+                    if(checkIsLoggedInChat()) {
+                        i = -1
+                        makeCall()
+                    }
+                }else{
+                    shortToast("You need an active internet connection to make calls.")
                 }
             }
         }
@@ -163,6 +170,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     private fun makeCall(){
         viewDialog = ViewDialog(requireContext())
         viewDialog.showDialogFor5Seconds()
+        var callAccepted= Helper[STOP_CALLING, false]
 
         i += 1
 
@@ -170,11 +178,11 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             return
         }
 
-        if(i != 0){
+        /*if(i != 0){
             Handler().postDelayed({
 
             }, 3000)
-        }
+        }*/
 
         startCall(true, i)
 
@@ -184,12 +192,21 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
 
 
         Handler().postDelayed({
+            if(Helper[HANG_UP, false]){
+                return@postDelayed
+            }
+
+            callAccepted= Helper[STOP_CALLING, false]
             viewDialog = ViewDialog(requireContext())
             viewDialog.showDialogFor5Seconds()
         }, 10000)
 
         Handler().postDelayed({
-            val callAccepted= Helper.get(STOP_CALLING, false)
+            if(Helper[HANG_UP, false]){
+                return@postDelayed
+            }
+
+            callAccepted = Helper[STOP_CALLING, false]
 
             if(!callAccepted){
                 if(i < (volunteerUsers.size - 1) && !Helper[HANG_UP, false]){
@@ -199,6 +216,8 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
                     //No response after calling everyone
                     shortToast("Please try calling again later")
                 }
+            }else{
+                return@postDelayed
             }
         }, 13000)
     }
@@ -369,5 +388,36 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
                 Toast.makeText(context, "Error creating user in server", Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    private fun isInternetAvailable(context: Context): Boolean {
+        var result = false
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val actNw =
+                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+            result = when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        } else {
+            connectivityManager.run {
+                connectivityManager.activeNetworkInfo?.run {
+                    result = when (type) {
+                        ConnectivityManager.TYPE_WIFI -> true
+                        ConnectivityManager.TYPE_MOBILE -> true
+                        ConnectivityManager.TYPE_ETHERNET -> true
+                        else -> false
+                    }
+
+                }
+            }
+        }
+
+        return result
     }
 }

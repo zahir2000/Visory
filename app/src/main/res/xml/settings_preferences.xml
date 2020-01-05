@@ -1,0 +1,36 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Profile"
+        android:key="profile_category"
+        android:icon="@drawable/ic_person_primary">
+
+        <Preference
+            app:key="personal_details"
+            android:summary="Change your personal details"
+            android:title="Personal details">
+        <intent android:action="com.taruc.visory.settings.PersonalDetailsActivity"/>
+        </Preference>
+
+        <Preference
+            app:key="change_password"
+            android:summary="Change your password"
+            android:title="Change Password">
+        <intent android:action="com.taruc.visory.settings.ChangePasswordActivity"/>
+        </Preference>
+
+        <Preference
+            app:key="change_email"
+            android:summary="Change your email"
+            android:title="Change Email">
+            <intent android:action="com.taruc.visory.settings.ChangeEmailActivity"/>
+        </Preference>
+    </PreferenceCategory>
+
+    <Preference
+        app:key="logout_button"
+        android:title="Logout"
+        android:layout="@layout/logout_button">
+    </Preference>
+</PreferenceScreen>

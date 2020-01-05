@@ -1,13 +1,12 @@
 package com.taruc.visory.volunteer
 
+import android.app.ActionBar
 import android.app.ActivityManager
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -27,6 +26,7 @@ import com.taruc.visory.blind.ERROR_LOGIN_ALREADY_TAKEN_HTTP_STATUS
 import com.taruc.visory.blind.EXTRA_LOGIN_ERROR_MESSAGE
 import com.taruc.visory.blind.EXTRA_LOGIN_RESULT
 import com.taruc.visory.blind.EXTRA_LOGIN_RESULT_CODE
+import com.taruc.visory.fragments.SettingsFragment
 import com.taruc.visory.quickblox.DEFAULT_USER_PASSWORD
 import com.taruc.visory.quickblox.activities.CallActivity
 import com.taruc.visory.quickblox.db.QbUsersDbManager
@@ -38,6 +38,7 @@ import com.taruc.visory.quickblox.util.signUp
 import com.taruc.visory.quickblox.utils.EXTRA_IS_INCOMING_CALL
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.utils.LoggedUser
+import com.taruc.visory.utils.shortToast
 import kotlinx.android.synthetic.main.profile_card.*
 
 
@@ -48,12 +49,14 @@ class VolunteerHomeFragment : Fragment() {
     private lateinit var user: QBUser
     private var uid: String = ""
     private var fullName: String = ""
+    private lateinit var con: ViewGroup
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
+        con = container!!
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
         return inflater.inflate(R.layout.fragment_volunteer_home, container, false)
@@ -63,6 +66,7 @@ class VolunteerHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
         (activity as AppCompatActivity).supportActionBar?.title = "Home"
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         val loggedUserPrefs = LoggedUser(this.activity!!.baseContext)
         uid = loggedUserPrefs.getUserID()
@@ -102,6 +106,31 @@ class VolunteerHomeFragment : Fragment() {
 
             override fun onError(responseException: QBResponseException) {}
         }, requestBuilder)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.home_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.home_settings -> {
+                val settingsFragment = SettingsFragment()
+                fragmentManager!!.beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                    .replace(con.id, settingsFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun checkIsLoggedInChat(): Boolean {

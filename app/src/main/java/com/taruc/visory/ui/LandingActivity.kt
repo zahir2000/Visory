@@ -68,7 +68,7 @@ class LandingActivity : AppCompatActivity() {
                     val intent = Intent(this, VolunteerHomeActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    overridePendingTransition(0, 0)
                 }
                 else {
                     val intent = Intent(this, BlindHomeActivity::class.java)

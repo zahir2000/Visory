@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:focusableInTouchMode="true"
+    android:descendantFocusability="beforeDescendants"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/facebook_auth_warning_text"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/change_password_facebook_warning_text"
+        style="@style/ViewGroup" />
+
+    <TextView
+        android:id="@+id/google_auth_warning_text"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/change_password_google_warning_text"
+        style="@style/ViewGroup" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/personal_details_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/email_change_form"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/ScrollViewChild">
+
+            <EditText
+                android:id="@+id/edit_text_new_email"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="email"
+                android:hint="New Email"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/edit_text_current_password"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="email"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:imeOptions="actionGo" />
+
+            <include layout="@layout/empty_space" />
+
+            <Button
+                android:id="@+id/button_change_email"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_update_email"
+                style="@style/ButtonStyle.Primary" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

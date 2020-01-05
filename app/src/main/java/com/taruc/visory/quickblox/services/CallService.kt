@@ -124,7 +124,7 @@ class CallService : Service(){
 
     private inner class NetworkConnectionListener : NetworkConnectionChecker.OnConnectivityChangedListener {
         override fun connectivityChanged(availableNow: Boolean) {
-            Toast.makeText(applicationContext, "Internet connection " + if (availableNow) "available" else " unavailable", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(applicationContext, "Internet connection " + if (availableNow) "available" else " unavailable", Toast.LENGTH_SHORT).show()
         }
     }
 
