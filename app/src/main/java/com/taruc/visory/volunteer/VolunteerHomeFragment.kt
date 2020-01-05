@@ -79,7 +79,7 @@ class VolunteerHomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        val isIncomingCall = Helper.get(EXTRA_IS_INCOMING_CALL, false)
+        val isIncomingCall = Helper[EXTRA_IS_INCOMING_CALL, false]
         if (isCallServiceRunning(CallService::class.java)) {
             CallActivity.start(this.activity!!.applicationContext, isIncomingCall)
         }

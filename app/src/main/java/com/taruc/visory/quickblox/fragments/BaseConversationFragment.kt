@@ -84,7 +84,7 @@ abstract class BaseConversationFragment : BaseToolBarFragment(), CallActivity.Cu
 
     private fun prepareAndShowOutgoingScreen() {
         configureOutgoingScreen()
-        allOpponentsTextView.text = getUserNamesFromUsersFullNames(opponents)
+        //allOpponentsTextView.text = getUserNamesFromUsersFullNames(opponents)
     }
 
     private fun getUserNamesFromUsersFullNames(allUsers: ArrayList<QBUser>): String {

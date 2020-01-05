@@ -14,6 +14,7 @@ import com.taruc.visory.quickblox.utils.CHECK_PERMISSIONS
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.quickblox.utils.PERMISSIONS
 import com.taruc.visory.quickblox.utils.ViewDialog
+import java.lang.Exception
 
 class VolunteerHomeActivity : AppCompatActivity() {
 
@@ -35,13 +36,10 @@ class VolunteerHomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        dialog = ViewDialog(this)
-        dialog.showDialog()
-
-        val handler = Handler()
-        handler.postDelayed({
-            dialog.hideDialog()
-        }, 5000)
+        try{
+            dialog = ViewDialog(this)
+            dialog.showDialogFor5Seconds()
+        }catch (e: Exception){}
 
         if(Helper[CHECK_PERMISSIONS, true]){
             PermissionsActivity.startForResult(this, false, PERMISSIONS)

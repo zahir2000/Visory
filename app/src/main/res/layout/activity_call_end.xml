@@ -13,56 +13,48 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:id="@+id/login_form"
+            android:id="@+id/report_form"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             style="@style/ScrollViewChild">
-            <ImageView
-                android:id="@+id/imageLandingActions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:cropToPadding="false"
-                android:maxWidth="300dip"
-                android:scaleType="fitCenter"
-                android:contentDescription="@string/image_landing_actions" />
+
 
             <TextView
-                android:id="@+id/headerLandingActions"
+                android:id="@+id/textViewCallEndHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/call_end_header"
                 style="@style/TextAppearance.Header"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="@dimen/spacing_md"/>
 
             <TextView
-                android:id="@+id/textLandingActions"
-                android:layout_width="wrap_content"
+                android:id="@+id/textViewCallEndBody"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/WelcomeTextBody"
-                android:paddingBottom="20dip"/>
+                android:text="@string/call_end_body"
+                style="@style/TextAppearance.Small"
+                android:textSize="16sp"/>
+
 
             <include
                 layout="@layout/empty_space" />
 
             <Button
-                android:id="@+id/button_register_submit"
+                android:id="@+id/button_bvi_report"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_sm"
                 style="@style/ButtonStyle.Secondary"
-                android:contentDescription="@string/button_register_cd"
-                android:text="@string/button_register" />
+                android:contentDescription="@string/cd_bvi_report"
+                android:text="@string/button_bvi_report" />
 
             <Button
-                android:id="@+id/button_login"
+                android:id="@+id/button_bvi_done"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/ButtonStyle.Primary"
-                android:contentDescription="@string/button_login_cd"
-                android:text="@string/button_login" />
+                android:contentDescription="@string/cd_bvi_done"
+                android:text="@string/button_bvi_done" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

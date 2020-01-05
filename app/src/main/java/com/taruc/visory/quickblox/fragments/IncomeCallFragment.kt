@@ -244,7 +244,7 @@ class IncomeCallFragment : Fragment(), Serializable, View.OnClickListener {
         } else {
             R.string.text_incoming_audio_call
         }
-        callTypeTextView.setText(callType)
+        //callTypeTextView.setText(callType)
 
         val imageResource = if (isVideoCall) {
             R.drawable.ic_video_white

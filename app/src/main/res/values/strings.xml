@@ -171,7 +171,7 @@
     <string name="user_list_on_call">User 1, User 2, User 3, User 4, User 5, User 6</string>
 
     <!--Call Screen-->
-    <string name="in_conference">In Conference</string>
+    <string name="calling">Calling a volunteer</string>
 
     <!--OpponentsFromCallAdapter-->
     <string name="opponent_pending">Pending</string>
@@ -209,4 +209,12 @@
     <integer name="pref_seekbar_step_default_int_value">1</integer>
 
     <string name="member_since">Member since %s</string>
+    <string name="text_incoming_call">Incoming call from a visually impaired person.</string>
+    <string name="call_end_header">We hope you received the help you needed.</string>
+    <string name="call_end_body">If you had any problems with your call, please let us know.</string>
+    <string name="cd_bvi_report">I have problems with my call</string>
+    <string name="cd_bvi_done">Close the call</string>
+    <string name="button_bvi_done">Done</string>
+    <string name="button_bvi_report">Report</string>
+    <string name="call_end_volunteer_header">Thank you for your help!</string>
 </resources>

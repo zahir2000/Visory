@@ -14,6 +14,8 @@ const val HANG_UP = "hang_up"
 
 const val CHECK_PERMISSIONS = "check_permissions"
 
+const val CONNECTED_TO_USER = "connected_to_user"
+
 const val EXTRA_LOGIN_ERROR_MESSAGE = "login_error_message"
 
 const val EXTRA_LOGIN_RESULT_CODE = 1002

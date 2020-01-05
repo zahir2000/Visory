@@ -412,7 +412,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
     override fun onRemoteVideoTrackReceive(session: QBRTCSession?, videoTrack: QBRTCVideoTrack, userID: Int?) {
         userID?.let {
             if (isPeerToPeerCall) {
-                setDuringCallActionBar()
+                //setDuringCallActionBar()
                 remoteFullScreenVideoView?.let {
                     fillVideoView(remoteFullScreenVideoView!!, videoTrack, true)
                     updateVideoView(remoteFullScreenVideoView!!, false)
@@ -492,7 +492,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
         } else {
             isRemoteShown = true
             opponentsAdapter.removeItem(itemHolder.adapterPosition)
-            setDuringCallActionBar()
+            //setDuringCallActionBar()
             setRecyclerViewVisibleState()
             remoteFullScreenVideoView?.let {
                 fillVideoView(userID, it, videoTrack)

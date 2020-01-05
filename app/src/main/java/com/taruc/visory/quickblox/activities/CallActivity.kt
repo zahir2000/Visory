@@ -19,6 +19,7 @@ import com.quickblox.videochat.webrtc.callbacks.QBRTCSessionEventsCallback
 import com.quickblox.videochat.webrtc.callbacks.QBRTCSessionStateCallback
 import com.quickblox.videochat.webrtc.view.QBRTCVideoTrack
 import com.taruc.visory.R
+import com.taruc.visory.blind.CallEndActivity
 import com.taruc.visory.quickblox.db.QbUsersDbManager
 import com.taruc.visory.quickblox.fragments.*
 import com.taruc.visory.quickblox.services.CallService
@@ -387,6 +388,10 @@ class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCall
     override fun onSessionClosed(session: QBRTCSession?) {
         if (callService.isCurrentSession(session)) {
             callService.stopForeground(true)
+            if(Helper[CONNECTED_TO_USER, false]){
+                val intent = Intent(this, CallEndActivity::class.java)
+                startActivity(intent)
+            }
             finish()
         }
     }

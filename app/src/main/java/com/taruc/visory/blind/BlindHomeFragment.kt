@@ -151,6 +151,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
                 //calls last person who used the app
 
                 Helper.save(HANG_UP, false)
+                Helper.save(CONNECTED_TO_USER, false)
                 if(checkIsLoggedInChat()) {
                     i = -1
                     makeCall()

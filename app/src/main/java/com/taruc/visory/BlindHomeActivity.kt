@@ -13,6 +13,7 @@ import com.taruc.visory.quickblox.utils.CHECK_PERMISSIONS
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.quickblox.utils.PERMISSIONS
 import com.taruc.visory.quickblox.utils.ViewDialog
+import java.lang.Exception
 
 class BlindHomeActivity : AppCompatActivity() {
 
@@ -34,9 +35,10 @@ class BlindHomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        viewDialog = ViewDialog(this)
-
-        showCustomLoadingDialog()
+        try{
+            viewDialog = ViewDialog(this)
+            viewDialog.showDialogFor5Seconds()
+        }catch (e: Exception){}
 
         if(Helper[CHECK_PERMISSIONS, true]){
             PermissionsActivity.startForResult(this, false, PERMISSIONS)
@@ -45,16 +47,5 @@ class BlindHomeActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         moveTaskToBack(true)
-    }
-
-    private fun showCustomLoadingDialog() {
-        //..show gif and hide after 5 seconds
-
-        viewDialog.showDialog()
-
-        val handler = Handler()
-        handler.postDelayed({
-            viewDialog.hideDialog()
-        }, 5000)
     }
 }

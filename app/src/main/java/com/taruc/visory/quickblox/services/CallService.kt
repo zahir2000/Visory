@@ -589,6 +589,7 @@ class CallService : Service(){
         override fun onCallAcceptByUser(session: QBRTCSession?, p1: Int?, p2: MutableMap<String, String>?) {
             stopRingtone()
             Helper.save(STOP_CALLING, true)
+            Helper.save(CONNECTED_TO_USER, true)
             if (session != WebRtcSessionManager.getCurrentSession()) {
                 return
             }

@@ -48,7 +48,8 @@
             android:id="@+id/call_type"
             style="@style/WrapContent"
             android:layout_marginTop="8dp"
-            android:text="@string/text_incoming_audio_call"
+            android:text="@string/text_incoming_call"
+            android:textAlignment="center"
             android:textColor="@color/colorDarkerGrey"
             android:textSize="@dimen/call_text_size" />
 
