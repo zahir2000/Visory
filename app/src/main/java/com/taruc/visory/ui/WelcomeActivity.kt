@@ -17,7 +17,7 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
-        startPermissionsActivity(false)
+        startPermissionsActivity()
 
         setTitle(R.string.label_welcome)
         val user = LoggedUser(this)
@@ -47,7 +47,7 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun startPermissionsActivity(checkOnlyAudio: Boolean) {
-        PermissionsActivity.startForResult(this, checkOnlyAudio, PERMISSIONS)
+    private fun startPermissionsActivity() {
+        PermissionsActivity.startForResult(this, false, PERMISSIONS)
     }
 }

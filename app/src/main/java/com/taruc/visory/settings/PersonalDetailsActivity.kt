@@ -12,15 +12,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.R
-import com.taruc.visory.utils.LoggedUser
-import com.taruc.visory.utils.makeErrorSnackbar
-import com.taruc.visory.utils.makeSuccessSnackbar
-import com.taruc.visory.utils.makeWarningSnackbar
+import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_personal_details.*
 
 class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var loggedUser: LoggedUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +28,10 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener {
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         auth = FirebaseAuth.getInstance()
+        loggedUser = LoggedUser(this)
+
+        edit_text_first_name.setText(getFirstName(loggedUser.getUserName()))
+        edit_text_last_name.setText(getLastName(loggedUser.getUserName()))
 
         button_update_profile.setOnClickListener(this)
     }
@@ -39,9 +41,8 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener {
             R.id.button_update_profile -> {
                 val fName = edit_text_first_name.text.toString()
                 val lName = edit_text_last_name.text.toString()
-                val user = LoggedUser(this)
 
-                if(user.getProvider() == "fb" || user.getProvider() == "google"){
+                if(loggedUser.getProvider() == "fb" || loggedUser.getProvider() == "google"){
                     updateProfile(v, fName, lName)
                 }
             }
@@ -59,20 +60,18 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener {
             return
         }
 
-        val user = LoggedUser(this)
-
         val rootRef = FirebaseDatabase.getInstance().getReference("users")
-        val uidRef = rootRef.child(String.format("%s", user.getUserID()))
+        val uidRef = rootRef.child(String.format("%s", loggedUser.getUserID()))
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                rootRef.child(user.getUserID())
+                rootRef.child(loggedUser.getUserID())
                     .child("lname").setValue(lName)
-                rootRef.child(user.getUserID())
+                rootRef.child(loggedUser.getUserID())
                     .child("fname").setValue(fName).addOnCompleteListener{task ->
                         if(task.isSuccessful) {
                             makeSuccessSnackbar(view, "Profile details updated successfully.")
-                            user.setUserName("$fName $lName")
+                            loggedUser.setUserName("$fName $lName")
 
                             Handler().postDelayed({
                                 finish()
@@ -86,17 +85,4 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener {
         }
         uidRef.addListenerForSingleValueEvent(valueEventListener)
     }
-
-        /*val user = auth.currentUser
-        user?.updateProfile(profileUpdates)
-            ?.addOnCompleteListener { task ->
-                if(task.isSuccessful){
-                    makeSuccessSnackbar(view, "Profile details updated successfully.")
-                    Handler().postDelayed({
-                        finish()
-                    }, 2000)
-                }else{
-                    makeErrorSnackbar(view, "Profile details was not updated.")
-                }
-            }*/
-    }
+}

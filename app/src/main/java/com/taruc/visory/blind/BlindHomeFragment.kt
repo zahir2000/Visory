@@ -9,9 +9,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -29,6 +27,7 @@ import com.quickblox.users.model.QBUser
 import com.quickblox.videochat.webrtc.QBRTCClient
 import com.quickblox.videochat.webrtc.QBRTCTypes
 import com.taruc.visory.R
+import com.taruc.visory.fragments.SettingsFragment
 import com.taruc.visory.quickblox.DEFAULT_USER_PASSWORD
 import com.taruc.visory.quickblox.activities.CallActivity
 import com.taruc.visory.quickblox.db.QbUsersDbManager
@@ -57,12 +56,15 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     private lateinit var volunteerUsers: ArrayList<QBUser>
     private var i = -1
     lateinit var viewDialog: ViewDialog
+    private lateinit var con: ViewGroup
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        con = container!!
+
         // Inflate the layout for this fragment
         auth = FirebaseAuth.getInstance()
         return inflater.inflate(R.layout.fragment_blind_home, container, false)
@@ -73,6 +75,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
 
         navController = Navigation.findNavController(view)
         (activity as AppCompatActivity).supportActionBar?.title = "Home"
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         val loggedUserPrefs = LoggedUser(this.activity!!.baseContext)
         uid = loggedUserPrefs.getUserID()
@@ -90,7 +93,30 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         button_blind_make_call.setOnClickListener(this)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.home_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.home_settings -> {
+                val settingsFragment = SettingsFragment()
+                fragmentManager!!.beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                    .replace(con.id, settingsFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onStart() {
         super.onStart()
@@ -178,18 +204,11 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             return
         }
 
-        /*if(i != 0){
-            Handler().postDelayed({
-
-            }, 3000)
-        }*/
-
         startCall(true, i)
 
         if(Helper[HANG_UP, false]){
             return
         }
-
 
         Handler().postDelayed({
             if(Helper[HANG_UP, false]){

@@ -61,7 +61,7 @@ fun makeSuccessSnackbar(view: View, text: String){
     val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG).setAction("Action", null)
     snackbar.setActionTextColor(Color.WHITE)
     val snackbarView = snackbar.view
-    snackbarView.setBackgroundColor(Color.rgb(80, 220, 100))
+    snackbarView.setBackgroundColor(Color.rgb(46, 139, 87))
     snackbar.show()
 }
 

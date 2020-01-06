@@ -12,6 +12,7 @@ import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseUiException
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -260,8 +261,12 @@ class LoginActivity : AppCompatActivity() {
                     } catch (e: Exception) {}
                 }, 3000)
             } else {
-                Toast.makeText(applicationContext, "" + response!!.error!!.message, Toast.LENGTH_SHORT).show()
-                //TODO : check if facebook email is not used before.
+                val e = response?.error
+                if(e is FirebaseUiException){
+                    Toast.makeText(applicationContext, "Login is cancelled.", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(applicationContext, "" + response!!.error!!.message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
         else if (requestCode == RC_SIGN_IN_GOOGLE) {
@@ -338,7 +343,7 @@ class LoginActivity : AppCompatActivity() {
                         uidRef.addListenerForSingleValueEvent(valueEventListener)
                     }
 
-                    Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Login is successful", Toast.LENGTH_SHORT).show()
 
                     Handler().postDelayed({
                         try {

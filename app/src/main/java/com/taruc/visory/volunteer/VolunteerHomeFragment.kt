@@ -57,6 +57,7 @@ class VolunteerHomeFragment : Fragment() {
     ): View? {
 
         con = container!!
+
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
         return inflater.inflate(R.layout.fragment_volunteer_home, container, false)
