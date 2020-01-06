@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EFEFF4"
+    android:background="@color/default_background"
     android:id="@+id/fragment_volunteer_home"
     tools:context=".volunteer.VolunteerHomeFragment">
 

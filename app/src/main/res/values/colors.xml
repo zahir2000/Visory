@@ -24,4 +24,5 @@
     <color name="text_color_caller_name">#1f1f1f</color>
     <color name="color_accent">#4ad24d</color>
     <color name="grey_transparent_20">#20606060</color>
+    <color name="default_background">#EFEFF4</color>
 </resources>

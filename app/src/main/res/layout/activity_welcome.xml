@@ -17,21 +17,25 @@
             style="@style/ScrollViewChild">
 
             <ImageView
-                android:layout_gravity="center_horizontal"
                 android:id="@+id/image_welcome"
                 android:layout_width="wrap_content"
-                android:layout_height="0.0dip"
-                android:layout_marginBottom="@dimen/spacing_sm"
-                android:src="@drawable/welcome"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/spacing_md"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:cropToPadding="false"
+                android:importantForAccessibility="no"
+                android:maxWidth="200dip"
                 android:scaleType="fitCenter"
-                android:layout_weight="1.0" />
+                android:src="@drawable/ic_welcome" />
 
             <TextView
                 android:gravity="center"
                 android:id="@+id/text_welcome_header"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Welcome Aboard"
+                android:text="@string/welcome_header_name"
                 android:layout_marginBottom="@dimen/spacing_sm"
                 style="@style/TextAppearance.Header" />
 
@@ -40,7 +44,6 @@
                 android:id="@+id/text_welcome_body1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="I love my job"
                 style="@style/TextAppearance.Small"
                 android:layout_marginBottom="@dimen/spacing_sm" />
 
@@ -50,7 +53,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 style="@style/TextAppearance.Small"
-                android:text="Helping is easy. Start by learning the tutorials!"
                 android:layout_marginBottom="@dimen/spacing_md" />
 
             <include layout="@layout/empty_space" />

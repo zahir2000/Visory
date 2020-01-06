@@ -52,13 +52,16 @@
                                         Here, we showcase the unique community of Visory and aim to inform, help and inspire community members.</string>
     <string name="text_about_content1">Stories are currently only available in English.</string>
 
-    <string name="text_permission_volunteer_body">To assist the blind or visually impaired, you will need microphone to respond.</string>
-    <string name="text_permission_volunteer_header">Allow Microphone</string>
+    <string name="text_permission_volunteer_body">Please give access to your microphone and video for a smooth conversation.</string>
+    <string name="text_permission_volunteer_header">Microphone and Video</string>
     <string name="button_grant_access">Grant Access</string>
-    <string name="image_permission_cd">Allow video &amp; microphone access</string>
+    <string name="image_permission_cd">Allow video and microphone access</string>
     <string name="button_welcome_continue">Continue</string>
     <string name="title_activity_bottom_nav">BottomNavActivity</string>
+    <string name="welcome_body2_volunteer">Helping is easy. Your phone is open for calls as long as you\'\re logged in.</string>
+    <string name="welcome_body2_blind">Start your first call now!</string>
     <string name="title_home">Home</string>
+    <string name="welcome_body_text1">"We are happy to have you on board."</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_stories">Stories</string>
@@ -226,4 +229,5 @@
     <string name="button_update_password">Update Password</string>
     <string name="button_update_email">Update Email</string>
     <string name="button_settings_logout">Logout</string>
+    <string name="welcome_header_name">Welcome %s!</string>
 </resources>

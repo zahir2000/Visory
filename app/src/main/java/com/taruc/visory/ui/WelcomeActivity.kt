@@ -20,6 +20,17 @@ class WelcomeActivity : AppCompatActivity() {
         startPermissionsActivity(false)
 
         setTitle(R.string.label_welcome)
+        val user = LoggedUser(this)
+        val name = user.getUserName()
+        text_welcome_header.text = getString(R.string.welcome_header_name, name)
+        text_welcome_body1.text = getString(R.string.welcome_body_text1)
+
+        if(user.getUserType() == 1){
+            text_welcome_body2.text = getString(R.string.welcome_body2_volunteer)
+        }else{
+            text_welcome_body2.text = getString(R.string.welcome_body2_blind)
+        }
+
 
         val loggedUserType = LoggedUser(this)
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
 import android.util.Patterns
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -64,7 +65,7 @@ class RegisterActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         button_register_submit.setOnClickListener{
-            register()
+            register(it)
         }
 
         button_facebook.setOnClickListener{
@@ -83,30 +84,35 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun register() {
+    private fun register(view: View) {
         var fName = edit_text_fname.text.toString()
         var lName = edit_text_lname.text.toString()
         val email = edit_text_email.text.toString()
         val password = edit_text_password.text.toString()
 
         if(TextUtils.isEmpty(fName)){
-            Toast.makeText(applicationContext, "Please enter your first name", Toast.LENGTH_SHORT).show()
+            makeWarningSnackbar(view, "Please enter your first name")
+            //Toast.makeText(applicationContext, "Please enter your first name", Toast.LENGTH_SHORT).show()
             return
         }
         if(TextUtils.isEmpty(lName)){
-            Toast.makeText(applicationContext, "Please enter your last name", Toast.LENGTH_SHORT).show()
+            makeWarningSnackbar(view, "Please enter your last name")
+            //Toast.makeText(applicationContext, "Please enter your last name", Toast.LENGTH_SHORT).show()
             return
         }
         if(TextUtils.isEmpty(email)){
-            Toast.makeText(applicationContext, "Please enter your email", Toast.LENGTH_SHORT).show()
+            makeWarningSnackbar(view, "Please enter your email")
+            //Toast.makeText(applicationContext, "Please enter your email", Toast.LENGTH_SHORT).show()
             return
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            Toast.makeText(applicationContext, "Please enter a valid email", Toast.LENGTH_SHORT).show()
+            makeWarningSnackbar(view, "Please enter a valid email")
+            //Toast.makeText(applicationContext, "Please enter a valid email", Toast.LENGTH_SHORT).show()
             return
         }
         if(TextUtils.isEmpty(password)){
-            Toast.makeText(applicationContext, "Please enter your password", Toast.LENGTH_SHORT).show()
+            makeWarningSnackbar(view, "Please enter your password")
+            //Toast.makeText(applicationContext, "Please enter your password", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -131,14 +137,17 @@ class RegisterActivity : AppCompatActivity() {
                     user?.sendEmailVerification()
                         ?.addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                Toast.makeText(applicationContext,  "Email sent.", Toast.LENGTH_SHORT).show()
+                                makeSuccessSnackbar(view, "Email sent.")
+                                //Toast.makeText(applicationContext,  "Email sent.", Toast.LENGTH_SHORT).show()
                             }
                             else {
-                                Toast.makeText(applicationContext,  "Email could not be sent.", Toast.LENGTH_SHORT).show()
+                                makeWarningSnackbar(view,"Email could not be sent.")
+                                //Toast.makeText(applicationContext,  "Email could not be sent.", Toast.LENGTH_SHORT).show()
                             }
                         }
                     myRef.child(key).setValue(newUser).addOnCompleteListener{
-                        Toast.makeText(applicationContext, "Registration successful", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(applicationContext, "Registration successful", Toast.LENGTH_SHORT).show()
+                        makeSuccessSnackbar(view, "Registration successful")
                         val loggedUserTypePref = LoggedUser(this)
                         val userName = "$fName $lName"
                         loggedUserTypePref.setUserData(
@@ -157,7 +166,8 @@ class RegisterActivity : AppCompatActivity() {
                         finish()
                     }
                 }else{
-                    Toast.makeText(applicationContext,  "Email already exists.", Toast.LENGTH_SHORT).show()
+                    makeErrorSnackbar(view, "Email already exists")
+                    //Toast.makeText(applicationContext,  "Email already exists.", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -327,7 +337,7 @@ class RegisterActivity : AppCompatActivity() {
                         uidRef.addListenerForSingleValueEvent(valueEventListener)
                     }
 
-                    Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
 
                     Handler().postDelayed({
                         try {

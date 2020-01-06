@@ -2,11 +2,14 @@ package com.taruc.visory.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
 import android.util.Patterns
+import android.view.View
 import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -80,25 +83,29 @@ class LoginActivity : AppCompatActivity() {
         }
 
         login_button_submit.setOnClickListener{
-            login()
+            hideKeyboard(this, it)
+            login(it)
         }
     }
 
-    private fun login() {
+    private fun login(view: View) {
         val email = email_text.text.toString()
         val password = password_text.text.toString()
         val loggedUserTypePref = LoggedUser(this)
 
         if(TextUtils.isEmpty(email)){
-            Toast.makeText(applicationContext, "Please enter your email", Toast.LENGTH_SHORT).show()
+            makeWarningSnackbar(view, "Please enter your email")
+            //Toast.makeText(applicationContext, "Please enter your email", Toast.LENGTH_SHORT).show()
             return
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            Toast.makeText(applicationContext, "Please enter a valid email", Toast.LENGTH_SHORT).show()
+            makeWarningSnackbar(view, "Please enter a valid email")
+            //Toast.makeText(applicationContext, "Please enter a valid email", Toast.LENGTH_SHORT).show()
             return
         }
         if(TextUtils.isEmpty(password)){
-            Toast.makeText(applicationContext, "Please enter your password", Toast.LENGTH_SHORT).show()
+            makeWarningSnackbar(view, "Please enter your password")
+            //Toast.makeText(applicationContext, "Please enter your password", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -106,7 +113,8 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Toast.makeText(applicationContext, "Login Successful", Toast.LENGTH_SHORT).show()
+                    makeSuccessSnackbar(view, "Login Successful")
+                    //Toast.makeText(applicationContext, "Login Successful", Toast.LENGTH_SHORT).show()
                     val user = auth.currentUser
 
                     val uid = FirebaseAuth.getInstance().currentUser!!.uid
@@ -159,7 +167,7 @@ class LoginActivity : AppCompatActivity() {
                     }, 3000)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Toast.makeText(applicationContext, "Login Failed", Toast.LENGTH_SHORT).show()
+                    makeErrorSnackbar(view, "Email and/or password is incorrect. Please try again")
                 }
             }
     }
