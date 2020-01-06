@@ -49,6 +49,7 @@ class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCall
     private lateinit var sharedPref: SharedPreferences
     private var opponentsIdsList: List<Int>? = null
     private lateinit var callService: CallService
+    private var callAccepted = false
 
     private var isInComingCall: Boolean = false
     private var isVideoCall: Boolean = false
@@ -391,6 +392,9 @@ class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCall
             if(Helper[CONNECTED_TO_USER, false]){
                 val intent = Intent(this, CallEndActivity::class.java)
                 startActivity(intent)
+            }else if(callAccepted){
+                val intent = Intent(this, com.taruc.visory.volunteer.CallEndActivity::class.java)
+                startActivity(intent)
             }
             finish()
         }
@@ -407,6 +411,7 @@ class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCall
     override fun onAcceptCurrentSession() {
         if (callService.currentSessionExist()) {
             addConversationFragment(true)
+            callAccepted = true
         }
     }
 

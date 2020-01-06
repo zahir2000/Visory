@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.IBinder
 import android.preference.PreferenceManager
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -169,7 +170,8 @@ class CallService : Service(){
         }
 
         appRTCAudioManager.start { selectedAudioDevice, availableAudioDevices ->
-            shortToast("Audio device switched to  $selectedAudioDevice")
+            Log.i("CallService", "Audio device switched to  $selectedAudioDevice")
+            //shortToast("Audio device switched to  $selectedAudioDevice")
         }
 
         if (currentSessionExist() && currentSession!!.conferenceType == QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_AUDIO) {
@@ -498,7 +500,8 @@ class CallService : Service(){
         }
 
         override fun onConnectionClosedForUser(session: QBRTCSession?, userID: Int?) {
-            shortToast("The user: " + userID + "has left the call")
+            //shortToast("The user: " + userID + "has left the call")
+            Log.i("CallService", "The user: " + userID + "has left the call")
             userID?.let {
                 removeVideoTrack(it)
             }
@@ -583,7 +586,8 @@ class CallService : Service(){
             val participant = QbUsersDbManager.getUserById(userID)
             val participantName = if (participant != null) participant.fullName else userID.toString()
 
-            shortToast("User " + participantName + " " + getString(R.string.hang_up_call) + " conversation")
+            //shortToast("User " + participantName + " " + getString(R.string.hang_up_call) + " conversation")
+            Log.i("CallService", "User " + participantName + " " + getString(R.string.hang_up_call) + " conversation")
         }
 
         override fun onCallAcceptByUser(session: QBRTCSession?, p1: Int?, p2: MutableMap<String, String>?) {

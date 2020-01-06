@@ -11,7 +11,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.taruc.visory.R
 import com.taruc.visory.quickblox.utils.ViewDialog
-import com.taruc.visory.utils.shortToast
 
 class ReportActivity : AppCompatActivity() {
 
