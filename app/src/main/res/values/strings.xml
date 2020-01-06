@@ -232,4 +232,6 @@
     <string name="welcome_header_name">Welcome %s!</string>
     <string name="current_password">Current Password</string>
     <string name="new_email">New Email</string>
+    <string name="version">Version</string>
+    <string name="version_number">1.0</string>
 </resources>

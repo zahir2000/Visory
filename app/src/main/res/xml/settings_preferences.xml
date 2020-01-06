@@ -28,6 +28,43 @@
         </Preference>
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="Socials"
+        android:key="social_category"
+        android:icon="@drawable/ic_share">
+
+        <Preference
+            app:key="social_facebook"
+            android:icon="@drawable/ic_facebook"
+            android:title="Facebook">
+            <intent android:action="android.intent.action.VIEW"
+                    android:data="http://www.facebook.com/zahirsher"/>
+        </Preference>
+
+        <Preference
+            app:key="social_twitter"
+            android:icon="@drawable/ic_twitter"
+            android:title="Twitter">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://www.twitter.com/zahirsher"/>
+        </Preference>
+
+        <Preference
+            app:key="social_instagram"
+            android:icon="@drawable/ic_instagram"
+            android:title="Instagram">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://www.instagram.com/zahirsher"/>
+        </Preference>
+    </PreferenceCategory>
+
+    <Preference
+        android:selectable="false"
+        android:enabled="true"
+        android:key="developer"
+        android:title="Zahiriddin Rustamov"
+        android:layout="@layout/preference_textview"/>
+
     <Preference
         app:key="logout_button"
         android:title="Logout"
