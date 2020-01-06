@@ -61,8 +61,7 @@
     <Preference
         android:selectable="false"
         android:enabled="true"
-        android:key="developer"
-        android:title="Zahiriddin Rustamov"
+        android:key="version_number"
         android:layout="@layout/preference_textview"/>
 
     <Preference

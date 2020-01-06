@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/report_button"
+    android:text="@string/submit_report"
+    style="@style/ButtonStyle.Secondary"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dip"
+    android:layout_marginBottom="30dip"
+    android:layout_marginStart="@dimen/spacing_md"
+    android:layout_marginLeft="@dimen/spacing_md"
+    android:layout_marginEnd="@dimen/spacing_md"
+    android:layout_marginRight="@dimen/spacing_md">
+</Button>

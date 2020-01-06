@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="Technical Problem"
+        android:key="technical_problem"
+        android:icon="@drawable/ic_error_outline">
+
+        <CheckBoxPreference
+            app:key="poor_audio_video"
+            android:title="Poor audio or video quality">
+        </CheckBoxPreference>
+
+        <CheckBoxPreference
+            app:key="no_audio_video"
+            android:title="No audio or video quality">
+        </CheckBoxPreference>
+
+        <CheckBoxPreference
+            app:key="unexpected_call_end"
+            android:title="Call ended unexpectedly">
+        </CheckBoxPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="User Problem"
+        android:key="user_problem"
+        android:icon="@drawable/ic_sentiment_dissatisfied">
+
+        <CheckBoxPreference
+            app:key="inappropriate_behavior"
+            android:title="Inappropriate behavior">
+        </CheckBoxPreference>
+
+        <CheckBoxPreference
+            app:key="no_help"
+            android:title="No help was provided">
+        </CheckBoxPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Other Problem"
+        android:key="other_problem"
+        android:icon="@drawable/ic_live_help">
+
+        <Preference
+            app:key="contact_us"
+            android:title="Contact Us">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://www.facebook.com/zahirsher"/>
+        </Preference>
+    </PreferenceCategory>
+
+    <Preference
+        app:key="submit_report"
+        android:title="Submit Report"
+        android:layout="@layout/report_button">
+    </Preference>
+
+</PreferenceScreen>

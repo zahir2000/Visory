@@ -234,4 +234,6 @@
     <string name="new_email">New Email</string>
     <string name="version">Version</string>
     <string name="version_number">1.0</string>
+    <string name="submit_report">Submit Report</string>
+    <string name="skip_text">Skip</string>
 </resources>
