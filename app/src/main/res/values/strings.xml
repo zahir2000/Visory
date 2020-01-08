@@ -241,4 +241,8 @@
     <string name="bottom_nav_donation">Donation</string>
     <string name="volunteer_tutorial_instructions_text">When a blind or visually impaired person requests help, the app notifies multiple volunteers, and the first to respond is connected. Answering a call is easy. When you receive a notification, all you have to do is open it.</string>
     <string name="volunteer_tutorial_instructions_text_info">The notification might look different whether your phone is locked or unlocked.</string>
+    <string name="storyTitle">Title</string>
+    <string name="storyBody">Story:</string>
+    <string name="submit">Submit</string>
+    <string name="selectPhoto">Submit Photo</string>
 </resources>
