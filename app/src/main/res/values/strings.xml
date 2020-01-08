@@ -237,4 +237,5 @@
     <string name="submit_report">Submit Report</string>
     <string name="skip_text">Skip</string>
     <string name="btnDonation">Donate</string>
+    <string name="btnDonate">Donate</string>
 </resources>
