@@ -21,8 +21,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".donation.DonationPayment"/>
-        <activity android:name=".volunteer.TutorialActivity"/>
+        <activity android:name=".donation.PaymentDetails"></activity>
+        <activity android:name=".donation.paypalmain" />
+        <activity android:name=".volunteer.TutorialActivity" />
         <activity android:name=".report.ReportActivity" />
         <activity android:name=".settings.ChangeEmailActivity">
             <intent-filter>
