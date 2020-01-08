@@ -19,7 +19,7 @@ class DonationMainPage : Fragment(), View.OnClickListener{
 
     override fun onClick(view: View) {
         when(view.id){
-            R.id.btnDonate2 -> {
+            R.id.btnDonate -> {
                 activity?.let{
                     val intent = Intent (it, paypalmain::class.java)
                     it.startActivity(intent)
@@ -40,6 +40,6 @@ class DonationMainPage : Fragment(), View.OnClickListener{
         super.onViewCreated(view, savedInstanceState)
 
         (activity as AppCompatActivity).supportActionBar?.title = "Donation"
-        btnDonate2.setOnClickListener(this)
+        btnDonate.setOnClickListener(this)
     }
 }

@@ -7,18 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.taruc.visory.R;
-
 import org.json.JSONException;
-
 import java.math.BigDecimal;
 
 public class paypalmain extends AppCompatActivity {
@@ -49,7 +45,7 @@ public class paypalmain extends AppCompatActivity {
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
 
-        btnDonate = (Button) findViewById(R.id.btnDonate2);
+        btnDonate = (Button) findViewById(R.id.btnDonate);
         txtDonate = (EditText) findViewById(R.id.txtDonate);
 
         btnDonate.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +58,7 @@ public class paypalmain extends AppCompatActivity {
 
     private void processPayment() {
         amount = txtDonate.getText().toString();
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(amount)), "RM", "Donate for Charity", PayPalPayment.PAYMENT_INTENT_SALE);
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(amount)), "MYR", "Donate for Charity", PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
