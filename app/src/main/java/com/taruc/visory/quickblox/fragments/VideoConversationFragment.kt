@@ -761,7 +761,8 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
 
         private fun setFullScreenOnOff() {
             if (actionBar.isShowing) {
-                hideToolBarAndButtons()
+                //hideToolBarAndButtons()
+                showToolBarAndButtons()
             } else {
                 showToolBarAndButtons()
             }

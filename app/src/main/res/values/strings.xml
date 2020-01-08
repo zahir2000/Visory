@@ -238,4 +238,5 @@
     <string name="skip_text">Skip</string>
     <string name="btnDonation">Donate</string>
     <string name="btnDonate">Donate</string>
+    <string name="bottom_nav_donation">Donation</string>
 </resources>

@@ -16,4 +16,9 @@
         android:name="com.taruc.visory.StoriesFragment"
         android:label="@string/title_stories"
         tools:layout="@layout/fragment_stories" />
+    <fragment
+        android:id="@+id/navigation_donation"
+        android:name="com.taruc.visory.donation.DonationMainPage"
+        android:label="fragment_donation_main_page"
+        tools:layout="@layout/fragment_donation_main_page" />
 </navigation>
