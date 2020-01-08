@@ -21,7 +21,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".report.ReportActivity"></activity>
+        <activity android:name=".Donation.DonationPayment"></activity>
+        <activity android:name=".Donation.DonationMainScreen" />
+        <activity android:name=".report.ReportActivity" />
         <activity android:name=".settings.ChangeEmailActivity">
             <intent-filter>
                 <action android:name="com.taruc.visory.settings.ChangeEmailActivity" />
