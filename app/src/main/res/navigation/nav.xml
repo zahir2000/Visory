@@ -164,9 +164,6 @@
         android:label="fragment_volunteer_home"
         tools:layout="@layout/fragment_volunteer_home" >
         <action
-            android:id="@+id/action_volunteerHomeFragment_to_volunteerTutorialFragment"
-            app:destination="@id/volunteerTutorialFragment" />
-        <action
             android:id="@+id/action_volunteerHomeFragment_to_storiesFragment"
             app:destination="@id/storiesFragment" />
     </fragment>
@@ -201,9 +198,4 @@
             android:id="@+id/action_subscribeFragment_to_welcomeFragment"
             app:destination="@id/welcomeFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/volunteerTutorialFragment"
-        android:name="com.taruc.visory.volunteer.VolunteerTutorialFragment"
-        android:label="fragment_volunteer_tutorial"
-        tools:layout="@layout/fragment_volunteer_tutorial" />
 </navigation>

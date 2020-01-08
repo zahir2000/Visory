@@ -1,6 +1,5 @@
 package com.taruc.visory.volunteer
 
-import android.app.ActionBar
 import android.app.ActivityManager
 import android.app.NotificationManager
 import android.content.Context
@@ -38,11 +37,11 @@ import com.taruc.visory.quickblox.util.signUp
 import com.taruc.visory.quickblox.utils.EXTRA_IS_INCOMING_CALL
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.utils.LoggedUser
-import com.taruc.visory.utils.shortToast
+import kotlinx.android.synthetic.main.fragment_volunteer_home.*
 import kotlinx.android.synthetic.main.profile_card.*
 
 
-class VolunteerHomeFragment : Fragment() {
+class VolunteerHomeFragment : Fragment(), View.OnClickListener {
 
     lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
@@ -72,6 +71,8 @@ class VolunteerHomeFragment : Fragment() {
         val loggedUserPrefs = LoggedUser(this.activity!!.baseContext)
         uid = loggedUserPrefs.getUserID()
         fullName = loggedUserPrefs.getUserName()
+
+        button_tutorial.setOnClickListener(this)
 
         val user = createQBUser()
         signUpNewUser(user)
@@ -263,5 +264,16 @@ class VolunteerHomeFragment : Fragment() {
     private fun clearAppNotifications() {
         val notificationManager = activity!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.button_tutorial -> {
+                activity?.let{
+                    val intent = Intent (it, TutorialActivity::class.java)
+                    it.startActivity(intent)
+                }
+            }
+        }
     }
 }

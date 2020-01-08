@@ -78,7 +78,7 @@ class SettingsFragment : Fragment() {
                 builder
                     .setTitle("Logout")
                     .setMessage("Are you sure you want to logout?")
-                    .setPositiveButton("Yes"){ _, _ ->
+                    .setPositiveButton("Yes, log out"){ _, _ ->
                         mGoogleSignInClient?.signOut()
                         auth.signOut()
                         activity?.onBackPressed()
@@ -89,7 +89,7 @@ class SettingsFragment : Fragment() {
                             return@let true
                         }
                     }
-                    .setNegativeButton("No"){ _, _ ->
+                    .setNegativeButton("Cancel"){ _, _ ->
                         Toast.makeText(context, "Good to see you back!", Toast.LENGTH_SHORT).show()
                     }
 
