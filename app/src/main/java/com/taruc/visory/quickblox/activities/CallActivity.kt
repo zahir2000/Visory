@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.*
 import android.preference.PreferenceManager
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -368,7 +369,8 @@ class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCall
             }
             val participant = QbUsersDbManager.getUserById(userId)
             val participantName = if (participant != null) participant.fullName else userId.toString()
-            shortToast("User " + participantName + " " + getString(R.string.hang_up_call) + " conversation")
+            //shortToast("User " + participantName + " " + getString(R.string.hang_up_call) + " conversation")
+            Log.i("CallActivity", "User " + participantName + " " + getString(R.string.hang_up_call) + " conversation")
         }
     }
 
