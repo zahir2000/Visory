@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.squareup.picasso.Picasso
 import com.taruc.visory.R
 import com.taruc.visory.utils.Story
 import kotlinx.android.synthetic.main.activity_list_stories.*
+import kotlinx.android.synthetic.main.content_list_stories.view.*
 import org.jivesoftware.smack.chat.Chat
 
 
@@ -42,7 +44,8 @@ class ListStoriesActivity : AppCompatActivity() {
            db
        ){
            override fun populateViewHolder(p0: StoryViewHolder?, p1: Story?, p2: Int) {
-               p0.itemView.
+               p0!!.itemView.txtTitle.setText(p1!!.sTitle)
+               Picasso.get().load(p1.imageUrl).into(p0.itemView.imgStory)
            }
        }
 
