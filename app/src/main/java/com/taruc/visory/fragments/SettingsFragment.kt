@@ -16,7 +16,11 @@ import androidx.preference.PreferenceFragmentCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.quickblox.users.QBUsers
 import com.taruc.visory.R
+import com.taruc.visory.quickblox.db.QbUsersDbManager
+import com.taruc.visory.quickblox.services.LoginService
+import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.ui.LandingActivity
 
 
@@ -79,13 +83,14 @@ class SettingsFragment : Fragment() {
                     .setTitle("Logout")
                     .setMessage("Are you sure you want to logout?")
                     .setPositiveButton("Yes, log out"){ _, _ ->
+                        logoutFromQuickblox()
                         mGoogleSignInClient?.signOut()
                         auth.signOut()
                         activity?.onBackPressed()
                         activity?.let{
                             val intent = Intent(it, LandingActivity::class.java)
                             it.startActivity(intent)
-                            it.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                            it.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
                             return@let true
                         }
                     }
@@ -98,6 +103,17 @@ class SettingsFragment : Fragment() {
             }
 
             return false
+        }
+
+        private fun logoutFromQuickblox() {
+            LoginService.logout(this.context!!)
+            removeAllUserData()
+        }
+
+        private fun removeAllUserData() {
+            Helper.clearAllData()
+            QbUsersDbManager.clearDB()
+            QBUsers.signOut().performAsync(null)
         }
     }
 }

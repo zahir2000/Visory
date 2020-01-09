@@ -9,67 +9,75 @@
     tools:context=".volunteer.VolunteerHomeFragment">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <include
-            android:id="@+id/profileCardView"
-            layout="@layout/profile_card"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_md"
-            android:layout_marginTop="@dimen/spacing_md"
-            android:layout_marginRight="@dimen/spacing_md" />
-
-        <TextView
-            android:id="@+id/textViewCallNotification"
-            style="@style/TextAppearance.Small"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_md"
-            android:layout_marginTop="@dimen/spacing_md"
-            android:layout_marginRight="@dimen/spacing_md"
-            android:background="@drawable/text_rounded_white"
-            android:paddingTop="@dimen/spacing_sm"
-            android:paddingBottom="@dimen/spacing_sm"
-            android:text="@string/text_notification_call"
-            android:textColor="@color/colorGrey" />
+            android:orientation="vertical">
 
-        <include
-            layout="@layout/empty_space"
-            android:layout_width="wrap_content"
-            android:layout_height="0.0dip"
-            android:layout_weight="0.1" />
+            <include
+                layout="@layout/user_stats"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_md"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:layout_marginRight="@dimen/spacing_md"/>
 
-        <Button
-            android:id="@+id/button_tutorial"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/text_learn_to_answer_calls"
-            android:layout_marginTop="@dimen/spacing_md"
-            android:layout_marginLeft="@dimen/spacing_md"
-            android:layout_marginRight="@dimen/spacing_md"
-            style="@style/ButtonStyle.Primary"/>
+            <include
+                android:id="@+id/profileCardView"
+                layout="@layout/profile_card"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_md"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:layout_marginRight="@dimen/spacing_md" />
 
-        <Button
-            android:id="@+id/button_trivia"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/text_trivia_game"
-            android:layout_marginLeft="@dimen/spacing_md"
-            android:layout_marginRight="@dimen/spacing_md"
-            android:layout_marginTop="@dimen/spacing_spoken_lang"
-            android:layout_marginBottom="@dimen/spacing_md"
-            style="@style/ButtonStyle.Primary"/>
+            <TextView
+                android:id="@+id/textViewCallNotification"
+                style="@style/TextAppearance.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_md"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:layout_marginRight="@dimen/spacing_md"
+                android:background="@drawable/text_rounded_white"
+                android:paddingTop="@dimen/spacing_sm"
+                android:paddingBottom="@dimen/spacing_sm"
+                android:text="@string/text_notification_call"
+                android:textColor="@color/colorGrey" />
 
-        <!--<com.google.android.material.bottomnavigation.BottomNavigationView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/bottom_nav"
-            android:background="@color/colorWhite"
-            app:menu="@menu/bottom_nav"/>-->
-    </LinearLayout>
+            <include
+                layout="@layout/empty_space"
+                android:layout_width="wrap_content"
+                android:layout_height="0.0dip"
+                android:layout_weight="0.1" />
+
+            <Button
+                android:id="@+id/button_tutorial"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_learn_to_answer_calls"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:layout_marginLeft="@dimen/spacing_md"
+                android:layout_marginRight="@dimen/spacing_md"
+                android:layout_marginBottom="@dimen/spacing_md"
+                style="@style/ButtonStyle.Primary"/>
+
+            <Button
+                android:id="@+id/button_trivia"
+                android:layout_width="fill_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:text="@string/text_trivia_game"
+                android:layout_marginLeft="@dimen/spacing_md"
+                android:layout_marginRight="@dimen/spacing_md"
+                android:layout_marginTop="@dimen/spacing_spoken_lang"
+                android:layout_marginBottom="@dimen/spacing_md"
+                style="@style/ButtonStyle.Primary"/>
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

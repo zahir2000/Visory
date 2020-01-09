@@ -6,7 +6,3 @@ import androidx.fragment.app.FragmentManager
 fun addFragment(fragmentManager: FragmentManager, containerId: Int, fragment: Fragment, tag: String) {
     fragmentManager.beginTransaction().replace(containerId, fragment, tag).commitAllowingStateLoss()
 }
-
-fun addFragmentWithBackStack(fragmentManager: FragmentManager, containerId: Int, fragment: Fragment, tag: String) {
-    fragmentManager.beginTransaction().replace(containerId, fragment, tag).addToBackStack(null).commitAllowingStateLoss()
-}

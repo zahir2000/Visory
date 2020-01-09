@@ -72,6 +72,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    aaptOptions {
+        noCompress "tflite"
+        noCompress "lite"
+    }
 }
 
 dependencies {
@@ -106,11 +111,16 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-analytics:17.2.1'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
-
+    implementation 'com.wonderkiln:camerakit:0.13.0'
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
+
+    //Object Detector
     implementation 'androidx.preference:preference:1.1.0'
 
     implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'
+    implementation 'com.wang.avi:library:2.1.3'
+    implementation 'org.tensorflow:tensorflow-lite:2.0.0'
+    implementation 'androidx.exifinterface:exifinterface:1.1.0'
 
     implementation 'com.google.firebase:firebase-storage:19.1.0'
 }

@@ -11,16 +11,23 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.quickblox.activities.PermissionsActivity
 import com.taruc.visory.quickblox.utils.CHECK_PERMISSIONS
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.quickblox.utils.PERMISSIONS
 import com.taruc.visory.quickblox.utils.ViewDialog
+import com.taruc.visory.utils.UserCount
+import com.taruc.visory.utils.loadUsers
 import java.lang.Exception
 
 class VolunteerHomeActivity : AppCompatActivity() {
 
     lateinit var dialog: ViewDialog
+    lateinit var userCount: UserCount
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +45,10 @@ class VolunteerHomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        //loadUserCount()
+
+        loadUsers(this)
+
         try{
             dialog = ViewDialog(this)
             dialog.showDialogFor5Seconds()
@@ -46,6 +57,31 @@ class VolunteerHomeActivity : AppCompatActivity() {
         if(Helper[CHECK_PERMISSIONS, true]){
             PermissionsActivity.startForResult(this, false, PERMISSIONS)
         }
+    }
+
+    private fun loadUserCount() {
+        val rootRef = FirebaseDatabase.getInstance().reference
+        val userRef = rootRef.child("users")
+        userCount = UserCount(this)
+        userCount.setUserCount(0, 0)
+
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for(ds in dataSnapshot.children){
+                    val role = ds.child("role").value
+                    val roleVal = role.toString().toInt()
+                    if(roleVal == 1){
+                        userCount.setVolCount(userCount.getVolCount() + 1)
+                    }else if(roleVal == 2){
+                        userCount.setBviCount(userCount.getBviCount() + 1)
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        userRef.addListenerForSingleValueEvent(valueEventListener)
     }
 
     override fun onBackPressed() {

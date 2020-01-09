@@ -16,15 +16,17 @@
     <application
         android:name=".quickblox.App"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_app_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.SubmitStoryActivity"></activity>
         <activity android:name=".donation.PaymentDetails" />
         <activity android:name=".donation.paypalmain" />
         <activity android:name=".volunteer.TutorialActivity" />
+        <activity android:name=".mlkit.ObjectDetectorActivity"
+            android:label="Object Detector" />
         <activity android:name=".report.ReportActivity" />
         <activity android:name=".settings.ChangeEmailActivity">
             <intent-filter>

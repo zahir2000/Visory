@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.quickblox.chat.QBChatService
 import com.quickblox.core.QBEntityCallback
 import com.quickblox.core.exception.QBResponseException
@@ -37,8 +42,12 @@ import com.taruc.visory.quickblox.util.signUp
 import com.taruc.visory.quickblox.utils.EXTRA_IS_INCOMING_CALL
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.utils.LoggedUser
+import com.taruc.visory.utils.UserCount
+import com.taruc.visory.utils.shortToast
 import kotlinx.android.synthetic.main.fragment_volunteer_home.*
 import kotlinx.android.synthetic.main.profile_card.*
+import kotlinx.android.synthetic.main.user_stats.*
+import java.lang.Exception
 
 
 class VolunteerHomeFragment : Fragment(), View.OnClickListener {
@@ -247,6 +256,22 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
         val loggedUserTypePref = LoggedUser(this.activity!!.baseContext)
         profile_joindate.text = getString(R.string.member_since, loggedUserTypePref.getUserJoinDate())
         profile_name.text = loggedUserTypePref.getUserName()
+
+        val userCount = UserCount(this.context!!)
+
+        Handler().postDelayed({
+            if(userCount.getBviCount() != 0 && userCount.getVolCount() != 0){
+                try{
+                    user_stats_view.visibility = View.VISIBLE
+                    textViewBlindCount.text = userCount.getBviCount().toString()
+                    textViewVolunteerCount.text = userCount.getVolCount().toString()
+                }catch (e: Exception){}
+            }else{
+                try{
+                    user_stats_view.visibility = View.GONE
+                }catch (e: Exception){}
+            }
+        }, 2000)
         //profile_language.text = loggedUserTypePref.getLanguage()
     }
 

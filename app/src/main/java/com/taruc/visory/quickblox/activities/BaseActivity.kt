@@ -41,13 +41,6 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    protected fun showErrorSnackbar(@StringRes resId: Int, e: Exception, clickListener: View.OnClickListener) {
-        val rootView = window.decorView.findViewById<View>(android.R.id.content)
-        if (rootView != null) {
-            showErrorSnackbar(rootView, resId, e, R.string.snackbar_retry, clickListener)
-        }
-    }
-
     protected fun checkPermissions(permissions: Array<String>): Boolean {
         for (permission in permissions) {
             if (checkPermission(permission)) {

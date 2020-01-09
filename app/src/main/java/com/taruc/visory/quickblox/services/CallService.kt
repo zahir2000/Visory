@@ -77,7 +77,7 @@ class CallService : Service(){
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val isIncomingCall = Helper.get(EXTRA_IS_INCOMING_CALL, false)
+        val isIncomingCall = Helper[EXTRA_IS_INCOMING_CALL, false]
         if(isIncomingCall){
             val notification = initNotification()
             startForeground(SERVICE_ID, notification)
@@ -171,7 +171,6 @@ class CallService : Service(){
 
         appRTCAudioManager.start { selectedAudioDevice, availableAudioDevices ->
             Log.i("CallService", "Audio device switched to  $selectedAudioDevice")
-            //shortToast("Audio device switched to  $selectedAudioDevice")
         }
 
         if (currentSessionExist() && currentSession!!.conferenceType == QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_AUDIO) {
@@ -445,8 +444,8 @@ class CallService : Service(){
         builder.setContentTitle(notificationTitle)
         builder.setContentText(notificationText)
         builder.setWhen(System.currentTimeMillis())
-        builder.setSmallIcon(R.mipmap.ic_launcher_round)
-        val bitmapIcon = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher_round)
+        builder.setSmallIcon(R.mipmap.ic_app_icon)
+        val bitmapIcon = BitmapFactory.decodeResource(resources, R.mipmap.ic_app_icon_round)
         builder.setLargeIcon(bitmapIcon)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

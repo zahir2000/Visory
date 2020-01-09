@@ -49,12 +49,6 @@ fun configRTCTimers(context: Context) {
     QBRTCConfig.setDialingTimeInterval(dialingTimeInterval)
 }
 
-fun isManageSpeakerPhoneByProximity(context: Context): Boolean {
-    val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
-    return sharedPref.getBoolean(context.getString(R.string.pref_manage_speakerphone_by_proximity_key),
-        java.lang.Boolean.valueOf(context.getString(R.string.pref_manage_speakerphone_by_proximity_default)))
-}
-
 fun getPreferenceInt(sharedPref: SharedPreferences, context: Context, strResKey: Int, strResDefValue: Int): Int {
     return sharedPref.getInt(context.getString(strResKey), Integer.valueOf(context.getString(strResDefValue)))
 }

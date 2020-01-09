@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_globe_big"
                 android:layout_gravity="center"
+                android:importantForAccessibility="no"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/introduction_image"
                 android:maxHeight="200.0dip"

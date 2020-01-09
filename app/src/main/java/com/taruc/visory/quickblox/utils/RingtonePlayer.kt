@@ -61,13 +61,9 @@ class RingtonePlayer {
         var notification: Uri? = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
 
         if (notification == null) {
-            // notification is null, using backup
             notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-            // I can't see this ever being null (as always have a default notification)
-            // but just incase
             if (notification == null) {
-                // notification backup is null, using 2nd backup
                 notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
             }
         }

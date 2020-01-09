@@ -268,8 +268,6 @@ class IncomeCallFragment : Fragment(), Serializable, View.OnClickListener {
         when (v.id) {
             R.id.image_button_reject_call -> reject()
             R.id.image_button_accept_call -> accept()
-            else -> {
-            }
         }
     }
 

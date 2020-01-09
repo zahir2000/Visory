@@ -238,13 +238,27 @@
     <string name="skip_text">Skip</string>
     <string name="btnDonation">Donate</string>
     <string name="btnDonate">Donate</string>
-    <string name="bottom_nav_donation">Donation</string>
+    <string name="bottom_nav_donation">Donate</string>
     <string name="volunteer_tutorial_instructions_text">When a blind or visually impaired person requests help, the app notifies multiple volunteers, and the first to respond is connected. Answering a call is easy. When you receive a notification, all you have to do is open it.</string>
     <string name="volunteer_tutorial_instructions_text_info">The notification might look different whether your phone is locked or unlocked.</string>
+    <string name="user_stats_volunteers">Volunteers</string>
+    <string name="user_stats_bvi">Blind</string>
+    <string name="default_user_count">0</string>
+    <string name="hang_up_the_call">Hang up the call</string>
+    <string name="toggle_your_mic">Toggle your mic</string>
+    <string name="toggle_your_camera">Toggle your camera</string>
+    <string name="toggle_your_sound">Toggle your sound</string>
+    <string name="call_timer">Call timer</string>
+    <string name="toggle_camera">Switch Camera</string>
+    <string name="detect_object">Detect Object</string>
+    <string name="image_result_descr">Image Result</string>
+    <string name="running_object_detector">Running Object Detector</string>
     <string name="storyTitle">Title</string>
     <string name="storyBody">Story:</string>
     <string name="submit">Submit</string>
     <string name="selectPhoto">Select Photo</string>
+    <string name="instructions_object_detection">Take an image by clicking \'Detect Object\' button.\nThe higher the reliance, the better.</string>
+    <string name="close_dialog">Close Dialog</string>
     <string name="lblHowManyYouWantToDonate">How many you want to donate?</string>
     <string name="radRM1">RM 1</string>
     <string name="radRM2">RM 2</string>
@@ -259,4 +273,5 @@
     <string name="lblThankYouforYourKidness.MayGodBlessYou">Thank You for Your Kidness. May God Bless You :)</string>
     <string name="shareStory">Share a story</string>
     <string name="readStory">Read Stories</string>
+    <string name="about_visory">Visory is a free app that is made specially for those who are blind or visually impaired. Kind-hearted and generous volunteers join our mission to assist people with need, even if it is small, the impact is still there.</string>
 </resources>

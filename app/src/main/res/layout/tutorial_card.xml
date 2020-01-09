@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/card"
+    android:paddingTop="@dimen/spacing_md"
+    android:paddingLeft="@dimen/spacing_md"
+    android:paddingRight="@dimen/spacing_md"
+    android:paddingBottom="@dimen/spacing_md"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<ImageView
+        android:id="@+id/imageView"
+        android:layout_width="75.0dip"
+        android:layout_height="75.0dip"
+        android:background="@drawable/image_rounded"
+        tools:srcCompat="@tools:sample/avatars" />-->
+
+    <!--<com.mikhaellopez.circularimageview.CircularImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/boku"
+        android:id="@+id/profile_card_picture"
+        app:civ_shadow="false"
+        app:civ_shadow_radius="10" />-->
+
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:src="@drawable/ic_volunteer_intro" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:text="@string/volunteer_tutorial_instructions_text"
+        style="@style/TextAppearance.Small" />
+
+</LinearLayout>

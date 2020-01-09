@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_md"
                 android:layout_marginBottom="@dimen/spacing_md"
+                android:importantForAccessibility="no"
                 android:text="@string/text_or"
                 style="@style/TextAppearance.Small" />
 

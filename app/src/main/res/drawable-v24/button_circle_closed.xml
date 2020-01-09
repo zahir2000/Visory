@@ -4,9 +4,9 @@
         <shape android:shape="oval">
             <corners android:radius="15.0dip"/>
             <padding android:bottom="2dip" android:top="2dip" android:left="2dip" android:right="2dip"/>
-            <stroke android:color="@color/colorHome" android:width="1dip"/>
+            <stroke android:color="@color/colorBlack" android:width="1dip"/>
             <size android:height="12.0dip" android:width="12.0dip" />
         </shape>
     </item>
-    <item android:drawable="@drawable/ic_close" />
+    <item android:drawable="@drawable/ic_close_black" />
 </layer-list>

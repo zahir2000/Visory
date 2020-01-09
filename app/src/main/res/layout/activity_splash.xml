@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_root"
     style="@style/MatchParent"
-    android:background="@color/colorWhite"
+    android:background="@color/colorPrimary"
     tools:context=".ui.SplashActivity">
 
     <LinearLayout
@@ -15,9 +15,10 @@
         <TextView
             android:id="@+id/text_splash_app_title"
             style="@style/WrapContent"
+            android:fontFamily="@font/bad_script"
             android:gravity="center"
             android:padding="@dimen/spacing_sm"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorGray"
             android:textSize="@dimen/splash_main_text_size"
             tools:text="AppName" />
 
@@ -26,6 +27,7 @@
             android:textColor="#dedede"
             style="@style/WrapContent"
             android:layout_marginTop="20dp"
+            android:visibility="gone"
             tools:text="1.0.0" />
     </LinearLayout>
 

@@ -40,14 +40,6 @@ object ChatPingAlarmManager {
         }
     }
 
-    /**
-     * Register a pending intent with the AlarmManager to be broadcasted every
-     * half hour and register the alarm broadcast receiver to receive this
-     * intent. The receiver will check all known questions if a ping is
-     * Necessary when invoked by the alarm intent.
-     *
-     * @param context
-     */
     fun onCreate(context: Context) {
         this.context = WeakReference(context)
         context.registerReceiver(alarmBroadcastReceiver, IntentFilter(PING_ALARM_ACTION))
@@ -57,9 +49,6 @@ object ChatPingAlarmManager {
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, trigger, PING_INTERVAL, pendingIntent)
     }
 
-    /**
-     * Unregister the alarm broadcast receiver and cancel the alarm.
-     */
     fun onDestroy() {
         try {
             context.get()?.unregisterReceiver(alarmBroadcastReceiver)

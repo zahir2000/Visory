@@ -17,6 +17,7 @@
         android:layout_gravity="center_vertical"
         android:background="@drawable/call_mic_toggle_background"
         android:checked="true"
+        android:contentDescription="@string/toggle_your_mic"
         android:gravity="center_vertical|center_horizontal"
         android:textOff=""
         android:textOn="" />
@@ -25,6 +26,7 @@
         android:id="@+id/button_hangup_call"
         style="@style/EndCallImageButton"
         android:layout_marginStart="@dimen/element_fragment_margin"
+        android:contentDescription="@string/hang_up_the_call"
         android:layout_marginLeft="@dimen/element_fragment_margin"
         android:background="@drawable/shape_oval_red" />
 
@@ -39,6 +41,7 @@
         android:checked="true"
         android:textOff=""
         android:textOn=""
+        android:contentDescription="@string/toggle_your_camera"
         android:visibility="gone"
         tools:visibility="visible" />
 
@@ -52,6 +55,7 @@
         android:background="@drawable/call_speaker_toggle_background"
         android:checked="true"
         android:textOff=""
+        android:contentDescription="@string/toggle_your_sound"
         android:textOn=""
         android:visibility="gone"
         tools:visibility="visible" />

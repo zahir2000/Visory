@@ -28,6 +28,7 @@ import com.quickblox.videochat.webrtc.QBRTCClient
 import com.quickblox.videochat.webrtc.QBRTCTypes
 import com.taruc.visory.R
 import com.taruc.visory.fragments.SettingsFragment
+import com.taruc.visory.mlkit.ObjectDetectorActivity
 import com.taruc.visory.quickblox.DEFAULT_USER_PASSWORD
 import com.taruc.visory.quickblox.activities.CallActivity
 import com.taruc.visory.quickblox.db.QbUsersDbManager
@@ -163,13 +164,10 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when(view.id){
             R.id.button_blind_detect_object -> {
-                /*
-                auth.signOut()
-                activity?.onBackPressed()
                 activity?.let{
-                    val intent = Intent(it, LandingActivity::class.java)
+                    val intent = Intent(it, ObjectDetectorActivity::class.java)
                     it.startActivity(intent)
-                }*/
+                }
             }
 
             R.id.button_blind_help -> {
