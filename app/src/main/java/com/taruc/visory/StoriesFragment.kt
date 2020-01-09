@@ -21,12 +21,12 @@ class StoriesFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        button2.setOnClickListener(this)
+        btnShare.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.button2 -> {
+            R.id.btnShare -> {
                 activity?.let{
                     val intent = Intent (it, SubmitStoryActivity::class.java)
                     it.startActivity(intent)

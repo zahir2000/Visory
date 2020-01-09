@@ -245,4 +245,6 @@
     <string name="storyBody">Story:</string>
     <string name="submit">Submit</string>
     <string name="selectPhoto">Select Photo</string>
+    <string name="shareStory">Share a story</string>
+    <string name="readStory">Read Stories</string>
 </resources>
