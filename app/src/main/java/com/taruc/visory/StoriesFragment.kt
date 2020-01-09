@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.taruc.visory.ui.ListStoriesActivity
 import com.taruc.visory.ui.SubmitStoryActivity
 import kotlinx.android.synthetic.main.fragment_stories.*
 
@@ -22,6 +23,7 @@ class StoriesFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         btnShare.setOnClickListener(this)
+        btnRead.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -29,6 +31,12 @@ class StoriesFragment : Fragment(), View.OnClickListener {
             R.id.btnShare -> {
                 activity?.let{
                     val intent = Intent (it, SubmitStoryActivity::class.java)
+                    it.startActivity(intent)
+                }
+            }
+            R.id.btnRead -> {
+                activity?.let{
+                    val intent = Intent (it, ListStoriesActivity::class.java)
                     it.startActivity(intent)
                 }
             }

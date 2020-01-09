@@ -71,7 +71,7 @@ class SubmitStoryActivity : AppCompatActivity() {
         val uid = FirebaseAuth.getInstance().uid
         val ref = FirebaseDatabase.getInstance().getReference("/stories/$uid")
 
-        val storyObj = Story(uid, storyCoverUrl, title, story, date)
+        val storyObj = Story(uid, storyCoverUrl, title, story, date )
         if(title.isEmpty()){
            editTextTitle.error = "Please enter a title for the story!"
            return

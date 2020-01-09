@@ -21,7 +21,11 @@
         android:roundIcon="@mipmap/ic_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.SubmitStoryActivity"></activity>
+        <activity
+            android:name=".ui.ListStoriesActivity"
+            android:label="@string/title_activity_list_stories"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ui.SubmitStoryActivity" />
         <activity android:name=".donation.PaymentDetails" />
         <activity android:name=".donation.paypalmain" />
         <activity android:name=".volunteer.TutorialActivity" />

@@ -123,4 +123,6 @@ dependencies {
     implementation 'androidx.exifinterface:exifinterface:1.1.0'
 
     implementation 'com.google.firebase:firebase-storage:19.1.0'
+
+    implementation 'com.firebaseui:firebase-ui-database:2.1.0'
 }
