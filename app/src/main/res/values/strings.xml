@@ -257,4 +257,6 @@
     <string name="lblPaymentAmount">Payment Amount</string>
     <string name="lblPaymentStatus">Payment Status</string>
     <string name="lblThankYouforYourKidness.MayGodBlessYou">Thank You for Your Kidness. May God Bless You :)</string>
+    <string name="shareStory">Share a story</string>
+    <string name="readStory">Read Stories</string>
 </resources>
