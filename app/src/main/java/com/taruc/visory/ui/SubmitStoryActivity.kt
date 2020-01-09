@@ -59,8 +59,6 @@ class SubmitStoryActivity : AppCompatActivity() {
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,selectedPhotoUri)
             imgStoryCover.setImageBitmap(bitmap)
             btnSelectPhoto.alpha = 0f
-//            val bitmapDrawable = BitmapDrawable(bitmap)
-//            btnSelectPhoto.setBackgroundDrawable(bitmapDrawable)
         }
     }
 
@@ -68,7 +66,7 @@ class SubmitStoryActivity : AppCompatActivity() {
         val title = editTextTitle.text.toString().trim()
         val story = editTextStory.text.toString()
         val date = getCurrentDate()
-        val uid = FirebaseAuth.getInstance().uid
+        val uid = FirebaseDatabase.getInstance().getReference("stories").push().key
         val ref = FirebaseDatabase.getInstance().getReference("/stories/$uid")
 
         val storyObj = Story(uid, storyCoverUrl, title, story, date )

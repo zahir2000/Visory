@@ -25,9 +25,9 @@ class ListStoriesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_stories)
-        setSupportActionBar(toolbar)
+        //setSupportActionBar(toolbar)
 
-        db = FirebaseDatabase.getInstance().getReference("Stories")
+        db = FirebaseDatabase.getInstance().getReference("stories")
         recycle_view = findViewById(R.id.list_view)
         recycle_view.setHasFixedSize(true)
         recycle_view.layoutManager = LinearLayoutManager(this)
