@@ -245,4 +245,16 @@
     <string name="storyBody">Story:</string>
     <string name="submit">Submit</string>
     <string name="selectPhoto">Select Photo</string>
+    <string name="lblHowManyYouWantToDonate">How many you want to donate?</string>
+    <string name="radRM1">RM 1</string>
+    <string name="radRM2">RM 2</string>
+    <string name="radCustom">Custom</string>
+    <string name="radRM5">RM 5</string>
+    <string name="radRM10">RM 10</string>
+    <string name="lblHowManyYouWantToDonateRM">How much you want to donate (RM)?</string>
+    <string name="btnX">X</string>
+    <string name="lblPaymentID">Payment ID</string>
+    <string name="lblPaymentAmount">Payment Amount</string>
+    <string name="lblPaymentStatus">Payment Status</string>
+    <string name="lblThankYouforYourKidness.MayGodBlessYou">Thank You for Your Kidness. May God Bless You :)</string>
 </resources>
