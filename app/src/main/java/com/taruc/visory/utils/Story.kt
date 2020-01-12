@@ -7,10 +7,6 @@ class Story{
     var sBody: String? = null
     var sDate: String? = null
 
-    constructor(){
-
-    }
-
     constructor(uid: String?, imageUrl: String?, sTitle: String?, sBody: String?, sDate: String?) {
         this.uid = uid
         this.imageUrl = imageUrl
@@ -19,8 +15,7 @@ class Story{
         this.sDate = sDate
     }
 
+    constructor():this("","","","",""){
 
-
-
-
+    }
 }

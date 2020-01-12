@@ -77,7 +77,7 @@ class SubmitStoryActivity : AppCompatActivity() {
 
         ref.setValue(storyObj).addOnCompleteListener{task ->
             if (task.isSuccessful){
-                shortToast("Story has been created!")
+                shortToast("Story has been shared!")
             }
         }
     }
