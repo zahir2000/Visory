@@ -280,6 +280,7 @@
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="select_language_spinner">Select Language</string>
+    <string name="donateHistory">Donate History</string>
 
     <string-array name="language_array">
         <item>English</item>
