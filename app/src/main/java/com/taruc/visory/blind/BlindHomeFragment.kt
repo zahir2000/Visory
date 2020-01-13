@@ -299,15 +299,21 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
                 }
             }
 
-            if(volunteerUsers.size <= 5){
+            if(volunteerUsers.size < 5){
                 for (i in 0 until dbSize) {
-                    if (usersFromDb[i].tags.contains("volunteer") && !usersFromDb[i].tags.contains(userLanguage)) {
-                        volunteerUsers.add(usersFromDb[i])
+                    if (usersFromDb[i].tags.contains("volunteer")) {
+                        if(usersFromDb[i].tags.contains(userLanguage)){
+                            //volunteerUsers.add(usersFromDb[i])
+                        }else{
+                            volunteerUsers.add(usersFromDb[i])
+                        }
                     }
                 }
             }
 
-            shortToast(volunteerUsers[0].login)
+            //for(i in 0 until volunteerUsers.size){
+            //    shortToast(volunteerUsers[i].login)
+            //}
 
         } catch (e: Exception) {
             Toast.makeText(context, e.message.toString(), Toast.LENGTH_SHORT).show()

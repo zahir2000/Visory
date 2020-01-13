@@ -417,7 +417,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                     }, 3000)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Toast.makeText(applicationContext, "Authentication failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, task.exception.toString(), Toast.LENGTH_SHORT).show()
                 }
             }
     }

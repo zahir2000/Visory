@@ -4,15 +4,16 @@ import android.content.Context
 import java.lang.Exception
 
 class LoggedUser(context: Context){
-    val SHARED_PREF = "sharedPrefs"
-    val USER_ID = "userID"
-    val USER_TYPE = "userType"
-    val USER_NAME = "userName"
-    val USER_EMAIL = "userEmail"
-    val USER_JOINDATE = "userJoinDate"
-    val USER_LANGUAGE = "userLanguage"
-    val PROVIDER = "provider"
-    val preference = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
+    private val SHARED_PREF = "sharedPrefs"
+    private val USER_ID = "userID"
+    private val USER_TYPE = "userType"
+    private val USER_NAME = "userName"
+    private val USER_EMAIL = "userEmail"
+    private val USER_JOINDATE = "userJoinDate"
+    private val USER_LANGUAGE = "userLanguage"
+    private val PROVIDER = "provider"
+    private val AVATAR_URL = "avatarUrl"
+    private val preference = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
 
     fun getUserID(): String{
         return preference.getString(USER_ID, "null")!!
@@ -81,6 +82,16 @@ class LoggedUser(context: Context){
     fun setProvider(provider: String){
         val editor = preference.edit()
         editor.putString(PROVIDER, provider)
+        editor.apply()
+    }
+
+    fun getAvatarUrl(): String{
+        return preference.getString(AVATAR_URL, "")!!
+    }
+
+    fun setAvatarUrl(avatarUrl: String){
+        val editor = preference.edit()
+        editor.putString(AVATAR_URL, avatarUrl)
         editor.apply()
     }
 

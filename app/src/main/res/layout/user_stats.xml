@@ -28,7 +28,7 @@
         app:civ_shadow_radius="10" />-->
 
     <ImageView
-        android:id="@+id/image_profile_profile"
+        android:id="@+id/image_user_stats"
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:contentDescription="@string/profile_img_cd"

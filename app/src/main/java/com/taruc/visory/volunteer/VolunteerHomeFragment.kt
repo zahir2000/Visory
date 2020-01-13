@@ -7,16 +7,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.quickblox.chat.QBChatService
 import com.quickblox.core.QBEntityCallback
 import com.quickblox.core.exception.QBResponseException
@@ -25,6 +22,7 @@ import com.quickblox.core.request.GenericQueryRule
 import com.quickblox.core.request.QBPagedRequestBuilder
 import com.quickblox.users.QBUsers
 import com.quickblox.users.model.QBUser
+import com.squareup.picasso.Picasso
 import com.taruc.visory.R
 import com.taruc.visory.blind.ERROR_LOGIN_ALREADY_TAKEN_HTTP_STATUS
 import com.taruc.visory.blind.EXTRA_LOGIN_ERROR_MESSAGE
@@ -43,7 +41,6 @@ import com.taruc.visory.quickblox.utils.EXTRA_IS_INCOMING_CALL
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.UserCount
-import com.taruc.visory.utils.shortToast
 import kotlinx.android.synthetic.main.fragment_volunteer_home.*
 import kotlinx.android.synthetic.main.profile_card.*
 import kotlinx.android.synthetic.main.user_stats.*
@@ -186,7 +183,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
                 if (e.httpStatusCode == ERROR_LOGIN_ALREADY_TAKEN_HTTP_STATUS) {
                     signInCreatedUser(newUser)
                 } else {
-                    Toast.makeText(context, e.errors.toString(), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, e.message.toString(), Toast.LENGTH_LONG).show()
                 }
             }
         })
@@ -259,6 +256,11 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
         profile_joindate.text = getString(R.string.member_since, loggedUserTypePref.getUserJoinDate())
         profile_name.text = loggedUserTypePref.getUserName()
         profile_language.text = loggedUserTypePref.getUserLanguage()
+
+        if(loggedUserTypePref.getAvatarUrl().isNotEmpty()){
+            val imageView = activity?.findViewById<ImageView>(R.id.image_profile_profile)
+            Picasso.get().load(loggedUserTypePref.getAvatarUrl()).into(imageView)
+        }
 
         val userCount = UserCount(this.context!!)
 

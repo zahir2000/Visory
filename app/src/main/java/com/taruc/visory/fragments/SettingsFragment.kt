@@ -22,6 +22,7 @@ import com.taruc.visory.quickblox.db.QbUsersDbManager
 import com.taruc.visory.quickblox.services.LoginService
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.ui.LandingActivity
+import com.taruc.visory.utils.LoggedUser
 
 
 class SettingsFragment : Fragment() {
@@ -86,6 +87,10 @@ class SettingsFragment : Fragment() {
                         logoutFromQuickblox()
                         mGoogleSignInClient?.signOut()
                         auth.signOut()
+
+                        val loggedUser = LoggedUser(requireContext())
+                        loggedUser.setAvatarUrl("")
+
                         activity?.onBackPressed()
                         activity?.let{
                             val intent = Intent(it, LandingActivity::class.java)
