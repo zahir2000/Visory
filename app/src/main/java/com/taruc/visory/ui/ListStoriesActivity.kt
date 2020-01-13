@@ -82,6 +82,6 @@ class ListStoriesActivity : AppCompatActivity() {
     class StoryViewHolder(itemView : View):RecyclerView.ViewHolder(itemView){
 
         var sTitle : TextView = itemView!!.findViewById(R.id.txtStoryTitle)
-        var sCoverImage : ImageView = itemView!!.findViewById(R.id.imgStoryCover)
+        var sCoverImage : ImageView = itemView!!.findViewById(R.id.imgCover)
     }
 }
