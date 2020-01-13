@@ -270,7 +270,7 @@
     <string name="lblPaymentID">Payment ID</string>
     <string name="lblPaymentAmount">Payment Amount</string>
     <string name="lblPaymentStatus">Payment Status</string>
-    <string name="lblThankYouforYourKidness.MayGodBlessYou">Thank You for Your Kidness. May God Bless You :)</string>
+    <string name="lblThankYou">Thank You for Your Kindness. May God Bless You :)</string>
     <string name="shareStory">Share a story</string>
     <string name="readStory">Read Stories</string>
     <string name="title_activity_list_stories">ListStoriesActivity</string>
@@ -281,6 +281,7 @@
     <string name="login">Login</string>
     <string name="select_language_spinner">Select Language</string>
     <string name="donateHistory">Donate History</string>
+    <string name="btnReturnToLandingPage">Go Back</string>
 
     <string-array name="language_array">
         <item>English</item>

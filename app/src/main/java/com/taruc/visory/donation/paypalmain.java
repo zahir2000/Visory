@@ -84,6 +84,7 @@ public class paypalmain extends AppCompatActivity {
                         );
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        finish();
                     }
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
@@ -93,34 +94,3 @@ public class paypalmain extends AppCompatActivity {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

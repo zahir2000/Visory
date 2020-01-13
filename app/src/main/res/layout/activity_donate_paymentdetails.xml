@@ -7,6 +7,10 @@
     android:background="@drawable/donationbackground"
     tools:context=".donation.PaymentDetails">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,6 +40,7 @@
             android:text="@string/lblPaymentStatus"
             android:textSize="14sp"
             android:textStyle="bold" />
+
     </LinearLayout>
 
     <TextView
@@ -47,7 +52,7 @@
         android:layout_marginTop="36dp"
         android:layout_marginBottom="388dp"
         android:gravity="center"
-        android:text="@string/lblThankYouforYourKidness.MayGodBlessYou"
+        android:text="@string/lblThankYou"
         android:textSize="30sp"
         android:textStyle="normal|bold" />
 
