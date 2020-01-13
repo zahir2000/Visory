@@ -2,13 +2,12 @@ package com.taruc.visory.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.text.TextUtils
 import android.util.Patterns
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
@@ -19,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
@@ -28,7 +28,6 @@ import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.R
 import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_login.email_text
 import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
@@ -38,6 +37,8 @@ class LoginActivity : AppCompatActivity() {
     private val RC_SIGN_IN = 2000
     private val RC_SIGN_IN_GOOGLE = 2004
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var textInputPassword: TextInputEditText
+    private lateinit var textInputEmail: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,17 +55,27 @@ class LoginActivity : AppCompatActivity() {
         val userTypePref = UserType(this)
         userType = userTypePref.getUserType()
 
+        textInputPassword = findViewById(R.id.text_edit_password)
+        textInputEmail = findViewById(R.id.text_edit_email)
         setTitle(R.string.label_login)
 
         val facebookConfig = arrayListOf(AuthUI.IdpConfig.FacebookBuilder().build())
+
         button_facebook.setOnClickListener{
-            startActivityForResult(
-                AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(facebookConfig)
-                    .setIsSmartLockEnabled(false)
-                    .build(),
-                RC_SIGN_IN)
+            hideKeyboard(this, it)
+
+            if(isInternetAvailable(applicationContext)){
+                startActivityForResult(
+                    AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(facebookConfig)
+                        .setIsSmartLockEnabled(false)
+                        .build(),
+                    RC_SIGN_IN)
+            }
+            else{
+                makeErrorSnackbar(it, getString(R.string.active_internet_connection))
+            }
         }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -73,42 +84,77 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
+
         button_google.setOnClickListener{
-            val signInIntent = googleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN_GOOGLE)
+            hideKeyboard(this, it)
+
+            if(isInternetAvailable(applicationContext)){
+                val signInIntent = googleSignInClient.signInIntent
+                startActivityForResult(signInIntent, RC_SIGN_IN_GOOGLE)
+            }
+            else{
+                makeErrorSnackbar(it, getString(R.string.active_internet_connection))
+            }
         }
 
         forgot_password_button.setOnClickListener {
+            hideKeyboard(this, it)
             val intent = Intent(this, ForgotPassActivity::class.java)
             startActivity(intent)
         }
 
         login_button_submit.setOnClickListener{
             hideKeyboard(this, it)
-            login(it)
+
+            if(isInternetAvailable(applicationContext)){
+                login(it)
+            }
+            else{
+                makeErrorSnackbar(it, getString(R.string.active_internet_connection))
+            }
         }
     }
 
-    private fun login(view: View) {
-        val email = email_text.text.toString()
-        val password = password_text.text.toString()
-        val loggedUserTypePref = LoggedUser(this)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val fromRegister = intent.getBooleanExtra("fromRegister", false)
+        if(!fromRegister){
+            menuInflater.inflate(R.menu.login_menu, menu)
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
 
-        if(TextUtils.isEmpty(email)){
-            makeWarningSnackbar(view, "Please enter your email")
-            //Toast.makeText(applicationContext, "Please enter your email", Toast.LENGTH_SHORT).show()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.login_register -> {
+                val intent = Intent(this, RegisterActivity::class.java)
+                intent.putExtra("fromLogin", true)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun login(view: View) {
+        val password = textInputPassword.text.toString().trim()
+        val email = textInputEmail.text.toString().trim()
+
+        if(email.isEmpty()){
+            makeErrorSnackbar(view, "Email can't be empty.")
+            return
+        }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            makeErrorSnackbar(view, "Please enter a valid email.")
             return
         }
-        else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            makeWarningSnackbar(view, "Please enter a valid email")
-            //Toast.makeText(applicationContext, "Please enter a valid email", Toast.LENGTH_SHORT).show()
+
+        if(password.isEmpty()){
+            makeErrorSnackbar(view, "Password can't be empty.")
+            return
+        }else if(password.length !in 6..16){
+            makeErrorSnackbar(view, "Password must be between 6 to 16 characters.")
             return
         }
-        if(TextUtils.isEmpty(password)){
-            makeWarningSnackbar(view, "Please enter your password")
-            //Toast.makeText(applicationContext, "Please enter your password", Toast.LENGTH_SHORT).show()
-            return
-        }
+
+        val loggedUserTypePref = LoggedUser(this)
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -127,6 +173,7 @@ class LoginActivity : AppCompatActivity() {
                             val userName = dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child("lname").value.toString()
                             val userEmail = dataSnapshot.child("email").value.toString()
                             val userJoinDate = dataSnapshot.child("datejoined").value.toString()
+                            val userLanguage = dataSnapshot.child("language").value.toString()
                             val role = Integer.parseInt(dataSnapshot.child("role").value!!.toString())
 
                             //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
@@ -137,6 +184,7 @@ class LoginActivity : AppCompatActivity() {
                                 userEmail,
                                 userJoinDate,
                                 role,
+                                userLanguage,
                                 getString(R.string.provider_email)
                             )
 
@@ -216,6 +264,7 @@ class LoginActivity : AppCompatActivity() {
                                 user.email!!,
                                 getCurrentDate(),
                                 userType,
+                                "English",
                                 getString(R.string.provider_fb)
                             )
                         }
@@ -240,6 +289,7 @@ class LoginActivity : AppCompatActivity() {
                                     userEmail,
                                     userJoinDate,
                                     role,
+                                    "English",
                                     getString(R.string.provider_fb)
                                 )
 
@@ -310,6 +360,7 @@ class LoginActivity : AppCompatActivity() {
                             user.email!!,
                             getCurrentDate(),
                             userType,
+                            "English",
                             getString(R.string.provider_google)
                         )
                     }
@@ -333,6 +384,7 @@ class LoginActivity : AppCompatActivity() {
                                     userEmail,
                                     userJoinDate,
                                     role,
+                                    "English",
                                     getString(R.string.provider_google)
                                 )
 

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:focusableInTouchMode="true"
     android:descendantFocusability="beforeDescendants"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     style="@style/FragmentBackground"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- TODO : make a custom EditText -->
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -53,24 +54,36 @@
                 android:text="@string/text_or"
                 style="@style/TextAppearance.Small" />
 
-            <EditText
-                android:id="@+id/email_text"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/login_email"
-                android:autofillHints="email"
-                android:inputType="textEmailAddress"
-                tools:targetApi="o" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/password_text"
-                android:layout_width="fill_parent"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_edit_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/login_email"
+                    android:inputType="textEmailAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_password"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/login_password"
-                android:autofillHints="password"
-                android:inputType="textPassword"
-                android:imeOptions="actionGo"
-                tools:targetApi="o" />
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_edit_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/login_password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <include
+                layout="@layout/empty_space"/>
 
             <Button
                 android:id="@+id/login_button_submit"

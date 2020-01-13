@@ -4,9 +4,6 @@ import android.app.ActivityManager
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
@@ -39,6 +36,8 @@ import com.taruc.visory.quickblox.util.signInUser
 import com.taruc.visory.quickblox.util.signUp
 import com.taruc.visory.quickblox.utils.*
 import com.taruc.visory.utils.LoggedUser
+import com.taruc.visory.utils.isInternetAvailable
+import com.taruc.visory.utils.makeErrorSnackbar
 import com.taruc.visory.utils.shortToast
 import kotlinx.android.synthetic.main.fragment_blind_home.*
 
@@ -105,11 +104,16 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.home_settings -> {
                 val settingsFragment = SettingsFragment()
                 fragmentManager!!.beginTransaction()
-                    .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                    .setCustomAnimations(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left,
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right
+                    )
                     .replace(con.id, settingsFragment)
                     .addToBackStack(null)
                     .commit()
@@ -122,11 +126,11 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
 
-        if(checkIsLoggedInChat()){
+        if (checkIsLoggedInChat()) {
             volunteerUsers = ArrayList()
             loadUsers()
             loadVolunteers()
-        }else{
+        } else {
             startLoginService()
         }
     }
@@ -157,14 +161,15 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun clearAppNotifications() {
-        val notificationManager = activity!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            activity!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
     }
 
     override fun onClick(view: View) {
-        when(view.id){
+        when (view.id) {
             R.id.button_blind_detect_object -> {
-                activity?.let{
+                activity?.let {
                     val intent = Intent(it, ObjectDetectorActivity::class.java)
                     it.startActivity(intent)
                 }
@@ -177,78 +182,86 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             R.id.button_blind_make_call -> {
                 //calls last person who used the app
 
-                if(isInternetAvailable(requireContext())){
+                if (isInternetAvailable(requireContext())) {
                     Helper.save(HANG_UP, false)
                     Helper.save(CONNECTED_TO_USER, false)
-                    if(checkIsLoggedInChat()) {
+                    if (checkIsLoggedInChat()) {
                         i = -1
                         makeCall()
                     }
-                }else{
-                    shortToast("You need an active internet connection to make calls.")
+                } else {
+                    makeErrorSnackbar(view, getString(R.string.active_internet_connection_call))
                 }
             }
         }
     }
 
-    private fun makeCall(){
+    private fun makeCall() {
         viewDialog = ViewDialog(requireContext())
         viewDialog.showDialogFor5Seconds()
-        var callAccepted= Helper[STOP_CALLING, false]
+        var callAccepted = Helper[STOP_CALLING, false]
 
         i += 1
 
-        if(Helper[HANG_UP, false]){
+        if (Helper[HANG_UP, false]) {
             return
         }
 
         startCall(true, i)
 
-        if(Helper[HANG_UP, false]){
+        if (Helper[HANG_UP, false]) {
             return
         }
 
         Handler().postDelayed({
-            if(Helper[HANG_UP, false]){
+            if (Helper[HANG_UP, false]) {
+                return@postDelayed
+            }
+            callAccepted = Helper[STOP_CALLING, false]
+
+            if (callAccepted) {
                 return@postDelayed
             }
 
-            callAccepted= Helper[STOP_CALLING, false]
             viewDialog = ViewDialog(requireContext())
             viewDialog.showDialogFor5Seconds()
         }, 10000)
 
+        if (callAccepted) {
+            return
+        }
+
         Handler().postDelayed({
-            if(Helper[HANG_UP, false]){
+            if (Helper[HANG_UP, false]) {
                 return@postDelayed
             }
 
             callAccepted = Helper[STOP_CALLING, false]
 
-            if(!callAccepted){
-                if(i < (volunteerUsers.size - 1) && !Helper[HANG_UP, false]){
+            if (!callAccepted) {
+                if (i < (volunteerUsers.size - 1) && !Helper[HANG_UP, false] && i < 5) {
                     makeCall()
                 }
-                else if((i + 1) == volunteerUsers.size){
+                else if ((i + 1) == volunteerUsers.size || (i + 1) == 5) {
                     //No response after calling everyone
                     shortToast("Please try calling again later")
                 }
-            }else{
+            } else {
                 return@postDelayed
             }
         }, 13000)
     }
 
-    private fun startCall(isVideoCall: Boolean, callID: Int) {
+    private fun startCall(isVideoCall: Boolean, callerIndex: Int) {
         val usersCount = volunteerUsers.size
 
-        if(usersCount == 0){
+        if (usersCount == 0) {
             loadUsers()
             loadVolunteers()
         }
 
         val opponentsList = ArrayList<Int>()
-        opponentsList.add(volunteerUsers[callID].id)
+        opponentsList.add(volunteerUsers[callerIndex].id)
 
         val conferenceType = if (isVideoCall) {
             QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO
@@ -258,27 +271,45 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
 
         try {
             val qbRtcClient = QBRTCClient.getInstance(this.activity!!.applicationContext)
-            val newQbRtcSession = qbRtcClient.createNewSessionWithOpponents(opponentsList, conferenceType)
+            val newQbRtcSession =
+                qbRtcClient.createNewSessionWithOpponents(opponentsList, conferenceType)
 
             WebRtcSessionManager.setCurrentSession(newQbRtcSession)
             sendPushMessage(opponentsList, fullName)
 
             CallActivity.start(this.activity!!.applicationContext, false)
-        }catch (e: java.lang.Exception){
+        } catch (e: java.lang.Exception) {
             Toast.makeText(context, e.message.toString(), Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun loadVolunteers(){
+    private fun loadVolunteers() {
         try {
-            val usersFromDb = QbUsersDbManager.allUsers
+            //So we don't keep adding same users again and again
+            volunteerUsers.clear()
 
-            for(i in 0 until usersFromDb.size - 1){
-                if(usersFromDb[i].tags.contains("volunteer")){
+            val usersFromDb = QbUsersDbManager.allUsers
+            val dbSize = usersFromDb.size
+            val loggedUser = LoggedUser(requireContext())
+            val userLanguage = loggedUser.getUserLanguage()
+
+            for (i in 0 until dbSize) {
+                if (usersFromDb[i].tags.contains("volunteer") && usersFromDb[i].tags.contains(userLanguage)) {
                     volunteerUsers.add(usersFromDb[i])
                 }
             }
-        }catch (e: Exception){
+
+            if(volunteerUsers.size <= 5){
+                for (i in 0 until dbSize) {
+                    if (usersFromDb[i].tags.contains("volunteer") && !usersFromDb[i].tags.contains(userLanguage)) {
+                        volunteerUsers.add(usersFromDb[i])
+                    }
+                }
+            }
+
+            shortToast(volunteerUsers[0].login)
+
+        } catch (e: Exception) {
             Toast.makeText(context, e.message.toString(), Toast.LENGTH_SHORT).show()
         }
     }
@@ -317,12 +348,14 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     private fun createQBUser(): QBUser {
         val qbUser = QBUser()
         val tags = StringifyArrayList<String>()
+        val loggedUser = LoggedUser(requireContext())
 
         qbUser.login = uid
         qbUser.fullName = fullName
         qbUser.password = DEFAULT_USER_PASSWORD
 
         tags.add("blind")
+        tags.add(loggedUser.getUserLanguage())
         qbUser.tags = tags
 
         return qbUser
@@ -405,36 +438,5 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
                 Toast.makeText(context, "Error creating user in server", Toast.LENGTH_LONG).show()
             }
         })
-    }
-
-    private fun isInternetAvailable(context: Context): Boolean {
-        var result = false
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val networkCapabilities = connectivityManager.activeNetwork ?: return false
-            val actNw =
-                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
-            result = when {
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                else -> false
-            }
-        } else {
-            connectivityManager.run {
-                connectivityManager.activeNetworkInfo?.run {
-                    result = when (type) {
-                        ConnectivityManager.TYPE_WIFI -> true
-                        ConnectivityManager.TYPE_MOBILE -> true
-                        ConnectivityManager.TYPE_ETHERNET -> true
-                        else -> false
-                    }
-
-                }
-            }
-        }
-
-        return result
     }
 }

@@ -10,10 +10,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.google.firebase.auth.FirebaseAuth
 import com.taruc.visory.R
-import com.taruc.visory.utils.makeDefaultSnackbar
-import com.taruc.visory.utils.makeErrorSnackbar
-import com.taruc.visory.utils.makeSuccessSnackbar
-import com.taruc.visory.utils.makeWarningSnackbar
+import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_forgot_pass.*
 
 class ForgotPassActivity : AppCompatActivity() {
@@ -32,7 +29,12 @@ class ForgotPassActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         button_reset_pass.setOnClickListener{
-            resetEmail(it)
+            if(isInternetAvailable(applicationContext)){
+                resetEmail(it)
+            }
+            else{
+                makeErrorSnackbar(it, getString(R.string.active_internet_connection))
+            }
         }
     }
 

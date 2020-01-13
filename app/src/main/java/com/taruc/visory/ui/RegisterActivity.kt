@@ -6,7 +6,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
 import android.util.Patterns
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -28,7 +33,7 @@ import com.taruc.visory.utils.*
 import java.lang.Exception
 
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private val RC_SIGN_IN: Int = 2420
     private val RC_SIGN_IN_GOOGLE: Int = 2024
@@ -36,6 +41,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var providers: List<AuthUI.IdpConfig>
     private lateinit var googleSignInClient: GoogleSignInClient
+    private var selectedLanguage: String = "English"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +60,19 @@ class RegisterActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
+        val spinner: Spinner = findViewById(R.id.language_spinner)
+        spinner.prompt = getString(R.string.select_language_spinner)
+        spinner.onItemSelectedListener = this
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.language_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+
         val providers = arrayListOf(
             AuthUI.IdpConfig.FacebookBuilder().build())
 
@@ -65,41 +84,81 @@ class RegisterActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         button_register_submit.setOnClickListener{
-            register(it)
+            hideKeyboard(this, it)
+
+            if(isInternetAvailable(applicationContext)){
+                register(it)
+            }
+            else{
+                makeErrorSnackbar(it, getString(R.string.active_internet_connection))
+            }
         }
 
         button_facebook.setOnClickListener{
-            startActivityForResult(
-                AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
-                    .setIsSmartLockEnabled(false)
-                    .build(),
-                RC_SIGN_IN)
+            hideKeyboard(this, it)
+
+            if(isInternetAvailable(applicationContext)){
+                startActivityForResult(
+                    AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .setIsSmartLockEnabled(false)
+                        .build(),
+                    RC_SIGN_IN)
+            }
+            else{
+                makeErrorSnackbar(it, getString(R.string.active_internet_connection))
+            }
         }
 
         button_google.setOnClickListener{
-            val signInIntent = googleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN_GOOGLE)
+            if(isInternetAvailable(applicationContext)){
+                val signInIntent = googleSignInClient.signInIntent
+                startActivityForResult(signInIntent, RC_SIGN_IN_GOOGLE)
+            }
+            else{
+                makeErrorSnackbar(it, getString(R.string.active_internet_connection))
+            }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val fromLogin = intent.getBooleanExtra("fromLogin", false)
+        if(!fromLogin){
+            menuInflater.inflate(R.menu.register_menu, menu)
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.register_login -> {
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.putExtra("fromRegister", true)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun register(view: View) {
         var fName = edit_text_fname.text.toString()
         var lName = edit_text_lname.text.toString()
-        val email = edit_text_email.text.toString()
-        val password = edit_text_password.text.toString()
+        val email = text_edit_email.text.toString()
+        val password = text_edit_password.text.toString()
 
         if(TextUtils.isEmpty(fName)){
             makeWarningSnackbar(view, "Please enter your first name")
             //Toast.makeText(applicationContext, "Please enter your first name", Toast.LENGTH_SHORT).show()
             return
         }
+
         if(TextUtils.isEmpty(lName)){
             makeWarningSnackbar(view, "Please enter your last name")
             //Toast.makeText(applicationContext, "Please enter your last name", Toast.LENGTH_SHORT).show()
             return
         }
+
         if(TextUtils.isEmpty(email)){
             makeWarningSnackbar(view, "Please enter your email")
             //Toast.makeText(applicationContext, "Please enter your email", Toast.LENGTH_SHORT).show()
@@ -110,9 +169,12 @@ class RegisterActivity : AppCompatActivity() {
             //Toast.makeText(applicationContext, "Please enter a valid email", Toast.LENGTH_SHORT).show()
             return
         }
-        if(TextUtils.isEmpty(password)){
-            makeWarningSnackbar(view, "Please enter your password")
-            //Toast.makeText(applicationContext, "Please enter your password", Toast.LENGTH_SHORT).show()
+
+        if(password.isEmpty()){
+            makeErrorSnackbar(view, "Password can't be empty.")
+            return
+        }else if(password.length !in 6..16){
+            makeErrorSnackbar(view, "Password must be between 6 to 16 characters.")
             return
         }
 
@@ -131,12 +193,12 @@ class RegisterActivity : AppCompatActivity() {
                         email,
                         userType,
                         getCurrentDate(),
-                        "English" // TODO : User preferred language
+                        selectedLanguage
                     )
                     val user = auth.currentUser
                     user?.sendEmailVerification()
-                        ?.addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
+                        ?.addOnCompleteListener { task2 ->
+                            if (task2.isSuccessful) {
                                 makeSuccessSnackbar(view, "Email sent.")
                                 //Toast.makeText(applicationContext,  "Email sent.", Toast.LENGTH_SHORT).show()
                             }
@@ -156,6 +218,7 @@ class RegisterActivity : AppCompatActivity() {
                             email,
                             getCurrentDate(),
                             userType,
+                            selectedLanguage,
                             getString(R.string.provider_email)
                         )
 
@@ -166,7 +229,7 @@ class RegisterActivity : AppCompatActivity() {
                         finish()
                     }
                 }else{
-                    makeErrorSnackbar(view, "Email already exists")
+                    makeErrorSnackbar(view, "Email already exists.")
                     //Toast.makeText(applicationContext,  "Email already exists.", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -206,7 +269,7 @@ class RegisterActivity : AppCompatActivity() {
                             user.email!!,
                             userType,
                             getCurrentDate(),
-                            "English" // TODO : User preferred language
+                            selectedLanguage
                         )
                         myRef.child(key).setValue(newUser).addOnCompleteListener{
                             loggedUserTypePref.setUserData(
@@ -215,6 +278,7 @@ class RegisterActivity : AppCompatActivity() {
                                 user.email!!,
                                 getCurrentDate(),
                                 userType,
+                                selectedLanguage,
                                 getString(R.string.provider_fb)
                             )
                         }
@@ -239,6 +303,7 @@ class RegisterActivity : AppCompatActivity() {
                                     userEmail,
                                     userJoinDate,
                                     role,
+                                    selectedLanguage,
                                     getString(R.string.provider_fb)
                                 )
 
@@ -294,7 +359,7 @@ class RegisterActivity : AppCompatActivity() {
                             user.email!!,
                             userType,
                             getCurrentDate(),
-                            "English" // TODO : User preferred language
+                            selectedLanguage
                         )
                         myRef.child(key).setValue(newUser)
 
@@ -304,6 +369,7 @@ class RegisterActivity : AppCompatActivity() {
                             user.email!!,
                             getCurrentDate(),
                             userType,
+                            selectedLanguage,
                             getString(R.string.provider_google)
                         )
                     }
@@ -327,6 +393,7 @@ class RegisterActivity : AppCompatActivity() {
                                     userEmail,
                                     userJoinDate,
                                     role,
+                                    selectedLanguage,
                                     getString(R.string.provider_google)
                                 )
 
@@ -353,5 +420,13 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Authentication failed", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        selectedLanguage = "English"
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        selectedLanguage = parent?.getItemAtPosition(position)?.toString() ?: "English"
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     android:focusableInTouchMode="true"
     android:descendantFocusability="beforeDescendants"
     android:layout_width="fill_parent"
@@ -37,22 +37,37 @@
             android:layout_height="wrap_content"
             style="@style/ScrollViewChild">
 
-            <EditText
-                android:id="@+id/edit_text_new_email"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="email"
-                android:hint="@string/new_email"
-                android:inputType="textEmailAddress" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edit_text_current_password"
-                android:layout_width="fill_parent"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_new_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="email"
+                    android:hint="@string/login_email"
+                    android:inputType="textEmailAddress"
+                    tools:targetApi="o" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_password"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="password"
-                android:hint="@string/current_password"
-                android:inputType="textPassword"
-                android:imeOptions="actionGo" />
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_current_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/current_password"
+                    android:autofillHints="password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    tools:targetApi="o" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <include layout="@layout/empty_space" />
 

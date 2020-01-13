@@ -162,12 +162,14 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
     private fun createQBUser(): QBUser {
         val qbUser = QBUser()
         val tags = StringifyArrayList<String>()
+        val loggedUser = LoggedUser(requireContext())
 
         qbUser.login = uid
         qbUser.fullName = fullName
         qbUser.password = DEFAULT_USER_PASSWORD
 
         tags.add("volunteer")
+        tags.add(loggedUser.getUserLanguage())
         qbUser.tags = tags
 
         return qbUser
@@ -184,7 +186,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
                 if (e.httpStatusCode == ERROR_LOGIN_ALREADY_TAKEN_HTTP_STATUS) {
                     signInCreatedUser(newUser)
                 } else {
-                    Toast.makeText(context, "Cannot create QB User", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, e.errors.toString(), Toast.LENGTH_LONG).show()
                 }
             }
         })
@@ -256,6 +258,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
         val loggedUserTypePref = LoggedUser(this.activity!!.baseContext)
         profile_joindate.text = getString(R.string.member_since, loggedUserTypePref.getUserJoinDate())
         profile_name.text = loggedUserTypePref.getUserName()
+        profile_language.text = loggedUserTypePref.getUserLanguage()
 
         val userCount = UserCount(this.context!!)
 

@@ -10,6 +10,7 @@ class LoggedUser(context: Context){
     val USER_NAME = "userName"
     val USER_EMAIL = "userEmail"
     val USER_JOINDATE = "userJoinDate"
+    val USER_LANGUAGE = "userLanguage"
     val PROVIDER = "provider"
     val preference = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
 
@@ -63,6 +64,16 @@ class LoggedUser(context: Context){
         editor.apply()
     }
 
+    fun getUserLanguage(): String{
+        return preference.getString(USER_LANGUAGE, "")!!
+    }
+
+    fun setUserLanguage(userLanguage: String){
+        val editor = preference.edit()
+        editor.putString(USER_LANGUAGE, userLanguage)
+        editor.apply()
+    }
+
     fun getProvider(): String{
         return preference.getString(PROVIDER, "")!!
     }
@@ -81,13 +92,14 @@ class LoggedUser(context: Context){
         }
     }
 
-    fun setUserData(userID: String, userName: String, userEmail: String, userJoinDate: String, userType: Int, provider: String){
+    fun setUserData(userID: String, userName: String, userEmail: String, userJoinDate: String, userType: Int, userLanguage:String, provider: String){
         val editor = preference.edit()
         editor.putString(USER_ID, userID)
         editor.putString(USER_NAME, userName)
         editor.putString(USER_EMAIL, userEmail)
         editor.putString(USER_JOINDATE, userJoinDate)
         editor.putInt(USER_TYPE, userType)
+        editor.putString(USER_LANGUAGE, userLanguage)
         editor.putString(PROVIDER, provider)
         editor.apply()
     }

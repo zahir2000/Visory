@@ -39,11 +39,11 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener {
         if(loggedUser.getProvider() == "fb"){
             facebook_auth_warning_text.visibility = View.VISIBLE
             edit_text_new_email.visibility = View.GONE
-            edit_text_current_password.visibility = View.GONE
+            text_input_password.visibility = View.GONE
         }else if(loggedUser.getProvider() == "google"){
             google_auth_warning_text.visibility = View.VISIBLE
             edit_text_new_email.visibility = View.GONE
-            edit_text_current_password.visibility = View.GONE
+            text_input_password.visibility = View.GONE
         }
 
         button_change_email.setOnClickListener(this)

@@ -55,42 +55,77 @@
                 android:text="@string/text_or"
                 style="@style/TextAppearance.Small" />
 
-            <EditText
-                android:id="@+id/edit_text_fname"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="first_name"
-                android:hint="@string/hint_fname"
-                android:inputType="textCapSentences"
-                tools:targetApi="o" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_fname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edit_text_lname"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="last_name"
-                android:hint="@string/hint_lname"
-                android:inputType="textCapSentences"
-                tools:targetApi="o" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_fname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_fname"
+                    android:autofillHints="given-name"
+                    android:inputType="textPersonName|textCapWords"
+                    tools:targetApi="o" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edit_text_email"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="email"
-                android:hint="@string/hint_email"
-                android:inputType="textEmailAddress"
-                tools:targetApi="o" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_lname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edit_text_password"
-                android:layout_width="fill_parent"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_lname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_lname"
+                    android:autofillHints="family-name"
+                    android:inputType="textPersonName|textCapWords"
+                    tools:targetApi="o" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_edit_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/login_email"
+                    android:autofillHints="email"
+                    android:inputType="textEmailAddress"
+                    tools:targetApi="o" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_password_register"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="password"
-                android:hint="@string/hint_password"
-                android:inputType="textPassword"
-                android:imeOptions="actionGo"
-                tools:targetApi="o" />
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_edit_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="password"
+                    android:hint="@string/login_password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    tools:targetApi="o" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/language_spinner"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:spinnerMode="dialog"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/empty_space"/>
 
             <Button
                 android:id="@+id/button_register_submit"
@@ -101,5 +136,4 @@
                 android:text="@string/button_register_submit" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    <!-- TODO: IndicatorView!!, Facebook&Google button styles -->
 </RelativeLayout>

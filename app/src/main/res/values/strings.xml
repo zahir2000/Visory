@@ -275,4 +275,14 @@
     <string name="readStory">Read Stories</string>
     <string name="title_activity_list_stories">ListStoriesActivity</string>
     <string name="about_visory">Visory is a free app that is made specially for those who are blind or visually impaired. Kind-hearted and generous volunteers join our mission to assist people with need, even if it is small, the impact is still there.</string>
+    <string name="active_internet_connection">You need an active internet connection to perform this action.</string>
+    <string name="active_internet_connection_call">You need an active internet connection to make calls.</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="select_language_spinner">Select Language</string>
+
+    <string-array name="language_array">
+        <item>English</item>
+        <item>Malay</item>
+    </string-array>
 </resources>
