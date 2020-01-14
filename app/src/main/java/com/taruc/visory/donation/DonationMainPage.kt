@@ -47,27 +47,15 @@ class DonationMainPage : Fragment(), View.OnClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.donateHistory -> {
-                activity?.let {
-                    val intent = Intent(it, DonateHistory::class.java)
-                    it.startActivity(intent)
-                    it.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-                }
-            }
-        }
+//        when (item.itemId) {
+//            R.id.donateHistory -> {
+//                activity?.let {
+//                    val intent = Intent(it, DonateHistory::class.java)
+//                    it.startActivity(intent)
+//                    it.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+//                }
+//            }
+//        }
         return super.onOptionsItemSelected(item)
     }
-
-//    val uid = FirebaseAuth.getInstance().currentUser!!.uid
-//    val rootRef = FirebaseDatabase.getInstance().getReference("DonateDatabase")
-//    var amount: Double = 0.00;
-//    val valueEventListener = object : ValueEventListener {
-//        override fun onDataChange(dataSnapshot: DataSnapshot) {
-//            amount = (dataSnapshot.child("amount").value.toString())
-//        }
-//
-//        override fun onCancelled(databaseError: DatabaseError) {
-//        }
-//    }
 }

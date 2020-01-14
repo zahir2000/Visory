@@ -2,13 +2,17 @@ package com.taruc.visory.donation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.taruc.visory.R;
 import com.taruc.visory.utils.LoggedUser;
 
@@ -17,27 +21,15 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class PaymentDetails extends AppCompatActivity {
     TextView txtId, txtAmount, txtStatus;
 
     DatabaseReference databaseUserDonationDetails;
 
-    DatabaseReference databaseTotalDonation;
-    double amt;
-    FirebaseDatabase mDatabase;
-    List<DonateDatabase> donateDatabases = new ArrayList<>();
+    double amt = 0.0;
 
-    public interface DataStatus{
-        void DataIsLoaded(List<DonateDatabase> donateDatabases, List<String> keys);
-    }
-    public PaymentDetails(){
-        mDatabase = FirebaseDatabase.getInstance();
-        databaseUserDonationDetails = mDatabase.getReference("DonateDatabase");
-    }
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -45,21 +37,10 @@ public class PaymentDetails extends AppCompatActivity {
         setContentView(R.layout.activity_donate_paymentdetails);
 
         databaseUserDonationDetails = FirebaseDatabase.getInstance().getReference("DonateDatabase");
-        databaseTotalDonation = FirebaseDatabase.getInstance().getReference("TotalDonation");
 
         txtId = (TextView) findViewById(R.id.txtId);
         txtAmount = (TextView) findViewById(R.id.txtAmount);
         txtStatus = (TextView) findViewById(R.id.txtStatus);
-
-        Intent intent = getIntent();
-
-        try {
-            JSONObject jsonObject = new JSONObject(intent.getStringExtra("PaymentDetails"));
-            showDetails(jsonObject.getJSONObject("response"), intent.getStringExtra("PaymentAmount"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            finish();
-        }
     }
 
     private void addDonationDetails(double payAmount) {
@@ -73,10 +54,8 @@ public class PaymentDetails extends AppCompatActivity {
         String id = databaseUserDonationDetails.push().getKey();
 
         DonateDatabase donateDetails = new DonateDatabase(email, payAmount, timeDate);
-        //TotalDonation totalDonation = new TotalDonation(payAmount);
 
         databaseUserDonationDetails.child(id).setValue(donateDetails);
-        //databaseTotalDonation.child("TotalDonation").setValue(payAmount);
     }
 
     private void showDetails(JSONObject response, String paymentAmount) {
@@ -86,7 +65,7 @@ public class PaymentDetails extends AppCompatActivity {
             txtAmount.setText("Amount: RM " + paymentAmount);
             double payAmount = Double.parseDouble(paymentAmount);
             addDonationDetails(payAmount);
-            Toast.makeText(getApplicationContext(), "Thanks for your kindness.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Thanks for your kindness. " + amt, Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Donate process is cancelled", Toast.LENGTH_LONG).show();
@@ -94,52 +73,43 @@ public class PaymentDetails extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        List<DonateDatabase> donateDetails = null;
-//        databaseUserDonationDetails.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-////                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-////                    DonateDatabase db = snapshot.getValue(DonateDatabase.class);
-////                    amt = db.getAmount();
-////                }
-//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                    //getting artist
-//                    DonateDatabase totalDonate = postSnapshot.getValue(DonateDatabase.class);
-//                    //adding artist to the list
-//                    donateDetails.add(totalDonate);
-//                    amt += donateDetails.get(0).getAmount();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//            }
-//        });
-//    }
-//
-//    public void readDatabase(final DataStatus dataStatus){
-//        databaseUserDonationDetails.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                donateDatabases.clear();
-//                List<String> keys = new ArrayList<>();
-//                for (DataSnapshot keyNode : dataSnapshot.getChildren()){
-//                    keys.add(keyNode.getKey());
-//                    DonateDatabase donateDatabase = keyNode.getValue(DonateDatabase.class);
-//                    donateDatabases.add(donateDatabase);
-//                }
-//                dataStatus.DataIsLoaded(donateDatabases,keys);
-//                amt = donateDatabases.get(3).getAmount();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        FirebaseDatabase.getInstance().getReference("DonateDatabase")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            double dbAmount = Double.parseDouble(String.valueOf(snapshot.child("amount").getValue()));
+                            addMe(dbAmount);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+        //Toast.makeText(this, String.valueOf(amt), Toast.LENGTH_LONG).show();
+
+        Intent intent = getIntent();
+
+        Handler handleMe = new Handler();
+        handleMe.postDelayed(() -> {
+            try {
+                JSONObject jsonObject = new JSONObject(intent.getStringExtra("PaymentDetails"));
+                showDetails(jsonObject.getJSONObject("response"), intent.getStringExtra("PaymentAmount"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                finish();
+            }
+        }, 2000);
+    }
+
+    private void addMe(double amttt) {
+        //Toast.makeText(this, String.valueOf(amttt), Toast.LENGTH_LONG).show();
+        amt = amt + amttt;
+    }
 }
