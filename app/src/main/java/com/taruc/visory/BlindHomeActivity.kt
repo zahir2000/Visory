@@ -29,7 +29,7 @@ class BlindHomeActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_blind_home, R.id.nav_stories_blind
+                R.id.navigation_blind_home, R.id.nav_stories_blind, R.id.nav_donation_blind
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

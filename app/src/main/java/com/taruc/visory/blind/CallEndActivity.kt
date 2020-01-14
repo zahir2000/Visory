@@ -38,6 +38,7 @@ class CallEndActivity : AppCompatActivity(), View.OnClickListener {
             if(user.id.toString()
                     .compareTo(callHistory?.getCalleeId().toString()) == 0){
                 callHistory?.setCalleeId(user.login)
+                break
             }
         }
 

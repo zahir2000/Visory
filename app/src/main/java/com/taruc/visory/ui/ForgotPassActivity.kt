@@ -38,7 +38,7 @@ class ForgotPassActivity : AppCompatActivity() {
         }
     }
 
-    fun resetEmail(view: View){
+    private fun resetEmail(view: View){
         val email = email_text.text.toString()
 
         if(TextUtils.isEmpty(email)){
