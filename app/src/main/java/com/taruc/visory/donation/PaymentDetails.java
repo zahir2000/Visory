@@ -2,7 +2,6 @@ package com.taruc.visory.donation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +26,7 @@ public class PaymentDetails extends AppCompatActivity {
     TextView txtId, txtAmount, txtStatus;
 
     DatabaseReference databaseUserDonationDetails;
-
     double amt = 0.0;
-
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -41,6 +38,16 @@ public class PaymentDetails extends AppCompatActivity {
         txtId = (TextView) findViewById(R.id.txtId);
         txtAmount = (TextView) findViewById(R.id.txtAmount);
         txtStatus = (TextView) findViewById(R.id.txtStatus);
+
+        Intent intent = getIntent();
+
+        try {
+            JSONObject jsonObject = new JSONObject(intent.getStringExtra("PaymentDetails"));
+            showDetails(jsonObject.getJSONObject("response"), intent.getStringExtra("PaymentAmount"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            finish();
+        }
     }
 
     private void addDonationDetails(double payAmount) {
@@ -65,7 +72,7 @@ public class PaymentDetails extends AppCompatActivity {
             txtAmount.setText("Amount: RM " + paymentAmount);
             double payAmount = Double.parseDouble(paymentAmount);
             addDonationDetails(payAmount);
-            Toast.makeText(getApplicationContext(), "Thanks for your kindness. " + amt, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Thanks for your kindness. ", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Donate process is cancelled", Toast.LENGTH_LONG).show();
@@ -91,21 +98,6 @@ public class PaymentDetails extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-
-        //Toast.makeText(this, String.valueOf(amt), Toast.LENGTH_LONG).show();
-
-        Intent intent = getIntent();
-
-        Handler handleMe = new Handler();
-        handleMe.postDelayed(() -> {
-            try {
-                JSONObject jsonObject = new JSONObject(intent.getStringExtra("PaymentDetails"));
-                showDetails(jsonObject.getJSONObject("response"), intent.getStringExtra("PaymentAmount"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-                finish();
-            }
-        }, 2000);
     }
 
     private void addMe(double amttt) {

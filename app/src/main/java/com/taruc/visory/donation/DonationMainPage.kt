@@ -5,6 +5,10 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.R
 import kotlinx.android.synthetic.main.fragment_donation_main_page.*
 
@@ -47,15 +51,37 @@ class DonationMainPage : Fragment(), View.OnClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.donateHistory -> {
-//                activity?.let {
-//                    val intent = Intent(it, DonateHistory::class.java)
-//                    it.startActivity(intent)
-//                    it.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-//                }
-//            }
-//        }
+        when (item.itemId) {
+            R.id.donateHistory -> {
+                activity?.let {
+                    val intent = Intent(it, donateHistory::class.java)
+                    it.startActivity(intent)
+                    it.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                }
+            }
+        }
         return super.onOptionsItemSelected(item)
+    }
+
+    var amount:Double = 0.00
+    override fun onStart() {
+        super.onStart()
+
+        val rootRef = FirebaseDatabase.getInstance().getReference("DonateDatabase")
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot: DataSnapshot in dataSnapshot.children) {
+                    val dbAmount = snapshot.child("amount").value.toString().toDouble()
+                    amount += dbAmount
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        }
+        rootRef.addListenerForSingleValueEvent(valueEventListener)
+        lblTotalDonate.text = "People have donated RM $amount"
+        amount=0.00
     }
 }
