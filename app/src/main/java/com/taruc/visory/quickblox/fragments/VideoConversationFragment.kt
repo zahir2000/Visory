@@ -30,6 +30,7 @@ import com.taruc.visory.quickblox.adapters.OpponentsFromCallAdapter
 import com.taruc.visory.quickblox.services.CallService
 import com.taruc.visory.quickblox.utils.EXTRA_IS_INCOMING_CALL
 import com.taruc.visory.quickblox.utils.Helper
+import com.taruc.visory.utils.CallHistory
 import com.taruc.visory.utils.shortToast
 import org.webrtc.CameraVideoCapturer
 import org.webrtc.RendererCommon
@@ -73,6 +74,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
     private var allCallbacksInit: Boolean = false
     private var isCurrentCameraFront: Boolean = false
     private var isLocalVideoFullScreen: Boolean = false
+    private var callHistory: CallHistory? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         parentView = super.onCreateView(inflater, container, savedInstanceState)
@@ -164,6 +166,8 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
             return
         }
 
+        callHistory = CallHistory(requireContext())
+
         val isIncomingCall = Helper.get(EXTRA_IS_INCOMING_CALL, false)
         if(isIncomingCall){
             opponentViewHolders = SparseArray(opponents.size)
@@ -241,17 +245,21 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
                 val userId = entry.key
                 val videoTrack = entry.value
 
-                if (userId == currentUser.id) {
-                    mainHandler.postDelayed({
-                        onLocalVideoTrackReceive(null, videoTrack)
-                    }, LOCAL_TRACK_INITIALIZE_DELAY)
-                } else if (conversationFragmentCallback?.getPeerChannel(userId) != QBRTCTypes.QBRTCConnectionState.QB_RTC_CONNECTION_CLOSED) {
-                    mainHandler.postDelayed({
-                        onConnectedToUser(null, userId)
-                        onRemoteVideoTrackReceive(null, videoTrack, userId)
-                    }, LOCAL_TRACK_INITIALIZE_DELAY)
-                } else {
-                    entryIterator.remove()
+                when {
+                    userId == currentUser.id -> {
+                        mainHandler.postDelayed({
+                            onLocalVideoTrackReceive(null, videoTrack)
+                        }, LOCAL_TRACK_INITIALIZE_DELAY)
+                    }
+                    conversationFragmentCallback?.getPeerChannel(userId) != QBRTCTypes.QBRTCConnectionState.QB_RTC_CONNECTION_CLOSED -> {
+                        mainHandler.postDelayed({
+                            onConnectedToUser(null, userId)
+                            onRemoteVideoTrackReceive(null, videoTrack, userId)
+                        }, LOCAL_TRACK_INITIALIZE_DELAY)
+                    }
+                    else -> {
+                        entryIterator.remove()
+                    }
                 }
             }
         }
@@ -650,6 +658,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
 
     override fun onCallAcceptByUser(session: QBRTCSession, userId: Int?, userInfo: Map<String, String>?) {
         setStatusForOpponent(userId, getString(R.string.accepted))
+        callHistory?.setCalleeId(userId.toString())
         switchCamera(null)
     }
 
@@ -714,6 +723,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
 
     override fun onCallTimeUpdate(time: String) {
         timerCallText.text = time
+        callHistory?.setCallTime(time)
     }
 
     private fun updateAllOpponentsList(newUsers: ArrayList<QBUser>) {

@@ -71,20 +71,16 @@
 
         <Button
             android:id="@+id/btnCloseDialog"
-            style="@style/ButtonStyle.Primary"
+            style="@style/ButtonStyle.NoBackground"
             android:textSize="12sp"
+            android:background="@color/colorPrimary"
             android:paddingTop="@dimen/spacing_vsm"
+            android:textColor="@color/colorWhite"
             android:paddingBottom="@dimen/spacing_vsm"
             android:layout_width="fill_parent"
-            android:layout_marginStart="@dimen/spacing_lg"
-            android:layout_marginEnd="@dimen/spacing_lg"
-            android:layout_marginBottom="@dimen/spacing_sm"
             android:visibility="gone"
             android:layout_height="40dp"
             android:text="@string/close_dialog" />
 
     </LinearLayout>
-
-
-
 </FrameLayout>

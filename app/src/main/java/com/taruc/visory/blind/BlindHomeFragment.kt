@@ -35,10 +35,7 @@ import com.taruc.visory.quickblox.util.loadUsersByPagedRequestBuilder
 import com.taruc.visory.quickblox.util.signInUser
 import com.taruc.visory.quickblox.util.signUp
 import com.taruc.visory.quickblox.utils.*
-import com.taruc.visory.utils.LoggedUser
-import com.taruc.visory.utils.isInternetAvailable
-import com.taruc.visory.utils.makeErrorSnackbar
-import com.taruc.visory.utils.shortToast
+import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.fragment_blind_home.*
 
 
@@ -181,6 +178,8 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
 
             R.id.button_blind_make_call -> {
                 //calls last person who used the app
+                val callHistory = CallHistory(this.requireContext())
+                callHistory.clear()
 
                 if (isInternetAvailable(requireContext())) {
                     Helper.save(HANG_UP, false)

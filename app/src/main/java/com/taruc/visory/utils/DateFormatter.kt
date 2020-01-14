@@ -13,6 +13,11 @@ fun getCurrentDateTime(): Date {
     return Calendar.getInstance().time
 }
 
+fun getCurrentFormattedDateTime(): String {
+    val date = getCurrentDateTime()
+    return date.toString("dd MMM yyyy HH:mm")
+}
+
 fun getCurrentDate(): String {
     val date = getCurrentDateTime()
     return date.toString("dd MMM yyyy")

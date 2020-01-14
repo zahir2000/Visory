@@ -225,7 +225,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                         val intent = Intent(this, VerifyEmailActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
-                        overridePendingTransition(0, 0)
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                         finish()
                     }
                 }else{
@@ -320,7 +320,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                         val intent = Intent(this, WelcomeActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
-                        overridePendingTransition(0, 0)
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                         finish()
                     } catch (e: Exception) {}
                 }, 3000)
@@ -411,7 +411,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                             val intent = Intent(this, WelcomeActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
-                            overridePendingTransition(0, 0)
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                             finish()
                         } catch (e: Exception) {}
                     }, 3000)
