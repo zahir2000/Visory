@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="2.5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="2.5dp"
+    android:background="@drawable/round_corner_ringgit_border">
 
     <TextView
         android:id="@+id/lblDonateAmountImage"
@@ -12,6 +17,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/round_corner_ringgit_border"
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
