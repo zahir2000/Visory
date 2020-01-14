@@ -10,7 +10,7 @@
     android:layout_marginEnd="8dp"
     app:cardCornerRadius="5dp"
     tools:ignore="ContentDescription"
-    tools:showIn="@layout/activity_list_stories">
+    tools:showIn="@layout/fragment_stories">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

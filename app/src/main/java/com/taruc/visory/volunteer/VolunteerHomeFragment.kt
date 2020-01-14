@@ -161,8 +161,8 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
         val tags = StringifyArrayList<String>()
         val loggedUser = LoggedUser(requireContext())
 
-        qbUser.login = uid
-        qbUser.fullName = fullName
+        qbUser.login = loggedUser.getUserID()
+        qbUser.fullName = loggedUser.getUserName()
         qbUser.password = DEFAULT_USER_PASSWORD
 
         tags.add("volunteer")
