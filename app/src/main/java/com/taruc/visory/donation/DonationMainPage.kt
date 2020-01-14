@@ -81,6 +81,7 @@ class DonationMainPage : Fragment(), View.OnClickListener {
         super.onStop()
 
         readTotalOfDonation()
+
     }
 
     private fun readTotalOfDonation() {
