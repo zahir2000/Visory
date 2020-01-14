@@ -31,7 +31,8 @@ class DonationMainPage : Fragment(), View.OnClickListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
@@ -63,15 +64,37 @@ class DonationMainPage : Fragment(), View.OnClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    var amount:Double = 0.00
+    var amount: Int = 0
     override fun onStart() {
         super.onStart()
+
+        readTotalOfDonation()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        readTotalOfDonation()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        readTotalOfDonation()
+    }
+
+    private fun readTotalOfDonation() {
+
+//        val mainHandler = Handler(Looper.getMainLooper())
+//
+//        mainHandler.post(object : Runnable {
+//            override fun run() {
 
         val rootRef = FirebaseDatabase.getInstance().getReference("DonateDatabase")
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
-                    val dbAmount = snapshot.child("amount").value.toString().toDouble()
+                    val dbAmount = snapshot.child("amount").value.toString().toInt()
                     amount += dbAmount
                 }
             }
@@ -82,6 +105,10 @@ class DonationMainPage : Fragment(), View.OnClickListener {
         }
         rootRef.addListenerForSingleValueEvent(valueEventListener)
         lblTotalDonate.text = "People have donated RM $amount"
-        amount=0.00
+        amount = 0
+
+//                mainHandler.postDelayed(this, 5000)
+//            }
+//        })
     }
 }

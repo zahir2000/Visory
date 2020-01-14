@@ -16,27 +16,27 @@ public class FirebaseDatabaseHelper {
     private DatabaseReference mReferenceDonateHistory;
     private List<DonateDatabase> donateDatabaseList = new ArrayList<>();
 
-    public interface DataStatus{
+    public interface DataStatus {
         void DataIsLoaded(List<DonateDatabase> donateDatabaseList, List<String> keys);
     }
 
-    public FirebaseDatabaseHelper(){
-        mDatabase=FirebaseDatabase.getInstance();
-        mReferenceDonateHistory=mDatabase.getReference("DonateDatabase");
+    public FirebaseDatabaseHelper() {
+        mDatabase = FirebaseDatabase.getInstance();
+        mReferenceDonateHistory = mDatabase.getReference("DonateDatabase");
     }
 
-    public void readDonateHistory(final DataStatus dataStatus){
+    public void readDonateHistory(final DataStatus dataStatus) {
         mReferenceDonateHistory.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 donateDatabaseList.clear();
                 List<String> keys = new ArrayList<>();
-                for(DataSnapshot keyNode : dataSnapshot.getChildren()){
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     keys.add(keyNode.getKey());
                     DonateDatabase donateDatabase = keyNode.getValue(DonateDatabase.class);
                     donateDatabaseList.add(donateDatabase);
                 }
-                dataStatus.DataIsLoaded(donateDatabaseList,keys);
+                dataStatus.DataIsLoaded(donateDatabaseList, keys);
             }
 
             @Override

@@ -7,11 +7,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.taruc.visory.R;
 import com.taruc.visory.utils.LoggedUser;
 
@@ -78,30 +75,5 @@ public class PaymentDetails extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Donate process is cancelled", Toast.LENGTH_LONG).show();
             finish();
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        FirebaseDatabase.getInstance().getReference("DonateDatabase")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            double dbAmount = Double.parseDouble(String.valueOf(snapshot.child("amount").getValue()));
-                            addMe(dbAmount);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
-    }
-
-    private void addMe(double amttt) {
-        //Toast.makeText(this, String.valueOf(amttt), Toast.LENGTH_LONG).show();
-        amt = amt + amttt;
     }
 }
