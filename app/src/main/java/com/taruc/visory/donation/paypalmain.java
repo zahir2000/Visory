@@ -52,10 +52,15 @@ public class paypalmain extends AppCompatActivity {
         btnDonate = (Button) findViewById(R.id.btnDonate);
         txtDonate = (EditText) findViewById(R.id.txtDonate);
 
+
         btnDonate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                processPayment();
+                if (txtDonate.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please fill in the amount you want to donate.", Toast.LENGTH_LONG).show();
+                } else {
+                    processPayment();
+                }
             }
         });
     }
