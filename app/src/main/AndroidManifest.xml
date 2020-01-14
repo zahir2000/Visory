@@ -21,8 +21,7 @@
         android:roundIcon="@mipmap/ic_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".donation.DonateHistory"></activity>
-        <activity android:name=".donation.donateHistory" />
+        <activity android:name=".donation.DonateHistory"/>
         <activity android:name=".ui.StoryDetailsActivity" />
         <activity android:name=".ui.ListStoriesActivity" />
         <activity android:name=".ui.SubmitStoryActivity" />
@@ -32,7 +31,8 @@
         <activity
             android:name=".mlkit.ObjectDetectorActivity"
             android:label="Object Detector" />
-        <activity android:name=".report.ReportActivity" />
+        <activity android:name=".report.ReportActivity"
+            android:label="Report a Problem"/>
         <activity android:name=".settings.ChangeEmailActivity">
             <intent-filter>
                 <action android:name="com.taruc.visory.settings.ChangeEmailActivity" />
@@ -54,8 +54,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".volunteer.CallEndActivity" />
-        <activity android:name=".blind.CallEndActivity" />
+        <activity android:name=".volunteer.CallEndActivity"
+            android:label="Call Ended"/>
+        <activity android:name=".blind.CallEndActivity"
+            android:label="Call Ended"/>
         <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
