@@ -36,6 +36,7 @@
         android:layout_width="252dp"
         android:layout_height="50dp"
         android:ems="10"
+        android:hint="@string/hintPleaseEnterAmountToDonate"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

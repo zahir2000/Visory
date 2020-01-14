@@ -283,6 +283,7 @@
     <string name="donateHistory">Donate History</string>
     <string name="btnReturnToLandingPage">Go Back</string>
     <string name="lblYouHaveDonated">You have donated</string>
+    <string name="hintPleaseEnterAmountToDonate">Please enter donate amount</string>
 
     <string-array name="language_array">
         <item>English</item>

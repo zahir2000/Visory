@@ -39,6 +39,19 @@ class RecyclerView_Config {
 
         public void bind(DonateDatabase donateDatabase, String key) {
             mAmountImage.setText("RM " + Integer.toString(donateDatabase.getAmount()));
+            if (donateDatabase.getAmount() < 5) {
+                mAmountImage.setBackgroundColor(3101573);
+            } else if (donateDatabase.getAmount() >= 5 && donateDatabase.getAmount() < 10) {
+                mAmountImage.setBackgroundColor(7581302);
+            }else if (donateDatabase.getAmount() >= 10 && donateDatabase.getAmount() < 20){
+                mAmountImage.setBackgroundColor(13662841);
+            }else if (donateDatabase.getAmount() >= 20 && donateDatabase.getAmount() < 50){
+                mAmountImage.setBackgroundColor(13993746);
+            }else if(donateDatabase.getAmount() >= 50 && donateDatabase.getAmount() < 100){
+                mAmountImage.setBackgroundColor(10015454);
+            }else{
+                mAmountImage.setBackgroundColor(8220821);
+            }
             mAmount.setText("RM " + Integer.toString(donateDatabase.getAmount()));
             mTimeDate.setText(donateDatabase.getDateTime());
             this.key = key;
