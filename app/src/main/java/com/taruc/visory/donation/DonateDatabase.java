@@ -5,14 +5,14 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class DonateDatabase {
     private String email;
-    private double amount;
+    private int amount;
     private String dateTime;
 
     public DonateDatabase() {
 
     }
 
-    public DonateDatabase(String email, double amount, String dateTime) {
+    public DonateDatabase(String email, int amount, String dateTime) {
         this.email = email;
         this.amount = amount;
         this.dateTime = dateTime;
@@ -22,7 +22,7 @@ public class DonateDatabase {
         return email;
     }
 
-    public double getAmount() {
+    public int getAmount() {
         return amount;
     }
 

@@ -47,7 +47,7 @@ public class PaymentDetails extends AppCompatActivity {
         }
     }
 
-    private void addDonationDetails(double payAmount) {
+    private void addDonationDetails(int payAmount) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
         String timeDate = dateFormat.format(date);
@@ -67,7 +67,7 @@ public class PaymentDetails extends AppCompatActivity {
             txtId.setText("Payment ID: " + response.getString("id"));
             txtStatus.setText("Status: " + response.getString("state"));
             txtAmount.setText("Amount: RM " + paymentAmount);
-            double payAmount = Double.parseDouble(paymentAmount);
+            int payAmount = Integer.parseInt(paymentAmount);
             addDonationDetails(payAmount);
             Toast.makeText(getApplicationContext(), "Thanks for your kindness. ", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
