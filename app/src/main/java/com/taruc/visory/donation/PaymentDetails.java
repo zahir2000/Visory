@@ -24,10 +24,16 @@ public class PaymentDetails extends AppCompatActivity {
 
     DatabaseReference databaseUserDonationDetails;
     DatabaseReference databaseTotalDonation;
+
+    double totalDonate;
+
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_donate_paymentdetails);
+
+        databaseUserDonationDetails = FirebaseDatabase.getInstance().getReference("DonateDatabase");
+        databaseTotalDonation = FirebaseDatabase.getInstance().getReference("TotalDonation");
 
         txtId = (TextView) findViewById(R.id.txtId);
         txtAmount = (TextView) findViewById(R.id.txtAmount);
@@ -42,9 +48,6 @@ public class PaymentDetails extends AppCompatActivity {
             e.printStackTrace();
             finish();
         }
-
-        databaseUserDonationDetails = FirebaseDatabase.getInstance().getReference("visory-abc54");
-        //databaseTotalDonation = FirebaseDatabase.getInstance().getReference("databaseTotalDonation");
     }
 
     private void addDonationDetails(double payAmount) {
@@ -56,11 +59,12 @@ public class PaymentDetails extends AppCompatActivity {
         String email = user.getUserEmail();
 
         String id = databaseUserDonationDetails.push().getKey();
+
         DonateDatabase donateDetails = new DonateDatabase(email, payAmount, timeDate);
-        TotalDonation totalDonation = new TotalDonation(payAmount);
+        //TotalDonation totalDonation = new TotalDonation(payAmount);
 
         databaseUserDonationDetails.child(id).setValue(donateDetails);
-        //databaseTotalDonation.child("TotalDonation").setValue(totalDonation);
+        databaseTotalDonation.child("TotalDonation").setValue(payAmount);
     }
 
     private void showDetails(JSONObject response, String paymentAmount) {
