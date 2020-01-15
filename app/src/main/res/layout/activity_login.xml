@@ -41,7 +41,7 @@
                 android:drawableStart="@drawable/google_icon"
                 android:paddingStart="20dip"
                 android:paddingEnd="20dip"
-                android:text="@string/text_signup_google"
+                android:text="@string/text_signin_google"
                 android:contentDescription="@string/button_google_login_cd"
                 android:textColor="#90000000" />
 
