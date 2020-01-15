@@ -10,9 +10,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.R
+import com.taruc.visory.quickblox.utils.ViewDialog
 import com.taruc.visory.utils.LoggedUser
 import kotlinx.android.synthetic.main.fragment_donation_main_page.*
-
 
 class DonationMainPage : Fragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -10,16 +10,22 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.taruc.visory.R;
+import com.taruc.visory.utils.LoggedUser;
 
 import org.json.JSONException;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class paypalmain extends AppCompatActivity {
 
@@ -133,6 +139,7 @@ public class paypalmain extends AppCompatActivity {
                 if (confirmation != null) {
                     try {
                         String paymentDetails = confirmation.toJSONObject().toString(4);
+                        addDonationDetails(amount);
                         startActivity(new Intent(this, PaymentDetails.class)
                                 .putExtra("PaymentDetails", paymentDetails)
                                 .putExtra("PaymentAmount", amount)
@@ -147,5 +154,23 @@ public class paypalmain extends AppCompatActivity {
             } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID)
                 Toast.makeText(this, "Invalid", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    DatabaseReference databaseUserDonationDetails;
+    private void addDonationDetails(String payAmount) {
+        databaseUserDonationDetails = FirebaseDatabase.getInstance().getReference("DonateDatabase");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        String timeDate = dateFormat.format(date);
+
+        LoggedUser user = new LoggedUser(this);
+        String email = user.getUserEmail();
+
+        String id = databaseUserDonationDetails.push().getKey();
+
+        int paymentAmount = Integer.parseInt(payAmount);
+        DonateDatabase donateDetails = new DonateDatabase(email, paymentAmount, timeDate);
+
+        databaseUserDonationDetails.child(id).setValue(donateDetails);
     }
 }
