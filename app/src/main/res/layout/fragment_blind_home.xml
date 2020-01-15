@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-    android:focusableInTouchMode="true"
-    android:descendantFocusability="beforeDescendants"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="@color/default_background"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- TODO : make a custom EditText -->
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
         <LinearLayout
-            android:orientation="vertical"
+            style="@style/ScrollViewChild"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/ScrollViewChild">
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/button_blind_make_call"
@@ -29,23 +28,24 @@
                 android:textSize="40.0sp" />
 
             <Button
-                android:textSize="22.0sp"
                 android:id="@+id/button_blind_detect_object"
+                style="@style/ButtonStyle.Secondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12.0dip"
                 android:contentDescription="@string/object_detector_cd"
                 android:text="@string/button_object_detector"
-                style="@style/ButtonStyle.Secondary" />
+                android:textSize="22.0sp" />
 
             <Button
-                android:textSize="22.0sp"
                 android:id="@+id/button_blind_help"
+                style="@style/ButtonStyle.Secondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12.0dip"
                 android:text="@string/button_get_help"
-                style="@style/ButtonStyle.Secondary" />
+                android:textSize="22.0sp"
+                android:visibility="gone" />
 
         </LinearLayout>
     </ScrollView>

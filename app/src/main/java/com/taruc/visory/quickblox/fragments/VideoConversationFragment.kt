@@ -551,9 +551,6 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
         }
     }
 
-    /**
-     * @param userId set userId if it from fullscreen videoTrack
-     */
     private fun fillVideoView(videoView: QBRTCSurfaceView, videoTrack: QBRTCVideoTrack,
                               remoteRenderer: Boolean) {
         videoTrack.removeRenderer(videoTrack.renderer)
@@ -570,9 +567,6 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
         videoView.requestLayout()
     }
 
-    /**
-     * @param userId set userId if it from fullscreen videoTrack
-     */
     private fun fillVideoView(userId: Int, videoView: QBRTCSurfaceView, videoTrack: QBRTCVideoTrack) {
         if (userId != 0) {
             userIDFullScreen = userId

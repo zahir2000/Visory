@@ -1,13 +1,9 @@
 package com.taruc.visory
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.view.View
-import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -22,7 +18,6 @@ import com.taruc.visory.quickblox.utils.PERMISSIONS
 import com.taruc.visory.quickblox.utils.ViewDialog
 import com.taruc.visory.utils.UserCount
 import com.taruc.visory.utils.loadUsers
-import java.lang.Exception
 
 class VolunteerHomeActivity : AppCompatActivity() {
 
@@ -49,12 +44,13 @@ class VolunteerHomeActivity : AppCompatActivity() {
 
         loadUsers(this)
 
-        try{
+        try {
             dialog = ViewDialog(this)
             dialog.showDialogFor5Seconds()
-        }catch (e: Exception){}
+        } catch (e: Exception) {
+        }
 
-        if(Helper[CHECK_PERMISSIONS, true]){
+        if (Helper[CHECK_PERMISSIONS, true]) {
             PermissionsActivity.startForResult(this, false, PERMISSIONS)
         }
     }
@@ -67,12 +63,12 @@ class VolunteerHomeActivity : AppCompatActivity() {
 
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for(ds in dataSnapshot.children){
+                for (ds in dataSnapshot.children) {
                     val role = ds.child("role").value
                     val roleVal = role.toString().toInt()
-                    if(roleVal == 1){
+                    if (roleVal == 1) {
                         userCount.setVolCount(userCount.getVolCount() + 1)
-                    }else if(roleVal == 2){
+                    } else if (roleVal == 2) {
                         userCount.setBviCount(userCount.getBviCount() + 1)
                     }
                 }
@@ -85,9 +81,9 @@ class VolunteerHomeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(supportFragmentManager.backStackEntryCount > 0){
+        if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStackImmediate()
-        }else{
+        } else {
             super.onBackPressed()
         }
     }
@@ -95,5 +91,10 @@ class VolunteerHomeActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         supportFragmentManager.popBackStackImmediate()
         return super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        dialog.hideDialog()
     }
 }

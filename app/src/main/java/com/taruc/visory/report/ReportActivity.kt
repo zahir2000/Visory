@@ -1,12 +1,12 @@
 package com.taruc.visory.report
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.taruc.visory.R
@@ -49,7 +49,7 @@ class ReportActivity : AppCompatActivity() {
         }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
-            when(item.itemId){
+            when (item.itemId) {
                 R.id.skip_report -> {
                     activity?.onBackPressed()
                     activity?.finish()
@@ -61,7 +61,7 @@ class ReportActivity : AppCompatActivity() {
 
         override fun onPreferenceTreeClick(preference: Preference?): Boolean {
             val key = preference?.key
-            if(key.equals("submit_report")){
+            if (key.equals("submit_report")) {
                 loadingDialog = ViewDialog(requireContext())
                 loadingDialog.showDialogFor5Seconds()
 
@@ -73,6 +73,11 @@ class ReportActivity : AppCompatActivity() {
             }
 
             return false
+        }
+
+        override fun onDestroy() {
+            super.onDestroy()
+            loadingDialog.hideDialog()
         }
     }
 }

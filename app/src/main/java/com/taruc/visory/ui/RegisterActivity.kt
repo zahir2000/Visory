@@ -38,7 +38,6 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     private val RC_SIGN_IN_GOOGLE: Int = 2024
     private var userType: Int = 0
     private lateinit var auth: FirebaseAuth
-    private lateinit var providers: List<AuthUI.IdpConfig>
     private lateinit var googleSignInClient: GoogleSignInClient
     private var selectedLanguage: String = "English"
 
@@ -294,6 +293,11 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                                 val userJoinDate = dataSnapshot.child("datejoined").value.toString()
                                 val role = Integer.parseInt(dataSnapshot.child("role").value.toString())
 
+                                val avatarUrl: String? = dataSnapshot.child("avatarurl").value.toString()
+                                if(avatarUrl != null && avatarUrl.isNotEmpty()){
+                                    loggedUserTypePref.setAvatarUrl(avatarUrl)
+                                }
+
                                 //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
                                 //if data is modified, it can directly be done using another activity.
                                 loggedUserTypePref.setUserData(
@@ -383,6 +387,11 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                                 val userEmail = dataSnapshot.child("email").value.toString()
                                 val userJoinDate = dataSnapshot.child("datejoined").value.toString()
                                 val role = Integer.parseInt(dataSnapshot.child("role").value.toString())
+
+                                val avatarUrl: String? = dataSnapshot.child("avatarurl").value.toString()
+                                if(avatarUrl != null && avatarUrl.isNotEmpty()){
+                                    loggedUserTypePref.setAvatarUrl(avatarUrl)
+                                }
 
                                 //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
                                 //if data is modified, it can directly be done using another activity.

@@ -303,6 +303,8 @@
     <string name="button_facebook_login_cd">Login with your Facebook account</string>
     <string name="button_google_login_cd">Login with your Google account</string>
     <string name="button_reset_pass_cd">Send a reset password link to your email</string>
+    <string name="developed_by_text">Developed by Zahiriddin Rustamov\nJaloliddin Rustamov\nHarrsimran Kaur\nTan Jun Chuan</string>
+    <string name="about_visory_cd">Information about Visory application</string>
     <string name="radRM50">RM 50</string>
     <string name="radRM100">RM 100</string>
     <string name="messageHelp">Do not worry! Help is on the way! You may use the button below to call 999.</string>

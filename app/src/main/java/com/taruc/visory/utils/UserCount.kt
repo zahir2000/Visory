@@ -1,6 +1,7 @@
 package com.taruc.visory.utils
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -10,7 +11,7 @@ class UserCount(context: Context){
     val SHARED_PREF = "sharedUserCountPrefs"
     val VOL_COUNT = "volCount"
     val BVI_COUNT = "bviCount"
-    val preference = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
+    val preference: SharedPreferences = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
 
     fun getVolCount(): Int{
         return preference.getInt(VOL_COUNT, 0)

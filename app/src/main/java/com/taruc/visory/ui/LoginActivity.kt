@@ -177,6 +177,11 @@ class LoginActivity : AppCompatActivity() {
                             val role =
                                 Integer.parseInt(dataSnapshot.child("role").value!!.toString())
 
+                            val avatarUrl: String? = dataSnapshot.child("avatarurl").value.toString()
+                            if(avatarUrl != null && avatarUrl.isNotEmpty()){
+                                loggedUserTypePref.setAvatarUrl(avatarUrl)
+                            }
+
                             //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
                             //if data is modified, it can directly be done using another activity.
                             loggedUserTypePref.setUserData(
@@ -294,6 +299,11 @@ class LoginActivity : AppCompatActivity() {
                                 val role =
                                     Integer.parseInt(dataSnapshot.child("role").value.toString())
 
+                                val avatarUrl: String? = dataSnapshot.child("avatarurl").value.toString()
+                                if(avatarUrl != null && avatarUrl.isNotEmpty()){
+                                    loggedUserTypePref.setAvatarUrl(avatarUrl)
+                                }
+
                                 //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
                                 //if data is modified, it can directly be done using another activity.
                                 loggedUserTypePref.setUserData(
@@ -399,6 +409,11 @@ class LoginActivity : AppCompatActivity() {
                                 val userJoinDate = dataSnapshot.child("datejoined").value.toString()
                                 val role =
                                     Integer.parseInt(dataSnapshot.child("role").value.toString())
+
+                                val avatarUrl: String? = dataSnapshot.child("avatarurl").value.toString()
+                                if(avatarUrl != null && avatarUrl.isNotEmpty()){
+                                    loggedUserTypePref.setAvatarUrl(avatarUrl)
+                                }
 
                                 //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
                                 //if data is modified, it can directly be done using another activity.

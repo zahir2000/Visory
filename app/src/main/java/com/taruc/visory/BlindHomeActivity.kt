@@ -1,8 +1,7 @@
 package com.taruc.visory
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -13,7 +12,6 @@ import com.taruc.visory.quickblox.utils.CHECK_PERMISSIONS
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.quickblox.utils.PERMISSIONS
 import com.taruc.visory.quickblox.utils.ViewDialog
-import java.lang.Exception
 
 class BlindHomeActivity : AppCompatActivity() {
 
@@ -35,20 +33,21 @@ class BlindHomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        try{
+        try {
             viewDialog = ViewDialog(this)
             viewDialog.showDialogFor5Seconds()
-        }catch (e: Exception){}
+        } catch (e: Exception) {
+        }
 
-        if(Helper[CHECK_PERMISSIONS, true]){
+        if (Helper[CHECK_PERMISSIONS, true]) {
             PermissionsActivity.startForResult(this, false, PERMISSIONS)
         }
     }
 
     override fun onBackPressed() {
-        if(supportFragmentManager.backStackEntryCount > 0){
+        if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStackImmediate()
-        }else{
+        } else {
             super.onBackPressed()
         }
     }
@@ -56,5 +55,10 @@ class BlindHomeActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         supportFragmentManager.popBackStackImmediate()
         return super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewDialog.hideDialog()
     }
 }

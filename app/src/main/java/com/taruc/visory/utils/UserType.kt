@@ -1,11 +1,12 @@
 package com.taruc.visory.utils
 
 import android.content.Context
+import android.content.SharedPreferences
 
 class UserType(context: Context){
     val SHARED_PREF = "sharedPrefs"
     val USER_TYPE = "userType"
-    val preference = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
+    val preference: SharedPreferences = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
 
     fun getUserType(): Int{
         return preference.getInt(USER_TYPE, 0)

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:seekBar="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
         android:layout="@layout/view_for_preference"
@@ -22,18 +21,18 @@
             android:key="@string/pref_startbitratevalue_key"
             android:max="@integer/pref_startbitratevalue_max_value"
             android:summary="%s"
-            android:title="@string/pref_startbitratevalue_title"/>
-            <!--seekBar:min="@integer/pref_startbitratevalue_min_value"
-            seekBar:stepSize="@integer/pref_startbitratevalue_step_size"-->
+            android:title="@string/pref_startbitratevalue_title" />
+        <!--seekBar:min="@integer/pref_startbitratevalue_min_value"
+        seekBar:stepSize="@integer/pref_startbitratevalue_step_size"-->
 
         <com.taruc.visory.quickblox.view.SeekBarPreference
             android:defaultValue="@string/pref_frame_rate_default"
             android:key="@string/pref_frame_rate_key"
             android:max="@integer/pref_frame_rate_max_value"
             android:summary="%s"
-            android:title="@string/pref_frame_rate_title"/>
-            <!--seekBar:min="@integer/pref_frame_rate_min_value"
-            seekBar:stepSize="@integer/pref_frame_rate_stepSize"-->
+            android:title="@string/pref_frame_rate_title" />
+        <!--seekBar:min="@integer/pref_frame_rate_min_value"
+        seekBar:stepSize="@integer/pref_frame_rate_stepSize"-->
 
         <com.taruc.visory.quickblox.view.ListPreferenceCompat
             android:defaultValue="@string/pref_audiocodec_def"

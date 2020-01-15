@@ -8,6 +8,7 @@
         android:layout_gravity="center_horizontal"
         android:adjustViewBounds="true"
         android:contentDescription="@string/image_about"
+        android:importantForAccessibility="no"
         android:src="@drawable/happy_kids" />
 
     <Button
@@ -18,5 +19,7 @@
         android:layout_marginTop="5.0dip"
         android:layout_marginEnd="5.0dip"
         android:background="@drawable/button_circle_closed"
+        android:clickable="true"
+        android:focusable="true"
         android:textColor="#fff" />
 </FrameLayout>
