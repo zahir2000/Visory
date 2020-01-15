@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.R
+import com.taruc.visory.utils.LoggedUser
 import kotlinx.android.synthetic.main.fragment_donation_main_page.*
 
 
@@ -65,6 +66,7 @@ class DonationMainPage : Fragment(), View.OnClickListener {
     }
 
     var amount: Int = 0
+    var ownAmount: Int = 0
     override fun onStart() {
         super.onStart()
 
@@ -75,10 +77,21 @@ class DonationMainPage : Fragment(), View.OnClickListener {
         val rootRef = FirebaseDatabase.getInstance().getReference("DonateDatabase")
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                loadingReadProgressBar.visibility = View.GONE
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     val dbAmount = snapshot.child("amount").value.toString().toInt()
                     amount += dbAmount
                     lblTotalDonate.text = "People have donated RM $amount"
+
+                    val dbEmail = snapshot.child("email").value.toString()
+
+                    val user = LoggedUser(this)
+
+                    if (dbEmail == user.getUserEmail()) {
+                        val dbAmount2 = snapshot.child("amount").value.toString().toInt()
+                        ownAmount += dbAmount2
+                        lblTotalDonate2.text = "You have donated RM $ownAmount"
+                    }
                 }
             }
 
@@ -88,5 +101,6 @@ class DonationMainPage : Fragment(), View.OnClickListener {
         }
         rootRef.addListenerForSingleValueEvent(valueEventListener)
         amount = 0
+        ownAmount = 0
     }
 }
