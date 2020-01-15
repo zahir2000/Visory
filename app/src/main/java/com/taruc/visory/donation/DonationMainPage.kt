@@ -85,7 +85,7 @@ class DonationMainPage : Fragment(), View.OnClickListener {
 
                     val dbEmail = snapshot.child("email").value.toString()
 
-                    val user = LoggedUser(this)
+                    val user = LoggedUser(requireContext())
 
                     if (dbEmail == user.getUserEmail()) {
                         val dbAmount2 = snapshot.child("amount").value.toString().toInt()

@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.taruc.visory.utils.LoggedUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,10 @@ public class FirebaseDatabaseHelper {
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     keys.add(keyNode.getKey());
                     DonateDatabase donateDatabase = keyNode.getValue(DonateDatabase.class);
+
+                    LoggedUser user = new LoggedUser(this);
+                    String email = user.getUserEmail();
+                    if(donateDatabase.getEmail()==)
                     donateDatabaseList.add(donateDatabase);
                 }
                 dataStatus.DataIsLoaded(donateDatabaseList, keys);

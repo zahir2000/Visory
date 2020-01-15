@@ -23,7 +23,6 @@ public class PaymentDetails extends AppCompatActivity {
     TextView txtId, txtAmount, txtStatus;
 
     DatabaseReference databaseUserDonationDetails;
-    double amt = 0.0;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
