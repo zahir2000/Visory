@@ -3,7 +3,6 @@ package com.taruc.visory.donation;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -32,9 +31,8 @@ public class paypalmain extends AppCompatActivity {
 
     Button btnDonate;
     EditText txtDonate;
-    //RadioButton radRM1,radRM5,radRM10,radRM20,radRM50,radRM100;
-
     String amount = "";
+    RadioGroup rg1, rg2;
 
     @Override
     protected void onDestroy() {
@@ -51,33 +49,35 @@ public class paypalmain extends AppCompatActivity {
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
 
-        btnDonate = (Button) findViewById(R.id.btnDonate);
-        txtDonate = (EditText) findViewById(R.id.txtDonate);
-//        radRM1 = (RadioButton) findViewById(R.id.radRM1);
-//        radRM5 = (RadioButton) findViewById(R.id.radRM5);
-//        radRM10 = (RadioButton) findViewById(R.id.radRM10);
-//        radRM20 = (RadioButton) findViewById(R.id.radRM20);
-//        radRM50 = (RadioButton) findViewById(R.id.radRM50);
-//        radRM100 = (RadioButton) findViewById(R.id.radRM100);
+        btnDonate = findViewById(R.id.btnDonate);
+        txtDonate = findViewById(R.id.txtDonate);
 
-//        int one  = 1;
-//        if(radRM1.isChecked()){
-//            txtDonate.append(String.valueOf(one));
-//        }else if(radRM2.isChecked()){
-//            txtDonate.setText();
-//        }else if(radRM5.isChecked()){
-//            txtDonate.setText(String.valueOf(5));
-//        }else if(radRM10.isChecked()){
-//            txtDonate.setText(String.valueOf(10));
-//        }
+        //Radio Buttons
+        rg1 = findViewById(R.id.radGroup1to3);
+        rg2 = findViewById(R.id.radGroup4to6);
+        rg1.clearCheck();
+        rg2.clearCheck();
+        rg1.setOnCheckedChangeListener(listener1);
+        rg2.setOnCheckedChangeListener(listener2);
 
-        RadioGroup radioGroup = findViewById(R.id.radGroup1to3);
-        RadioGroup radioGroup2 = findViewById(R.id.radGroup4to6);
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            // checkedId is the RadioButton selected
-            if(radioGroup2.getCheckedRadioButtonId() != -1){
-                radioGroup2.clearCheck();
+        btnDonate.setOnClickListener(view -> {
+            if (txtDonate.getText().toString().equals("")) {
+                Toast.makeText(getApplicationContext(), "Please fill in the amount you want to donate.", Toast.LENGTH_LONG).show();
+            } else {
+                processPayment();
             }
+        });
+    }
+
+    private RadioGroup.OnCheckedChangeListener listener1 = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            if (checkedId != -1) {
+                rg2.setOnCheckedChangeListener(null); // remove the listener before clearing so we don't throw that stackoverflow exception(like Vladimir Volodin pointed out)
+                rg2.clearCheck(); // clear the second RadioGroup!
+                rg2.setOnCheckedChangeListener(listener2); //reset the listener
+            }
+
             switch (checkedId) {
                 case R.id.radRM1:
                     txtDonate.setText("1");
@@ -89,13 +89,18 @@ public class paypalmain extends AppCompatActivity {
                     txtDonate.setText("10");
                     break;
             }
-        });
+        }
+    };
 
-        radioGroup2.setOnCheckedChangeListener((group, checkedId) -> {
-            // checkedId is the RadioButton selected
-            if(radioGroup.getCheckedRadioButtonId() != -1){
-                radioGroup.clearCheck();
+    private RadioGroup.OnCheckedChangeListener listener2 = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            if (checkedId != -1) {
+                rg1.setOnCheckedChangeListener(null);
+                rg1.clearCheck();
+                rg1.setOnCheckedChangeListener(listener1);
             }
+
             switch (checkedId) {
                 case R.id.radRM20:
                     txtDonate.setText("20");
@@ -107,19 +112,8 @@ public class paypalmain extends AppCompatActivity {
                     txtDonate.setText("100");
                     break;
             }
-        });
-
-        btnDonate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (txtDonate.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please fill in the amount you want to donate.", Toast.LENGTH_LONG).show();
-                } else {
-                    processPayment();
-                }
-            }
-        });
-    }
+        }
+    };
 
     private void processPayment() {
         amount = txtDonate.getText().toString();
