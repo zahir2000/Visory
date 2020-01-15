@@ -22,7 +22,6 @@ import com.taruc.visory.utils.loadUsers
 class VolunteerHomeActivity : AppCompatActivity() {
 
     lateinit var dialog: ViewDialog
-    lateinit var userCount: UserCount
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +39,6 @@ class VolunteerHomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        //loadUserCount()
-
         loadUsers(this)
 
         try {
@@ -53,31 +50,6 @@ class VolunteerHomeActivity : AppCompatActivity() {
         if (Helper[CHECK_PERMISSIONS, true]) {
             PermissionsActivity.startForResult(this, false, PERMISSIONS)
         }
-    }
-
-    private fun loadUserCount() {
-        val rootRef = FirebaseDatabase.getInstance().reference
-        val userRef = rootRef.child("users")
-        userCount = UserCount(this)
-        userCount.setUserCount(0, 0)
-
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (ds in dataSnapshot.children) {
-                    val role = ds.child("role").value
-                    val roleVal = role.toString().toInt()
-                    if (roleVal == 1) {
-                        userCount.setVolCount(userCount.getVolCount() + 1)
-                    } else if (roleVal == 2) {
-                        userCount.setBviCount(userCount.getBviCount() + 1)
-                    }
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        }
-        userRef.addListenerForSingleValueEvent(valueEventListener)
     }
 
     override fun onBackPressed() {

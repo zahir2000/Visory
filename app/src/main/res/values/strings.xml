@@ -71,7 +71,7 @@
     <string name="label_register">Register</string>
     <string name="bottom_nav_text_home">Home</string>
     <string name="bottom_nav_text_stories">Stories</string>
-    <string name="text_check_email_instructions">Open the link in your email and click the Completed button.</string>
+    <string name="text_check_email_instructions">Open the link in your email and then click the completed button.</string>
     <string name="label_welcome">Welcome</string>
     <string name="label_verify_email">Verify Email</string>
 
