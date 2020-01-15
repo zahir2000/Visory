@@ -1,6 +1,7 @@
 package com.taruc.visory.donation;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -40,17 +41,23 @@ class RecyclerView_Config {
         public void bind(DonateDatabase donateDatabase, String key) {
             mAmountImage.setText("RM " + Integer.toString(donateDatabase.getAmount()));
             if (donateDatabase.getAmount() < 5) {
-                mAmountImage.setBackgroundColor(3101573);
+                mAmountImage.setBackgroundColor(Color.parseColor("#88A9DF"));
+                //mAmountImage.setBackgroundResource(R.drawable.dollar_signs_background_rm1);
             } else if (donateDatabase.getAmount() >= 5 && donateDatabase.getAmount() < 10) {
-                mAmountImage.setBackgroundColor(7581302);
+                mAmountImage.setBackgroundColor((Color.parseColor("#73AE76")));
+                //mAmountImage.setBackgroundResource(R.drawable.dollar_signs_background_rm5);
             }else if (donateDatabase.getAmount() >= 10 && donateDatabase.getAmount() < 20){
-                mAmountImage.setBackgroundColor(13662841);
+                mAmountImage.setBackgroundColor((Color.parseColor("#D07A79")));
+                //mAmountImage.setBackgroundResource(R.drawable.dollar_signs_background_rm10);
             }else if (donateDatabase.getAmount() >= 20 && donateDatabase.getAmount() < 50){
-                mAmountImage.setBackgroundColor(13993746);
+                mAmountImage.setBackgroundColor((Color.parseColor("#D58712")));
+                //mAmountImage.setBackgroundResource(R.drawable.dollar_signs_background_rm20);
             }else if(donateDatabase.getAmount() >= 50 && donateDatabase.getAmount() < 100){
-                mAmountImage.setBackgroundColor(10015454);
+                mAmountImage.setBackgroundColor((Color.parseColor("#98D2DE")));
+                //mAmountImage.setBackgroundResource(R.drawable.dollar_signs_background_rm50);
             }else{
-                mAmountImage.setBackgroundColor(8220821);
+                mAmountImage.setBackgroundColor((Color.parseColor("#7D7095")));
+                //mAmountImage.setBackgroundResource(R.drawable.dollar_signs_background_rm100);
             }
             mAmount.setText("RM " + Integer.toString(donateDatabase.getAmount()));
             mTimeDate.setText(donateDatabase.getDateTime());

@@ -71,32 +71,14 @@ class DonationMainPage : Fragment(), View.OnClickListener {
         readTotalOfDonation()
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        readTotalOfDonation()
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        readTotalOfDonation()
-
-    }
-
     private fun readTotalOfDonation() {
-
-//        val mainHandler = Handler(Looper.getMainLooper())
-//
-//        mainHandler.post(object : Runnable {
-//            override fun run() {
-
         val rootRef = FirebaseDatabase.getInstance().getReference("DonateDatabase")
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     val dbAmount = snapshot.child("amount").value.toString().toInt()
                     amount += dbAmount
+                    lblTotalDonate.text = "People have donated RM $amount"
                 }
             }
 
@@ -105,11 +87,6 @@ class DonationMainPage : Fragment(), View.OnClickListener {
             }
         }
         rootRef.addListenerForSingleValueEvent(valueEventListener)
-        lblTotalDonate.text = "People have donated RM $amount"
         amount = 0
-
-//                mainHandler.postDelayed(this, 5000)
-//            }
-//        })
     }
 }
