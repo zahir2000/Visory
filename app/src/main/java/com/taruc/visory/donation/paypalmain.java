@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +32,8 @@ public class paypalmain extends AppCompatActivity {
 
     Button btnDonate;
     EditText txtDonate;
+    //RadioButton radRM1,radRM2,radRM5,radRM10;
+    RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroupAmountDonateRadioButton);
 
     String amount = "";
 
@@ -51,7 +54,42 @@ public class paypalmain extends AppCompatActivity {
 
         btnDonate = (Button) findViewById(R.id.btnDonate);
         txtDonate = (EditText) findViewById(R.id.txtDonate);
+//        radRM1 = (RadioButton) findViewById(R.id.radRM1);
+//        radRM2 = (RadioButton) findViewById(R.id.radRM2);
+//        radRM5 = (RadioButton) findViewById(R.id.radRM5);
+//        radRM10 = (RadioButton) findViewById(R.id.radRM10);
 
+//        int one  = 1;
+//        if(radRM1.isChecked()){
+//            txtDonate.append(String.valueOf(one));
+//        }else if(radRM2.isChecked()){
+//            txtDonate.setText();
+//        }else if(radRM5.isChecked()){
+//            txtDonate.setText(String.valueOf(5));
+//        }else if(radRM10.isChecked()){
+//            txtDonate.setText(String.valueOf(10));
+//        }
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                switch (checkedId) {
+                    case R.id.radRM1:
+                        txtDonate.setText("1");
+                        break;
+                    case R.id.radRM2:
+                        txtDonate.setText("2");
+                        break;
+                    case R.id.radRM5:
+                        txtDonate.setText("5");
+                        break;
+                    case R.id.radRM10:
+                        txtDonate.setText("10");
+                        break;
+                }
+            }
+        });
 
         btnDonate.setOnClickListener(new View.OnClickListener() {
             @Override

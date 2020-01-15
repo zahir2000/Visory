@@ -1,7 +1,5 @@
 package com.taruc.visory.donation;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -9,7 +7,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.taruc.visory.utils.LoggedUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +35,7 @@ public class FirebaseDatabaseHelper {
                     keys.add(keyNode.getKey());
                     DonateDatabase donateDatabase = keyNode.getValue(DonateDatabase.class);
 
-                    if(donateDatabase.getEmail() == user.getUserEmail()) {
-                        donateDatabaseList.add(donateDatabase);
-                    }
+                    donateDatabaseList.add(donateDatabase);
                 }
                 dataStatus.DataIsLoaded(donateDatabaseList, keys);
             }

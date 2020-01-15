@@ -11,13 +11,12 @@
         android:id="@+id/lblDonate"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="124dp"
         android:text="@string/lblHowManyYouWantToDonateRM"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,8 +40,42 @@
         android:inputType="number"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblDonate" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupAmountDonateRadioButton" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupAmountDonateRadioButton"
+        android:layout_width="252dp"
+        android:layout_height="128dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblDonate">
+
+        <RadioButton
+            android:id="@+id/radRM1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/radRM1" />
+
+        <RadioButton
+            android:id="@+id/radRM2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/radRM2" />
+
+        <RadioButton
+            android:id="@+id/radRM5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/radRM5" />
+
+        <RadioButton
+            android:id="@+id/radRM10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/radRM10" />
+    </RadioGroup>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

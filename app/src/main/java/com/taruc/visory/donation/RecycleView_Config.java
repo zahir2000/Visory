@@ -25,7 +25,7 @@ class RecyclerView_Config {
     }
 
     class donateHistoryView extends RecyclerView.ViewHolder {
-        private TextView mAmount, mAmountImage;
+        private TextView mAmount, mAmountImage,mWho;
         private TextView mTimeDate;
 
         private String key;
@@ -36,6 +36,7 @@ class RecyclerView_Config {
             mAmountImage = (TextView) itemView.findViewById(R.id.lblDonateAmountImage);
             mAmount = (TextView) itemView.findViewById(R.id.lblRMDonated);
             mTimeDate = (TextView) itemView.findViewById(R.id.lblTimeDateDonate);
+            mWho = (TextView) itemView.findViewById(R.id.lblYouHaveDonated);
         }
 
         public void bind(DonateDatabase donateDatabase, String key) {
@@ -61,6 +62,7 @@ class RecyclerView_Config {
             }
             mAmount.setText("RM " + Integer.toString(donateDatabase.getAmount()));
             mTimeDate.setText(donateDatabase.getDateTime());
+            mWho.setText(donateDatabase.getEmail() + " have donated");
             this.key = key;
         }
     }
