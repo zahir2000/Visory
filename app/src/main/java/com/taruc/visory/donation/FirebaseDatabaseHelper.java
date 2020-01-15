@@ -1,6 +1,6 @@
 package com.taruc.visory.donation;
 
-import android.widget.Toast;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 
@@ -29,7 +29,6 @@ public class FirebaseDatabaseHelper {
     }
 
     public void readDonateHistory(final DataStatus dataStatus) {
-
         mReferenceDonateHistory.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -39,9 +38,9 @@ public class FirebaseDatabaseHelper {
                     keys.add(keyNode.getKey());
                     DonateDatabase donateDatabase = keyNode.getValue(DonateDatabase.class);
 
-                    LoggedUser user = new LoggedUser();
-                    if (donateDatabase.getEmail() == user.getUserEmail())
+                    if(donateDatabase.getEmail() == user.getUserEmail()) {
                         donateDatabaseList.add(donateDatabase);
+                    }
                 }
                 dataStatus.DataIsLoaded(donateDatabaseList, keys);
             }

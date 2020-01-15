@@ -11,7 +11,6 @@ import com.taruc.visory.R;
 import java.util.List;
 
 public class donateHistory extends AppCompatActivity {
-
     private RecyclerView mRecycleView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
