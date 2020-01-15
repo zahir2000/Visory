@@ -42,7 +42,6 @@
                 android:textSize="22.0sp"
                 android:id="@+id/button_blind_help"
                 android:layout_width="match_parent"
-                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12.0dip"
                 android:text="@string/button_get_help"

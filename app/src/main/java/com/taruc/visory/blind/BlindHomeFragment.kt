@@ -35,6 +35,7 @@ import com.taruc.visory.quickblox.util.loadUsersByPagedRequestBuilder
 import com.taruc.visory.quickblox.util.signInUser
 import com.taruc.visory.quickblox.util.signUp
 import com.taruc.visory.quickblox.utils.*
+import com.taruc.visory.ui.GetHelpActivity
 import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.fragment_blind_home.*
 
@@ -173,7 +174,8 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.button_blind_help -> {
-
+                val intent = Intent(context, GetHelpActivity::class.java)
+                startActivity(intent)
             }
 
             R.id.button_blind_make_call -> {
