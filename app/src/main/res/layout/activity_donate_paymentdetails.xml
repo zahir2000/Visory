@@ -46,15 +46,20 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/lblThankYou"
         android:layout_width="match_parent"
         android:layout_height="307dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="36dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginBottom="388dp"
         android:gravity="center"
         android:text="@string/lblThankYou"
+        android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="30sp"
         android:textStyle="normal|bold" />
