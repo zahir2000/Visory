@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.startActivity
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.*
 import com.karumi.dexter.Dexter
@@ -53,28 +55,28 @@ class GetHelpActivity : AppCompatActivity() {
         }
     }
 
-    private fun requestPermissionCall():Boolean{
-        Dexter.withActivity(this)
-            .withPermission(Manifest.permission.CALL_PHONE)
-            .withListener(object: PermissionListener{
-                override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-                    isPermission = true
-                }
+    override fun onStop() {
+        super.onStop()
+            val loggedUser = LoggedUser(applicationContext)
+            val rootRef = FirebaseDatabase.getInstance().getReference("users")
+            val uidRef = rootRef.child(String.format("%s", loggedUser.getUserID()))
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    rootRef.child(loggedUser.getUserID())
+                        .child("latitude").removeValue()
 
-                override fun onPermissionRationaleShouldBeShown(
-                    permission: PermissionRequest?,
-                    token: PermissionToken?
-                ) {
+                    rootRef.child(loggedUser.getUserID())
+                        .child("longitude").removeValue()
+                        .addOnCompleteListener { task ->
+                            if(task.isSuccessful){
+                                shortToast("Location is not being recorded.")
+                            }
+                        }
                 }
-
-                override fun onPermissionDenied(response: PermissionDeniedResponse?) {
-                    if(response!!.isPermanentlyDenied){
-                        isPermission = false
-                    }
-                }
-            }).check()
-        return isPermission
-    }
+                override fun onCancelled(databaseError: DatabaseError) {}
+            }
+            uidRef.addListenerForSingleValueEvent(valueEventListener)
+        }
 
     private fun checkLocation():Boolean{
         if(!isLocationEnabled()){
@@ -163,15 +165,15 @@ class GetHelpActivity : AppCompatActivity() {
             }
 
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
             override fun onProviderEnabled(provider: String?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
             override fun onProviderDisabled(provider: String?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
         })
