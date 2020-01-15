@@ -88,7 +88,10 @@
         android:layout_marginStart="@dimen/spacing_md"
         android:layout_marginEnd="@dimen/spacing_md"
         android:layout_marginBottom="32dp"
+        android:paddingStart="@dimen/spacing_md"
         android:text="@string/selectPhoto"
+        android:drawableStart="@drawable/ic_photo_camera_black_24dp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/imgStoryCover"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
