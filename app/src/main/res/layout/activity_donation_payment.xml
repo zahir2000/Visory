@@ -48,33 +48,67 @@
         android:id="@+id/radioGroupAmountDonateRadioButton"
         android:layout_width="252dp"
         android:layout_height="128dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblDonate">
 
-        <RadioButton
-            android:id="@+id/radRM1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/radRM1" />
+        <RadioGroup
+            android:id="@+id/radGroup1to3"
+            android:layout_width="126dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/radRM2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/radRM2" />
+            <RadioButton
+                android:id="@+id/radRM1"
+                android:layout_width="126dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radRM1" />
 
-        <RadioButton
-            android:id="@+id/radRM5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/radRM5" />
+            <RadioButton
+                android:id="@+id/radRM5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radRM5" />
 
-        <RadioButton
-            android:id="@+id/radRM10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/radRM10" />
+            <RadioButton
+                android:id="@+id/radRM10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radRM10" />
+
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/radGroup4to6"
+            android:layout_width="126dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radRM20"
+                android:layout_width="126dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radRM20" />
+
+            <RadioButton
+                android:id="@+id/radRM50"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radRM50" />
+
+            <RadioButton
+                android:id="@+id/radRM100"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radRM100" />
+        </RadioGroup>
     </RadioGroup>
 
 

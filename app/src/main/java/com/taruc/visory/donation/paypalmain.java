@@ -32,7 +32,7 @@ public class paypalmain extends AppCompatActivity {
 
     Button btnDonate;
     EditText txtDonate;
-    //RadioButton radRM1,radRM2,radRM5,radRM10;
+    //RadioButton radRM1,radRM5,radRM10,radRM20,radRM50,radRM100;
 
     String amount = "";
 
@@ -54,9 +54,11 @@ public class paypalmain extends AppCompatActivity {
         btnDonate = (Button) findViewById(R.id.btnDonate);
         txtDonate = (EditText) findViewById(R.id.txtDonate);
 //        radRM1 = (RadioButton) findViewById(R.id.radRM1);
-//        radRM2 = (RadioButton) findViewById(R.id.radRM2);
 //        radRM5 = (RadioButton) findViewById(R.id.radRM5);
 //        radRM10 = (RadioButton) findViewById(R.id.radRM10);
+//        radRM20 = (RadioButton) findViewById(R.id.radRM20);
+//        radRM50 = (RadioButton) findViewById(R.id.radRM50);
+//        radRM100 = (RadioButton) findViewById(R.id.radRM100);
 
 //        int one  = 1;
 //        if(radRM1.isChecked()){
@@ -69,21 +71,40 @@ public class paypalmain extends AppCompatActivity {
 //            txtDonate.setText(String.valueOf(10));
 //        }
 
-        RadioGroup radioGroup = findViewById(R.id.radioGroupAmountDonateRadioButton);
+        RadioGroup radioGroup = findViewById(R.id.radGroup1to3);
+        RadioGroup radioGroup2 = findViewById(R.id.radGroup4to6);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             // checkedId is the RadioButton selected
+            if(radioGroup2.getCheckedRadioButtonId() != -1){
+                radioGroup2.clearCheck();
+            }
             switch (checkedId) {
                 case R.id.radRM1:
                     txtDonate.setText("1");
-                    break;
-                case R.id.radRM2:
-                    txtDonate.setText("2");
                     break;
                 case R.id.radRM5:
                     txtDonate.setText("5");
                     break;
                 case R.id.radRM10:
                     txtDonate.setText("10");
+                    break;
+            }
+        });
+
+        radioGroup2.setOnCheckedChangeListener((group, checkedId) -> {
+            // checkedId is the RadioButton selected
+            if(radioGroup.getCheckedRadioButtonId() != -1){
+                radioGroup.clearCheck();
+            }
+            switch (checkedId) {
+                case R.id.radRM20:
+                    txtDonate.setText("20");
+                    break;
+                case R.id.radRM50:
+                    txtDonate.setText("50");
+                    break;
+                case R.id.radRM100:
+                    txtDonate.setText("100");
                     break;
             }
         });
