@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
@@ -16,6 +15,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Spinner
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -52,10 +52,10 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
         edit_text_last_name.setText(getLastName(loggedUser.getUserName()))
         edit_text_pd_email.setText(loggedUser.getUserEmail())
 
-        if(loggedUser.getUserType() == 2){
+        if (loggedUser.getUserType() == 2) {
             profile_image_card_view.visibility = View.GONE
-        }else{
-            if(loggedUser.getAvatarUrl().isNotEmpty()){
+        } else {
+            if (loggedUser.getAvatarUrl().isNotEmpty() && loggedUser.getAvatarUrl().compareTo("null") != 0) {
                 val imageView = findViewById<ImageView>(R.id.image_update_profile_profile)
                 Picasso.get().load(loggedUser.getAvatarUrl()).into(imageView)
             }
@@ -80,32 +80,35 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
+        when (v?.id) {
             R.id.button_update_profile -> {
                 val fName = edit_text_first_name.text.toString()
                 val lName = edit_text_last_name.text.toString()
 
-                if(loggedUser.getUserType() == 1){
-                    if(fName.compareTo(getFirstName(loggedUser.getUserName())) == 0
+                if (loggedUser.getUserType() == 1) {
+                    if (fName.compareTo(getFirstName(loggedUser.getUserName())) == 0
                         && lName.compareTo(getLastName(loggedUser.getUserName())) == 0
-                        && selectedPhotoUri == null && !changedLanguage){
+                        && selectedPhotoUri == null && !changedLanguage
+                    ) {
                         finish()
-                    }else{
+                    } else {
                         updateProfile(v, fName, lName)
                     }
-                }else{
-                    if(fName.compareTo(getFirstName(loggedUser.getUserName())) == 0
+                } else {
+                    if (fName.compareTo(getFirstName(loggedUser.getUserName())) == 0
                         && lName.compareTo(getLastName(loggedUser.getUserName())) == 0
-                        && !changedLanguage){
+                        && !changedLanguage
+                    ) {
                         finish()
-                    }else{
+                    } else {
                         updateProfile(v, fName, lName)
                     }
                 }
             }
 
             R.id.image_update_profile_profile -> {
-                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                val intent =
+                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 intent.type = "image/*"
                 startActivityForResult(intent, 0)
             }
@@ -115,13 +118,13 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
             selectedPhotoUri = data.data!!
             val bitmap: Bitmap
 
-            bitmap = if(Build.VERSION.SDK_INT < 28){
+            bitmap = if (Build.VERSION.SDK_INT < 28) {
                 MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotoUri)
-            } else{
+            } else {
                 val source = ImageDecoder.createSource(this.contentResolver, selectedPhotoUri!!)
                 ImageDecoder.decodeBitmap(source)
             }
@@ -131,12 +134,12 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun updateProfile(view: View, fName: String, lName: String) {
-        if(TextUtils.isEmpty(fName)){
+        if (TextUtils.isEmpty(fName)) {
             makeWarningSnackbar(view, "Please enter your first name")
             return
         }
 
-        if(TextUtils.isEmpty(lName)){
+        if (TextUtils.isEmpty(lName)) {
             makeWarningSnackbar(view, "Please enter your last name")
             return
         }
@@ -153,31 +156,32 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
                     .child("language").setValue(selectedLanguage)
                 loggedUser.setUserLanguage(selectedLanguage)
 
-                if(loggedUser.getUserType() == 1){
+                if (loggedUser.getUserType() == 1) {
                     uploadImageToFirebaseStorage()
                 }
 
                 rootRef.child(loggedUser.getUserID())
-                    .child("fname").setValue(fName).addOnCompleteListener{task ->
-                        if(task.isSuccessful) {
+                    .child("fname").setValue(fName).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
                             makeSuccessSnackbar(view, "Profile details updated successfully.")
                             loggedUser.setUserName("$fName $lName")
 
                             Handler().postDelayed({
                                 finish()
                             }, 2000)
-                        }else{
+                        } else {
                             makeErrorSnackbar(view, "Profile details was not updated.")
                         }
                     }
             }
+
             override fun onCancelled(databaseError: DatabaseError) {}
         }
         uidRef.addListenerForSingleValueEvent(valueEventListener)
     }
 
-    private fun uploadImageToFirebaseStorage(){
-        if(selectedPhotoUri == null)
+    private fun uploadImageToFirebaseStorage() {
+        if (selectedPhotoUri == null)
             return
 
         val loggedUser = LoggedUser(this)
@@ -198,6 +202,7 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
                             rootRef.child(loggedUser.getUserID())
                                 .child("avatarurl").setValue(newAvatarUrl)
                         }
+
                         override fun onCancelled(databaseError: DatabaseError) {}
                     }
                     uidRef.addListenerForSingleValueEvent(valueEventListener)

@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.R
+import com.taruc.visory.quickblox.utils.ViewDialog
 import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -182,6 +183,9 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this){ task ->
                 if(task.isSuccessful){
+                    val viewDialog = ViewDialog(this)
+                    viewDialog.showDialog()
+
                     val database = FirebaseDatabase.getInstance()
                     val myRef = database.getReference("users")
                     val key = FirebaseAuth.getInstance().currentUser!!.uid
@@ -220,6 +224,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                             getString(R.string.provider_email)
                         )
 
+                        viewDialog.hideDialog()
                         val intent = Intent(this, VerifyEmailActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
@@ -249,6 +254,9 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
+
+            val viewDialog = ViewDialog(this)
+            viewDialog.showDialog()
 
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
@@ -320,6 +328,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
                 Handler().postDelayed({
                     try {
+                        viewDialog.hideDialog()
                         val intent = Intent(this, WelcomeActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
@@ -328,8 +337,8 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                     } catch (e: Exception) {}
                 }, 3000)
             } else {
+                viewDialog.hideDialog()
                 Toast.makeText(applicationContext, "" + response!!.error!!.message, Toast.LENGTH_SHORT).show()
-                //TODO : check if facebook email is not used before.
             }
         }
         else if (requestCode == RC_SIGN_IN_GOOGLE) {
@@ -343,8 +352,12 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     }
 
     private fun firebaseAuthWithGoogle(acc: GoogleSignInAccount) {
+        val viewDialog = ViewDialog(this)
+        viewDialog.showDialog()
+
         val loggedUserTypePref = LoggedUser(this)
         val credential = GoogleAuthProvider.getCredential(acc.idToken, null)
+
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -416,6 +429,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
                     Handler().postDelayed({
                         try {
+                            viewDialog.hideDialog()
                             val intent = Intent(this, WelcomeActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
@@ -425,6 +439,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                     }, 3000)
                 } else {
                     // If sign in fails, display a message to the user.
+                    viewDialog.hideDialog()
                     Toast.makeText(applicationContext, task.exception.toString(), Toast.LENGTH_SHORT).show()
                 }
             }

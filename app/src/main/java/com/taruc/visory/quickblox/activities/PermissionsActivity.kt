@@ -20,7 +20,11 @@ private const val CHECK_ONLY_AUDIO = "check_only_audio"
 class PermissionsActivity : BaseActivity(), View.OnClickListener {
 
     companion object {
-        fun startForResult(activity: Activity, checkOnlyAudio: Boolean, permissions: Array<String>) {
+        fun startForResult(
+            activity: Activity,
+            checkOnlyAudio: Boolean,
+            permissions: Array<String>
+        ) {
             val intent = Intent(activity, PermissionsActivity::class.java)
             intent.putExtra(EXTRA_PERMISSIONS, permissions)
             intent.putExtra(CHECK_ONLY_AUDIO, checkOnlyAudio)
@@ -40,7 +44,7 @@ class PermissionsActivity : BaseActivity(), View.OnClickListener {
 
         val permissions = getPermissions()
 
-        if(checkPermissions(permissions)){
+        if (checkPermissions(permissions)) {
             if (intent == null || !intent.hasExtra(EXTRA_PERMISSIONS)) {
                 throw RuntimeException("This Activity needs to be launched using the static startActivityForResult() method.")
             }
@@ -49,23 +53,14 @@ class PermissionsActivity : BaseActivity(), View.OnClickListener {
             requiresCheck = true
 
             button_give_access.setOnClickListener(this)
-        }else{
+        } else {
             Helper.save(CHECK_PERMISSIONS, false)
             finish()
         }
     }
-    //right here, change it to button
-    /*override fun onResume() {
-        super.onResume()
-        if (requiresCheck) {
-            checkPermissions()
-        } else {
-            requiresCheck = true
-        }
-    }*/
 
     override fun onClick(view: View) {
-        when(view.id){
+        when (view.id) {
             R.id.button_give_access -> {
                 if (requiresCheck) {
                     checkPermissions()
@@ -121,7 +116,11 @@ class PermissionsActivity : BaseActivity(), View.OnClickListener {
         finish()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == PERMISSION_CODE && hasAllPermissionsGranted(grantResults)) {
             requiresCheck = true
             allPermissionsGranted()
@@ -143,10 +142,11 @@ class PermissionsActivity : BaseActivity(), View.OnClickListener {
         if (grantResults.size > 1) {
             for (index in grantResults.indices) {
                 if (grantResults[index] != 0) {
-                    longToast(getString(R.string.permission_unavailable, PermissionFeatures.values()[index]))
+                    longToast(getString(R.string.permission_unavailable,PermissionFeatures.values()[index]))
                 }
             }
-        } else {
+        }
+        else {
             longToast(getString(R.string.permission_unavailable, PermissionFeatures.MICROPHONE))
         }
     }

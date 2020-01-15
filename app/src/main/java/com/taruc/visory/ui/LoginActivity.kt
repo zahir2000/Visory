@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.R
+import com.taruc.visory.quickblox.utils.ViewDialog
 import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -156,6 +157,9 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    val viewDialog = ViewDialog(this)
+                    viewDialog.showDialog()
+
                     // Sign in success, update UI with the signed-in user's information
                     makeSuccessSnackbar(view, "Login Successful")
                     //Toast.makeText(applicationContext, "Login Successful", Toast.LENGTH_SHORT).show()
@@ -177,8 +181,9 @@ class LoginActivity : AppCompatActivity() {
                             val role =
                                 Integer.parseInt(dataSnapshot.child("role").value!!.toString())
 
-                            val avatarUrl: String? = dataSnapshot.child("avatarurl").value.toString()
-                            if(avatarUrl != null && avatarUrl.isNotEmpty()){
+                            val avatarUrl: String? =
+                                dataSnapshot.child("avatarurl").value.toString()
+                            if (avatarUrl != null && avatarUrl.isNotEmpty()) {
                                 loggedUserTypePref.setAvatarUrl(avatarUrl)
                             }
 
@@ -205,6 +210,7 @@ class LoginActivity : AppCompatActivity() {
                         try {
                             if (auth.currentUser != null) {
                                 if (auth.currentUser!!.isEmailVerified) {
+                                    viewDialog.hideDialog()
                                     val intent = Intent(this, WelcomeActivity::class.java)
                                     intent.flags =
                                         Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -215,6 +221,7 @@ class LoginActivity : AppCompatActivity() {
                                     )
                                     finish()
                                 } else {
+                                    viewDialog.hideDialog()
                                     val intent = Intent(this, VerifyEmailActivity::class.java)
                                     intent.flags =
                                         Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -227,6 +234,7 @@ class LoginActivity : AppCompatActivity() {
                                 }
                             }
                         } catch (e: Exception) {
+                            viewDialog.hideDialog()
                         }
                     }, 3000)
                 } else {
@@ -252,7 +260,8 @@ class LoginActivity : AppCompatActivity() {
 
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
-
+            val viewDialog = ViewDialog(this)
+            viewDialog.showDialog()
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
                 if (auth.currentUser != null) {
@@ -299,8 +308,9 @@ class LoginActivity : AppCompatActivity() {
                                 val role =
                                     Integer.parseInt(dataSnapshot.child("role").value.toString())
 
-                                val avatarUrl: String? = dataSnapshot.child("avatarurl").value.toString()
-                                if(avatarUrl != null && avatarUrl.isNotEmpty()){
+                                val avatarUrl: String? =
+                                    dataSnapshot.child("avatarurl").value.toString()
+                                if (avatarUrl != null && avatarUrl.isNotEmpty()) {
                                     loggedUserTypePref.setAvatarUrl(avatarUrl)
                                 }
 
@@ -327,6 +337,7 @@ class LoginActivity : AppCompatActivity() {
 
                 Handler().postDelayed({
                     try {
+                        viewDialog.hideDialog()
                         val intent = Intent(this, WelcomeActivity::class.java)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -337,6 +348,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }, 3000)
             } else {
+                viewDialog.hideDialog()
                 val e = response?.error
                 if (e is FirebaseUiException) {
                     Toast.makeText(applicationContext, "Login is cancelled.", Toast.LENGTH_SHORT)
@@ -361,9 +373,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun firebaseAuthWithGoogle(acc: GoogleSignInAccount) {
-        //TODO: Check if user has registered before
+        val viewDialog = ViewDialog(this)
+        viewDialog.showDialog()
+
         val loggedUserTypePref = LoggedUser(this)
         val credential = GoogleAuthProvider.getCredential(acc.idToken, null)
+
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -410,8 +425,9 @@ class LoginActivity : AppCompatActivity() {
                                 val role =
                                     Integer.parseInt(dataSnapshot.child("role").value.toString())
 
-                                val avatarUrl: String? = dataSnapshot.child("avatarurl").value.toString()
-                                if(avatarUrl != null && avatarUrl.isNotEmpty()){
+                                val avatarUrl: String? =
+                                    dataSnapshot.child("avatarurl").value.toString()
+                                if (avatarUrl != null && avatarUrl.isNotEmpty()) {
                                     loggedUserTypePref.setAvatarUrl(avatarUrl)
                                 }
 
@@ -440,6 +456,7 @@ class LoginActivity : AppCompatActivity() {
 
                     Handler().postDelayed({
                         try {
+                            viewDialog.hideDialog()
                             val intent = Intent(this, WelcomeActivity::class.java)
                             intent.flags =
                                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -451,6 +468,7 @@ class LoginActivity : AppCompatActivity() {
                     }, 3000)
                 } else {
                     // If sign in fails, display a message to the user.
+                    viewDialog.hideDialog()
                     Toast.makeText(applicationContext, "Authentication failed", Toast.LENGTH_SHORT)
                         .show()
                 }
