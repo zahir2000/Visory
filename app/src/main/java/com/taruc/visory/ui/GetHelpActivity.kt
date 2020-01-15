@@ -39,9 +39,9 @@ class GetHelpActivity : AppCompatActivity() {
 
         if(requestSinglePermission()){
             checkLocation()
+            getLocation()
         }
 
-        getLocation()
     }
 
     private fun checkLocation():Boolean{
@@ -103,7 +103,7 @@ class GetHelpActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0f, object : LocationListener{
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0f, object : LocationListener{
             override fun onLocationChanged(location: Location?) {
                 lastLocation = LocationClass(location!!.latitude,location.longitude)
 

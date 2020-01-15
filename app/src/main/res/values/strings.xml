@@ -45,7 +45,7 @@
     <string name="image_closed_email">Closed Email</string>
     <string name="make_call_cd">Make a call to a volunteer</string>
     <string name="button_make_call">Call a volunteer</string>
-    <string name="button_get_help">Emergency</string>
+    <string name="button_emergency">Emergency</string>
 
     <string name="text_about_header">Community Stories</string>
     <string name="text_about_content">Compelling stories, in-depth interviews and more will be updated weekly in our new Stories section.
@@ -307,7 +307,8 @@
     <string name="about_visory_cd">Information about Visory application</string>
     <string name="radRM50">RM 50</string>
     <string name="radRM100">RM 100</string>
-    <string name="messageHelp">Do not worry! Help is on the way! You may use the button below to call 999.</string>
+    <string name="messageHelp">We have notified volunteers. Alternatively, you may use the button below to call 999.</string>
+    <string name="call">Call</string>
 
     <string-array name="language_array">
         <item>English</item>
