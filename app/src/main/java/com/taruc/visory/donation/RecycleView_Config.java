@@ -25,7 +25,7 @@ class RecyclerView_Config {
     }
 
     class donateHistoryView extends RecyclerView.ViewHolder {
-        private TextView mAmount, mAmountImage,mWho;
+        private TextView mAmount, mAmountImage,mWho,lblEmpty;
         private TextView mTimeDate;
 
         private String key;
