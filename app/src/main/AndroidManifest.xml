@@ -24,15 +24,12 @@
         android:roundIcon="@mipmap/ic_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".donation.donateHistory"
-            android:label="Donation History"/>
+        <activity android:name=".donation.donateHistory"/>
         <activity android:name=".ui.GetHelpActivity"/>
         <activity android:name=".ui.StoryDetailsActivity" />
         <activity android:name=".ui.SubmitStoryActivity" />
-        <activity android:name=".donation.PaymentDetails"
-            android:label="Donation Details"/>
-        <activity android:name=".donation.paypalmain"
-            android:label="Donation"/>
+        <activity android:name=".donation.PaymentDetails" />
+        <activity android:name=".donation.paypalmain" />
         <activity android:name=".volunteer.TutorialActivity" />
         <activity
             android:name=".mlkit.ObjectDetectorActivity"
