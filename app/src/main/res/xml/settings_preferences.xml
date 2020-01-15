@@ -1,72 +1,74 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        android:title="Profile"
+        android:icon="@drawable/ic_person_primary"
         android:key="profile_category"
-        android:icon="@drawable/ic_person_primary">
+        android:title="Profile">
 
         <Preference
-            app:key="personal_details"
             android:summary="Change your personal details"
-            android:title="Personal details">
-        <intent android:action="com.taruc.visory.settings.PersonalDetailsActivity"/>
+            android:title="Personal details"
+            app:key="personal_details">
+            <intent android:action="com.taruc.visory.settings.PersonalDetailsActivity" />
         </Preference>
 
         <Preference
-            app:key="change_password"
             android:summary="Change your password"
-            android:title="Change Password">
-        <intent android:action="com.taruc.visory.settings.ChangePasswordActivity"/>
+            android:title="Change Password"
+            app:key="change_password">
+            <intent android:action="com.taruc.visory.settings.ChangePasswordActivity" />
         </Preference>
 
         <Preference
-            app:key="change_email"
             android:summary="Change your email"
-            android:title="Change Email">
-            <intent android:action="com.taruc.visory.settings.ChangeEmailActivity"/>
+            android:title="Change Email"
+            app:key="change_email">
+            <intent android:action="com.taruc.visory.settings.ChangeEmailActivity" />
         </Preference>
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Socials"
+        android:icon="@drawable/ic_share"
         android:key="social_category"
-        android:icon="@drawable/ic_share">
+        android:title="Socials">
 
         <Preference
-            app:key="social_facebook"
             android:icon="@drawable/ic_facebook"
-            android:title="Facebook">
-            <intent android:action="android.intent.action.VIEW"
-                    android:data="http://www.facebook.com/zahirsher"/>
+            android:title="Facebook"
+            app:key="social_facebook">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://www.facebook.com/zahirsher" />
         </Preference>
 
         <Preference
-            app:key="social_twitter"
             android:icon="@drawable/ic_twitter"
-            android:title="Twitter">
-            <intent android:action="android.intent.action.VIEW"
-                android:data="http://www.twitter.com/zahirsher"/>
+            android:title="Twitter"
+            app:key="social_twitter">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://www.twitter.com/zahirsher" />
         </Preference>
 
         <Preference
-            app:key="social_instagram"
             android:icon="@drawable/ic_instagram"
-            android:title="Instagram">
-            <intent android:action="android.intent.action.VIEW"
-                android:data="http://www.instagram.com/zahirsher"/>
+            android:title="Instagram"
+            app:key="social_instagram">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://www.instagram.com/zahirsher" />
         </Preference>
     </PreferenceCategory>
 
     <Preference
-        android:selectable="false"
         android:enabled="true"
         android:key="version_number"
-        android:layout="@layout/preference_textview"/>
+        android:layout="@layout/preference_textview"
+        android:selectable="false" />
 
     <Preference
-        app:key="logout_button"
+        android:layout="@layout/logout_button"
         android:title="Logout"
-        android:layout="@layout/logout_button">
-    </Preference>
+        app:key="logout_button"/>
 </PreferenceScreen>

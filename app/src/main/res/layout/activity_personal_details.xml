@@ -88,6 +88,7 @@
                 android:id="@+id/edit_language_spinner"
                 android:layout_marginTop="@dimen/spacing_sm"
                 android:spinnerMode="dialog"
+                android:contentDescription="@string/spinner_language_cd"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
 
@@ -96,6 +97,7 @@
             <Button
                 android:id="@+id/button_update_profile"
                 android:layout_width="fill_parent"
+                android:contentDescription="@string/update_profile_cd"
                 android:layout_height="wrap_content"
                 android:text="@string/button_update_profile"
                 style="@style/ButtonStyle.Primary" />

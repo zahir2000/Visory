@@ -284,6 +284,25 @@
     <string name="btnReturnToLandingPage">Go Back</string>
     <string name="lblYouHaveDonated">You have donated</string>
     <string name="hintPleaseEnterAmountToDonate">Please enter donate amount</string>
+    <string name="object_detector_cd">Take a picture with your camera to detect the object</string>
+    <string name="stories_cd">Check out the stories of the other visually impaired.</string>
+    <string name="spinner_language_cd">Change your language</string>
+    <string name="update_profile_cd">Save profile changes</string>
+    <string name="change_email_cd">Save email changes</string>
+    <string name="change_password_cd">Save password changes</string>
+    <string name="app_version_cd">Visory application version</string>
+    <string name="settings_logout_cd">Logout from your account</string>
+    <string name="register_login_cd">Login to your existing account</string>
+    <string name="login_register_cd">Register with a new account</string>
+    <string name="button_facebook_cd">Register with your Facebook account</string>
+    <string name="button_google_cd">Register with your Google account</string>
+    <string name="button_register_submit_cd">Register your new account</string>
+    <string name="language_spinner_cd">Select your preferred language</string>
+    <string name="forgot_password_button_cd">Reset your password</string>
+    <string name="login_button_submit_cd">Login to your account</string>
+    <string name="button_facebook_login_cd">Login with your Facebook account</string>
+    <string name="button_google_login_cd">Login with your Google account</string>
+    <string name="button_reset_pass_cd">Send a reset password link to your email</string>
 
     <string-array name="language_array">
         <item>English</item>

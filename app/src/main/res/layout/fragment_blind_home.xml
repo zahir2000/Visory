@@ -34,6 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12.0dip"
+                android:contentDescription="@string/object_detector_cd"
                 android:text="@string/button_object_detector"
                 style="@style/ButtonStyle.Secondary" />
 

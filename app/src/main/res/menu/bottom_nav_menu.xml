@@ -8,6 +8,7 @@
 
     <item
         android:id="@+id/navigation_stories"
+        android:contentDescription="@string/stories_cd"
         android:icon="@drawable/ic_favorite"
         android:title="@string/bottom_nav_text_stories" />
 

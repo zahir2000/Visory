@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:contentDescription="@string/app_version_cd"
         android:layout_gravity="start"/>
     <TextView
         android:text="@string/version_number"

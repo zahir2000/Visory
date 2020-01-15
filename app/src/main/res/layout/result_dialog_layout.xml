@@ -11,9 +11,8 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
-
         <RelativeLayout
-            android:id="@+id/aviLoaderHolderView"
+            android:id="@+id/dialog_indicator_layout"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginTop="10dp"
@@ -21,17 +20,17 @@
             android:gravity="center">
 
             <com.wang.avi.AVLoadingIndicatorView
-                android:id="@+id/aviLoader"
+                android:id="@+id/dialog_indicator_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="visible"
                 app:indicatorColor="@color/colorPrimary"
-                app:indicatorName="BallClipRotatePulseIndicator" />
+                app:indicatorName="BallClipRotateIndicator" />
 
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/iViewResult"
+            android:id="@+id/dialog_image_result"
             android:layout_marginTop="10dp"
             android:layout_width="150dp"
             android:layout_height="150dp"
@@ -40,7 +39,7 @@
             android:contentDescription="@string/image_result_descr"/>
 
         <TextView
-            android:id="@+id/tvResult"
+            android:id="@+id/dialog_text_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -54,7 +53,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tvLoadingRecognition"
+            android:id="@+id/dialog_text_loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
@@ -70,7 +69,7 @@
             layout="@layout/empty_space"/>
 
         <Button
-            android:id="@+id/btnCloseDialog"
+            android:id="@+id/button_close_dialog"
             style="@style/ButtonStyle.NoBackground"
             android:textSize="12sp"
             android:background="@color/colorPrimary"

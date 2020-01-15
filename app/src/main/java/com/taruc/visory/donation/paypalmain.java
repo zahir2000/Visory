@@ -33,7 +33,6 @@ public class paypalmain extends AppCompatActivity {
     Button btnDonate;
     EditText txtDonate;
     //RadioButton radRM1,radRM2,radRM5,radRM10;
-    RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroupAmountDonateRadioButton);
 
     String amount = "";
 
@@ -70,24 +69,22 @@ public class paypalmain extends AppCompatActivity {
 //            txtDonate.setText(String.valueOf(10));
 //        }
 
-
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // checkedId is the RadioButton selected
-                switch (checkedId) {
-                    case R.id.radRM1:
-                        txtDonate.setText("1");
-                        break;
-                    case R.id.radRM2:
-                        txtDonate.setText("2");
-                        break;
-                    case R.id.radRM5:
-                        txtDonate.setText("5");
-                        break;
-                    case R.id.radRM10:
-                        txtDonate.setText("10");
-                        break;
-                }
+        RadioGroup radioGroup = findViewById(R.id.radioGroupAmountDonateRadioButton);
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            // checkedId is the RadioButton selected
+            switch (checkedId) {
+                case R.id.radRM1:
+                    txtDonate.setText("1");
+                    break;
+                case R.id.radRM2:
+                    txtDonate.setText("2");
+                    break;
+                case R.id.radRM5:
+                    txtDonate.setText("5");
+                    break;
+                case R.id.radRM10:
+                    txtDonate.setText("10");
+                    break;
             }
         });
 

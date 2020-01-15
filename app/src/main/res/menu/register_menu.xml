@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/register_login"
+        android:contentDescription="@string/register_login_cd"
         android:icon="@drawable/ic_login"
         android:title="@string/login"
-        app:showAsAction="ifRoom"/>
-
+        app:showAsAction="ifRoom" />
 </menu>

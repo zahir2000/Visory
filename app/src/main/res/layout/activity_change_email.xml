@@ -75,6 +75,7 @@
                 android:id="@+id/button_change_email"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/change_email_cd"
                 android:text="@string/button_update_email"
                 style="@style/ButtonStyle.Primary" />
         </LinearLayout>

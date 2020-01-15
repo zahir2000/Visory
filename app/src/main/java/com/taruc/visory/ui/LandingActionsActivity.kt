@@ -1,10 +1,10 @@
 package com.taruc.visory.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.google.firebase.auth.FirebaseAuth
+import androidx.appcompat.app.AppCompatActivity
+import com.r0adkll.slidr.Slidr
 import com.taruc.visory.R
 import com.taruc.visory.utils.UserType
 import kotlinx.android.synthetic.main.activity_landing_actions.*
@@ -12,11 +12,11 @@ import kotlinx.android.synthetic.main.activity_landing_actions.*
 class LandingActionsActivity : AppCompatActivity(), View.OnClickListener {
 
     private var userType: Int = 0
-    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing_actions)
+        Slidr.attach(this)
 
         //implement back button
         val actionbar = supportActionBar
@@ -61,7 +61,7 @@ class LandingActionsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(view: View) {
-        when(view.id){
+        when (view.id) {
             R.id.button_login -> {
                 val intent = Intent(this, LoginActivity::class.java)
                 //intent.putExtra("userType", userType)
@@ -75,31 +75,4 @@ class LandingActionsActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-
-    /*override fun onStart() {
-        super.onStart()
-
-//        auth = FirebaseAuth.getInstance()
-//        updateUI()
-    }
-
-    *//*private fun updateUI() {
-        val accessToken = AccessToken.getCurrentAccessToken()
-        val isLoggedIn = accessToken != null && !accessToken.isExpired
-
-        if(auth.currentUser != null){
-            if(auth.currentUser!!.isEmailVerified || isLoggedIn){
-                val intent = Intent(this, WelcomeActivity::class.java) // TODO: Change to Home activity
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                overridePendingTransition(0, 0)
-            }else{
-                val intent = Intent(this, VerifyEmailActivity::class.java) // TODO: Change to Home activity
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                overridePendingTransition(0, 0)
-            }
-            finish()
-        }
-    }*/
 }

@@ -1,31 +1,14 @@
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/user_stats_view"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/stats"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@drawable/stats"
-    android:paddingTop="@dimen/spacing_md"
     android:paddingLeft="@dimen/spacing_md"
+    android:paddingTop="@dimen/spacing_md"
     android:paddingRight="@dimen/spacing_md"
-    android:paddingBottom="@dimen/spacing_md"
-    android:layout_width="fill_parent"
-    android:id="@+id/user_stats_view"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!--<ImageView
-        android:id="@+id/imageView"
-        android:layout_width="75.0dip"
-        android:layout_height="75.0dip"
-        android:background="@drawable/image_rounded"
-        tools:srcCompat="@tools:sample/avatars" />-->
-
-    <!--<com.mikhaellopez.circularimageview.CircularImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@drawable/boku"
-        android:id="@+id/profile_card_picture"
-        app:civ_shadow="false"
-        app:civ_shadow_radius="10" />-->
+    android:paddingBottom="@dimen/spacing_md">
 
     <ImageView
         android:id="@+id/image_user_stats"
@@ -33,14 +16,13 @@
         android:layout_height="130dp"
         android:contentDescription="@string/profile_img_cd"
         android:scaleType="fitCenter"
-
         android:src="@drawable/ic_globe_big" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:paddingTop="10dp"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:paddingTop="10dp"
         android:weightSum="2">
 
         <LinearLayout
@@ -53,20 +35,20 @@
             <TextView
                 android:id="@+id/textViewBlindCount"
                 android:layout_width="match_parent"
-                android:textColor="#f0f0f1"
-                android:text="@string/default_user_count"
                 android:layout_height="wrap_content"
+                android:text="@string/default_user_count"
                 android:textAlignment="center"
+                android:textColor="#f0f0f1"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textViewBlindText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/user_stats_bvi"
                 android:textAlignment="center"
                 android:textColor="@color/colorGray"
-                android:textSize="12sp"
-                android:text="@string/user_stats_bvi" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <View
@@ -85,19 +67,19 @@
                 android:id="@+id/textViewVolunteerCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/default_user_count"
                 android:textAlignment="center"
                 android:textColor="#f0f0f1"
-                android:text="@string/default_user_count"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textViewVolunteerText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/user_stats_volunteers"
                 android:textAlignment="center"
                 android:textColor="@color/colorGray"
-                android:textSize="12sp"
-                android:text="@string/user_stats_volunteers" />
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

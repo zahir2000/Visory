@@ -1,51 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-    android:focusableInTouchMode="true"
-    android:descendantFocusability="beforeDescendants"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/FragmentBackground"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    style="@style/FragmentBackground"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- TODO : make a custom EditText -->
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fillViewport="true">
 
         <LinearLayout
-            android:orientation="vertical"
+            style="@style/ScrollViewChild"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/ScrollViewChild">
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imageViewIntroduction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_globe_big"
                 android:layout_gravity="center"
-                android:importantForAccessibility="no"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/introduction_image"
+                android:importantForAccessibility="no"
                 android:maxHeight="200.0dip"
-                android:scaleType="centerInside" />
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_globe_big" />
 
 
             <TextView
                 android:id="@+id/textViewIntroduction"
+                style="@style/TextAppearance.Header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_gravity="center"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:paddingBottom="20dip"
                 android:layout_marginEnd="8dp"
-                android:text="@string/introduction_text"
-                style="@style/TextAppearance.Header" />
+                android:paddingBottom="20dip"
+                android:text="@string/introduction_text" />
 
 
-            <include
-                layout="@layout/empty_space" />
+            <include layout="@layout/empty_space" />
 
             <Button
                 android:id="@+id/buttonBlind"

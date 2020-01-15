@@ -27,15 +27,15 @@
         app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <TextView
+        style="@style/TextAppearance.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:paddingStart="@dimen/spacing_md"
+        android:paddingEnd="@dimen/spacing_md"
         android:text="@string/about_visory"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:paddingStart="@dimen/spacing_md"
-        android:paddingEnd="@dimen/spacing_md"
-        style="@style/TextAppearance.Small"
         app:layout_constraintTop_toBottomOf="@+id/textViewAboutHeader" />
 </androidx.constraintlayout.widget.ConstraintLayout>

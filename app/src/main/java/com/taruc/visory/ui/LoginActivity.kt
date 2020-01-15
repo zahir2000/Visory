@@ -2,7 +2,6 @@ package com.taruc.visory.ui
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Patterns
@@ -10,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseUiException
 import com.firebase.ui.auth.IdpResponse
@@ -28,7 +28,6 @@ import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.R
 import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_login.*
-import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
 
@@ -61,19 +60,19 @@ class LoginActivity : AppCompatActivity() {
 
         val facebookConfig = arrayListOf(AuthUI.IdpConfig.FacebookBuilder().build())
 
-        button_facebook.setOnClickListener{
+        button_facebook.setOnClickListener {
             hideKeyboard(this, it)
 
-            if(isInternetAvailable(applicationContext)){
+            if (isInternetAvailable(applicationContext)) {
                 startActivityForResult(
                     AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(facebookConfig)
                         .setIsSmartLockEnabled(false)
                         .build(),
-                    RC_SIGN_IN)
-            }
-            else{
+                    RC_SIGN_IN
+                )
+            } else {
                 makeErrorSnackbar(it, getString(R.string.active_internet_connection))
             }
         }
@@ -85,14 +84,13 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        button_google.setOnClickListener{
+        button_google.setOnClickListener {
             hideKeyboard(this, it)
 
-            if(isInternetAvailable(applicationContext)){
+            if (isInternetAvailable(applicationContext)) {
                 val signInIntent = googleSignInClient.signInIntent
                 startActivityForResult(signInIntent, RC_SIGN_IN_GOOGLE)
-            }
-            else{
+            } else {
                 makeErrorSnackbar(it, getString(R.string.active_internet_connection))
             }
         }
@@ -103,13 +101,12 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        login_button_submit.setOnClickListener{
+        login_button_submit.setOnClickListener {
             hideKeyboard(this, it)
 
-            if(isInternetAvailable(applicationContext)){
+            if (isInternetAvailable(applicationContext)) {
                 login(it)
-            }
-            else{
+            } else {
                 makeErrorSnackbar(it, getString(R.string.active_internet_connection))
             }
         }
@@ -117,14 +114,14 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val fromRegister = intent.getBooleanExtra("fromRegister", false)
-        if(!fromRegister){
+        if (!fromRegister) {
             menuInflater.inflate(R.menu.login_menu, menu)
         }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.login_register -> {
                 val intent = Intent(this, RegisterActivity::class.java)
                 intent.putExtra("fromLogin", true)
@@ -138,18 +135,18 @@ class LoginActivity : AppCompatActivity() {
         val password = textInputPassword.text.toString().trim()
         val email = textInputEmail.text.toString().trim()
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             makeErrorSnackbar(view, "Email can't be empty.")
             return
-        }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             makeErrorSnackbar(view, "Please enter a valid email.")
             return
         }
 
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             makeErrorSnackbar(view, "Password can't be empty.")
             return
-        }else if(password.length !in 6..16){
+        } else if (password.length !in 6..16) {
             makeErrorSnackbar(view, "Password must be between 6 to 16 characters.")
             return
         }
@@ -170,11 +167,15 @@ class LoginActivity : AppCompatActivity() {
                     val uidRef = rootRef.child(String.format("%s", uid))
                     val valueEventListener = object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val userName = dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child("lname").value.toString()
+                            val userName =
+                                dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child(
+                                    "lname"
+                                ).value.toString()
                             val userEmail = dataSnapshot.child("email").value.toString()
                             val userJoinDate = dataSnapshot.child("datejoined").value.toString()
                             val userLanguage = dataSnapshot.child("language").value.toString()
-                            val role = Integer.parseInt(dataSnapshot.child("role").value!!.toString())
+                            val role =
+                                Integer.parseInt(dataSnapshot.child("role").value!!.toString())
 
                             //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
                             //if data is modified, it can directly be done using another activity.
@@ -189,6 +190,7 @@ class LoginActivity : AppCompatActivity() {
                             )
 
                         }
+
                         override fun onCancelled(databaseError: DatabaseError) {
                         }
                     }
@@ -196,23 +198,31 @@ class LoginActivity : AppCompatActivity() {
 
                     Handler().postDelayed({
                         try {
-                            if(auth.currentUser != null){
-                                if(auth.currentUser!!.isEmailVerified){
+                            if (auth.currentUser != null) {
+                                if (auth.currentUser!!.isEmailVerified) {
                                     val intent = Intent(this, WelcomeActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    intent.flags =
+                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                     startActivity(intent)
-                                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                                    overridePendingTransition(
+                                        R.anim.slide_in_right,
+                                        R.anim.slide_out_left
+                                    )
                                     finish()
-                                }
-                                else{
+                                } else {
                                     val intent = Intent(this, VerifyEmailActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    intent.flags =
+                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                     startActivity(intent)
-                                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                                    overridePendingTransition(
+                                        R.anim.slide_in_right,
+                                        R.anim.slide_out_left
+                                    )
                                     finish()
                                 }
                             }
-                        } catch (e: Exception) {}
+                        } catch (e: Exception) {
+                        }
                     }, 3000)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -240,13 +250,13 @@ class LoginActivity : AppCompatActivity() {
 
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
-                if(auth.currentUser != null){
-                    if(response?.isNewUser!!){
+                if (auth.currentUser != null) {
+                    if (response?.isNewUser!!) {
                         val user = FirebaseAuth.getInstance().currentUser
                         val database = FirebaseDatabase.getInstance()
                         val myRef = database.getReference("users")
 
-                        val name:String = user!!.displayName!!
+                        val name: String = user!!.displayName!!
                         val key = FirebaseAuth.getInstance().currentUser!!.uid
 
                         val newUser = User(
@@ -255,9 +265,9 @@ class LoginActivity : AppCompatActivity() {
                             user.email!!,
                             userType,
                             getCurrentDate(),
-                            "English" // TODO : User preferred language
+                            "English"
                         )
-                        myRef.child(key).setValue(newUser).addOnCompleteListener{
+                        myRef.child(key).setValue(newUser).addOnCompleteListener {
                             loggedUserTypePref.setUserData(
                                 FirebaseAuth.getInstance().currentUser!!.uid,
                                 name,
@@ -268,18 +278,21 @@ class LoginActivity : AppCompatActivity() {
                                 getString(R.string.provider_fb)
                             )
                         }
-                    }
-                    else{
+                    } else {
                         val uid = FirebaseAuth.getInstance().currentUser!!.uid
                         val rootRef = FirebaseDatabase.getInstance().getReference("users")
                         //val uidRef = rootRef.child(String.format("%s/role", uid))
                         val uidRef = rootRef.child(String.format("%s", uid))
                         val valueEventListener = object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                val userName = dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child("lname").value.toString()
+                                val userName =
+                                    dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child(
+                                        "lname"
+                                    ).value.toString()
                                 val userEmail = dataSnapshot.child("email").value.toString()
                                 val userJoinDate = dataSnapshot.child("datejoined").value.toString()
-                                val role = Integer.parseInt(dataSnapshot.child("role").value.toString())
+                                val role =
+                                    Integer.parseInt(dataSnapshot.child("role").value.toString())
 
                                 //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
                                 //if data is modified, it can directly be done using another activity.
@@ -294,6 +307,7 @@ class LoginActivity : AppCompatActivity() {
                                 )
 
                             }
+
                             override fun onCancelled(databaseError: DatabaseError) {
                             }
                         }
@@ -304,28 +318,35 @@ class LoginActivity : AppCompatActivity() {
                 Handler().postDelayed({
                     try {
                         val intent = Intent(this, WelcomeActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                         finish()
-                    } catch (e: Exception) {}
+                    } catch (e: Exception) {
+                    }
                 }, 3000)
             } else {
                 val e = response?.error
-                if(e is FirebaseUiException){
-                    Toast.makeText(applicationContext, "Login is cancelled.", Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(applicationContext, "" + response!!.error!!.message, Toast.LENGTH_SHORT).show()
+                if (e is FirebaseUiException) {
+                    Toast.makeText(applicationContext, "Login is cancelled.", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    Toast.makeText(
+                        applicationContext,
+                        "" + response!!.error!!.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-        }
-        else if (requestCode == RC_SIGN_IN_GOOGLE) {
+        } else if (requestCode == RC_SIGN_IN_GOOGLE) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account!!)
-            } catch (e: ApiException) {}
+            } catch (e: ApiException) {
+            }
         }
     }
 
@@ -336,7 +357,7 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    if(task.result?.additionalUserInfo?.isNewUser!!){
+                    if (task.result?.additionalUserInfo?.isNewUser!!) {
                         val user = auth.currentUser
                         val database = FirebaseDatabase.getInstance()
                         val myRef = database.getReference("users")
@@ -350,7 +371,7 @@ class LoginActivity : AppCompatActivity() {
                             user.email!!,
                             userType,
                             getCurrentDate(),
-                            "English" // TODO : User preferred language
+                            "English"
                         )
                         myRef.child(key).setValue(newUser)
 
@@ -363,18 +384,21 @@ class LoginActivity : AppCompatActivity() {
                             "English",
                             getString(R.string.provider_google)
                         )
-                    }
-                    else{
+                    } else {
                         val uid = FirebaseAuth.getInstance().currentUser!!.uid
                         val rootRef = FirebaseDatabase.getInstance().getReference("users")
                         //val uidRef = rootRef.child(String.format("%s/role", uid))
                         val uidRef = rootRef.child(String.format("%s", uid))
                         val valueEventListener = object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                val userName = dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child("lname").value.toString()
+                                val userName =
+                                    dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child(
+                                        "lname"
+                                    ).value.toString()
                                 val userEmail = dataSnapshot.child("email").value.toString()
                                 val userJoinDate = dataSnapshot.child("datejoined").value.toString()
-                                val role = Integer.parseInt(dataSnapshot.child("role").value.toString())
+                                val role =
+                                    Integer.parseInt(dataSnapshot.child("role").value.toString())
 
                                 //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
                                 //if data is modified, it can directly be done using another activity.
@@ -389,26 +413,31 @@ class LoginActivity : AppCompatActivity() {
                                 )
 
                             }
+
                             override fun onCancelled(databaseError: DatabaseError) {
                             }
                         }
                         uidRef.addListenerForSingleValueEvent(valueEventListener)
                     }
 
-                    Toast.makeText(applicationContext, "Login is successful", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Login is successful", Toast.LENGTH_SHORT)
+                        .show()
 
                     Handler().postDelayed({
                         try {
                             val intent = Intent(this, WelcomeActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            intent.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                             finish()
-                        } catch (e: Exception) {}
+                        } catch (e: Exception) {
+                        }
                     }, 3000)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Toast.makeText(applicationContext, "Authentication failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Authentication failed", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
     }

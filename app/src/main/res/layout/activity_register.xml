@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-    android:focusableInTouchMode="true"
-    android:descendantFocusability="beforeDescendants"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/FragmentBackground"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    style="@style/FragmentBackground"
 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="fill_parent"
@@ -15,45 +15,47 @@
         android:fillViewport="true">
 
         <LinearLayout
-            android:orientation="vertical"
             android:id="@+id/email_login_form"
+            style="@style/ScrollViewChild"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/ScrollViewChild">
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/button_facebook"
+                style="@style/ButtonStyle.Primary"
                 android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_xsm"
+                android:background="@drawable/facebook_style"
+                android:contentDescription="@string/button_facebook_cd"
                 android:drawableStart="@drawable/facebook_icon"
                 android:paddingStart="20dip"
                 android:paddingEnd="20dip"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_xsm"
-                android:text="@string/text_signup_facebook"
-                android:background="@drawable/facebook_style"
-                style="@style/ButtonStyle.Primary" />
+                android:text="@string/text_signup_facebook" />
 
             <Button
                 android:id="@+id/button_google"
+                style="@style/ButtonStyle.Primary"
                 android:layout_width="fill_parent"
-                android:drawableStart="@drawable/google_icon"
                 android:layout_height="wrap_content"
+                android:background="@drawable/google_style"
+                android:contentDescription="@string/button_google_cd"
+                android:drawableStart="@drawable/google_icon"
                 android:paddingStart="20dip"
                 android:paddingEnd="20dip"
-                android:textColor="#90000000"
                 android:text="@string/text_signup_google"
-                android:background="@drawable/google_style"
-                style="@style/ButtonStyle.Primary" />
+                android:textColor="#90000000" />
 
             <TextView
-                android:gravity="center"
+                style="@style/TextAppearance.Small"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_md"
-                android:importantForAccessibility="no"
                 android:layout_marginBottom="@dimen/spacing_sm"
-                android:text="@string/text_or"
-                style="@style/TextAppearance.Small" />
+                android:gravity="center"
+                android:importantForAccessibility="no"
+                android:text="@string/text_or" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_fname"
@@ -64,8 +66,8 @@
                     android:id="@+id/edit_text_fname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_fname"
                     android:autofillHints="given-name"
+                    android:hint="@string/hint_fname"
                     android:inputType="textPersonName|textCapWords"
                     tools:targetApi="o" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -79,8 +81,8 @@
                     android:id="@+id/edit_text_lname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_lname"
                     android:autofillHints="family-name"
+                    android:hint="@string/hint_lname"
                     android:inputType="textPersonName|textCapWords"
                     tools:targetApi="o" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -94,8 +96,8 @@
                     android:id="@+id/text_edit_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/login_email"
                     android:autofillHints="email"
+                    android:hint="@string/login_email"
                     android:inputType="textEmailAddress"
                     tools:targetApi="o" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -119,13 +121,13 @@
 
             <Spinner
                 android:id="@+id/language_spinner"
-                android:layout_marginTop="@dimen/spacing_sm"
-                android:spinnerMode="dialog"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:contentDescription="@string/language_spinner_cd"
+                android:spinnerMode="dialog" />
 
-            <include
-                layout="@layout/empty_space"/>
+            <include layout="@layout/empty_space" />
 
             <Button
                 android:id="@+id/button_register_submit"
@@ -133,6 +135,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_sm"
+                android:contentDescription="@string/button_register_submit_cd"
                 android:text="@string/button_register_submit" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

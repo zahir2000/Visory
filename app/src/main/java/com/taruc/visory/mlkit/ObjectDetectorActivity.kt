@@ -1,13 +1,11 @@
 package com.taruc.visory.mlkit
 
 import android.app.Dialog
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
@@ -16,10 +14,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.taruc.visory.R
-import com.taruc.visory.utils.shortToast
 import com.wonderkiln.camerakit.*
 import kotlinx.android.synthetic.main.activity_object_detector.*
-import kotlinx.android.synthetic.main.result_dialog_layout.*
 import java.lang.StringBuilder
 import java.util.concurrent.Executors
 
@@ -77,11 +73,11 @@ class ObjectDetectorActivity : AppCompatActivity() {
         resultDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         resultDialog.setContentView(customProgressView)
 
-        val ivImageResult = customProgressView.findViewById<ImageView>(R.id.iViewResult)
-        val tvLoadingText = customProgressView.findViewById<TextView>(R.id.tvLoadingRecognition)
-        val tvTextResults = customProgressView.findViewById<TextView>(R.id.tvResult)
-        val aviLoaderHolder = customProgressView.findViewById<View>(R.id.aviLoaderHolderView)
-        val closeResultButton = customProgressView.findViewById<Button>(R.id.btnCloseDialog)
+        val imageResult = customProgressView.findViewById<ImageView>(R.id.dialog_image_result)
+        val loadingText = customProgressView.findViewById<TextView>(R.id.dialog_text_loading)
+        val result = customProgressView.findViewById<TextView>(R.id.dialog_text_result)
+        val indicatorLayout = customProgressView.findViewById<View>(R.id.dialog_indicator_layout)
+        val closeResultButton = customProgressView.findViewById<Button>(R.id.button_close_dialog)
 
         closeResultButton.setOnClickListener{
             resultDialog.dismiss()
@@ -97,12 +93,12 @@ class ObjectDetectorActivity : AppCompatActivity() {
                 var bitmap = cameraKitImage.bitmap
                 bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false)
 
-                aviLoaderHolder.visibility = View.GONE
-                tvLoadingText.visibility = View.GONE
+                indicatorLayout.visibility = View.GONE
+                loadingText.visibility = View.GONE
                 closeResultButton.visibility = View.VISIBLE
 
                 val results = classifier.recognizeImage(bitmap)
-                ivImageResult.setImageBitmap(bitmap)
+                imageResult.setImageBitmap(bitmap)
 
                 val builder = StringBuilder()
 
@@ -120,10 +116,10 @@ class ObjectDetectorActivity : AppCompatActivity() {
                     builder.append("Sorry, we could not identify this object. Please try again or change your location to area with more light.")
                 }
 
-                tvTextResults.text = builder.toString()
+                result.text = builder.toString()
 
-                tvTextResults.visibility = View.VISIBLE
-                ivImageResult.visibility = View.VISIBLE
+                result.visibility = View.VISIBLE
+                imageResult.visibility = View.VISIBLE
 
                 resultDialog.setCancelable(true)
 
@@ -137,14 +133,14 @@ class ObjectDetectorActivity : AppCompatActivity() {
         btnDetectObject.setOnClickListener {
             cameraView.captureImage()
             resultDialog.show()
-            tvTextResults.visibility = View.GONE
-            ivImageResult.visibility = View.GONE
+            result.visibility = View.GONE
+            imageResult.visibility = View.GONE
 
         }
 
         resultDialog.setOnDismissListener {
-            tvLoadingText.visibility = View.VISIBLE
-            aviLoaderHolder.visibility = View.VISIBLE
+            loadingText.visibility = View.VISIBLE
+            indicatorLayout.visibility = View.VISIBLE
         }
 
         initTensorFlowAndLoadModel()
