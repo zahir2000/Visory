@@ -8,6 +8,7 @@ import android.content.Intent
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
@@ -24,6 +25,7 @@ import com.taruc.visory.R
 import com.taruc.visory.utils.LocationClass
 import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.shortToast
+import kotlinx.android.synthetic.main.activity_get_help.*
 
 
 class GetHelpActivity : AppCompatActivity() {
@@ -32,7 +34,9 @@ class GetHelpActivity : AppCompatActivity() {
     private lateinit var locationManager:LocationManager
     private lateinit var latLng: LatLng
     var isPermission:Boolean = false
+    private val phoneNum = "999"
 
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_help)
@@ -42,6 +46,34 @@ class GetHelpActivity : AppCompatActivity() {
             getLocation()
         }
 
+        btnCall.setOnClickListener {
+            val callIntent = Intent(Intent.ACTION_DIAL)
+            callIntent.data = Uri.parse("tel:$phoneNum")
+            startActivity(callIntent)
+        }
+    }
+
+    private fun requestPermissionCall():Boolean{
+        Dexter.withActivity(this)
+            .withPermission(Manifest.permission.CALL_PHONE)
+            .withListener(object: PermissionListener{
+                override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+                    isPermission = true
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permission: PermissionRequest?,
+                    token: PermissionToken?
+                ) {
+                }
+
+                override fun onPermissionDenied(response: PermissionDeniedResponse?) {
+                    if(response!!.isPermanentlyDenied){
+                        isPermission = false
+                    }
+                }
+            }).check()
+        return isPermission
     }
 
     private fun checkLocation():Boolean{
