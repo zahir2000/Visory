@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -47,6 +48,11 @@ class SubmitStoryActivity : AppCompatActivity() {
             uploadImageToFirebaseStorage()
         }
 
+        val contentView: View = findViewById(R.id.submit_story)
+        contentView.setOnClickListener {
+            it.hideKeyboard()
+        }
+
     }
 
     var selectedPhotoUri: Uri? = null
@@ -71,7 +77,7 @@ class SubmitStoryActivity : AppCompatActivity() {
 
         val storyObj = Story(uid, storyCoverUrl, title, story, date )
         if(title.isEmpty()){
-           editTextTitle.error = "Please enter a title for the story!"
+            editTextTitle.error = "Please enter a title for the story!"
            return
         }
 
@@ -95,5 +101,10 @@ class SubmitStoryActivity : AppCompatActivity() {
                     saveStory(it.toString())
                 }
             }
+    }
+
+    private fun View.hideKeyboard() {
+        val inputMethodManager = context!!.getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0)
     }
 }

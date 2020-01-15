@@ -253,7 +253,7 @@
     <string name="detect_object">Detect Object</string>
     <string name="image_result_descr">Image Result</string>
     <string name="running_object_detector">Running Object Detector</string>
-    <string name="storyTitle">Title</string>
+    <string name="storyTitle">Title:</string>
     <string name="storyBody">Story:</string>
     <string name="submit">Submit</string>
     <string name="selectPhoto">Select Photo</string>
@@ -309,6 +309,8 @@
     <string name="radRM100">RM 100</string>
     <string name="messageHelp">We have notified volunteers. Alternatively, you may use the button below to call 999.</string>
     <string name="call">Call</string>
+    <string name="title_hint">Title</string>
+    <string name="story_hint">Story goes here...</string>
 
     <string-array name="language_array">
         <item>English</item>
