@@ -84,9 +84,7 @@ class DonationMainPage : Fragment(), View.OnClickListener {
                     lblTotalDonate.text = "People have donated RM $amount"
 
                     val dbEmail = snapshot.child("email").value.toString()
-
                     val user = LoggedUser(requireContext())
-
                     if (dbEmail == user.getUserEmail()) {
                         val dbAmount2 = snapshot.child("amount").value.toString().toInt()
                         ownAmount += dbAmount2
