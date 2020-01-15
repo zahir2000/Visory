@@ -7,109 +7,121 @@
     android:background="@drawable/donationbackground"
     tools:context=".donation.paypalmain">
 
-    <TextView
-        android:id="@+id/lblDonate"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginTop="124dp"
-        android:text="@string/lblHowManyYouWantToDonateRM"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/btnDonate"
-        style="@style/ButtonStyle.Primary"
-        android:layout_width="252dp"
-        android:layout_height="wrap_content"
-        android:text="@string/btnDonate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDonate" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/txtDonate"
-        android:layout_width="252dp"
-        android:layout_height="50dp"
-        android:ems="10"
-        android:hint="@string/hintPleaseEnterAmountToDonate"
-        android:inputType="number"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupAmountDonateRadioButton" />
+            <TextView
+                android:id="@+id/lblDonate"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="56dp"
+                android:text="@string/lblHowManyYouWantToDonateRM"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <RadioGroup
-        android:id="@+id/radioGroupAmountDonateRadioButton"
-        android:layout_width="252dp"
-        android:layout_height="128dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblDonate">
-
-        <RadioGroup
-            android:id="@+id/radGroup1to3"
-            android:layout_width="126dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/radRM1"
-                android:layout_width="126dp"
+            <Button
+                android:id="@+id/btnDonate"
+                style="@style/ButtonStyle.Primary"
+                android:layout_width="252dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/radRM1" />
+                android:text="@string/btnDonate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtDonate" />
 
-            <RadioButton
-                android:id="@+id/radRM5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/radRM5" />
+            <RadioGroup
+                android:id="@+id/radioGroupAmountDonateRadioButton"
+                android:layout_width="252dp"
+                android:layout_height="128dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblDonate">
 
-            <RadioButton
-                android:id="@+id/radRM10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/radRM10" />
+                <RadioGroup
+                    android:id="@+id/radGroup1to3"
+                    android:layout_width="126dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-        </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/radRM1"
+                        android:layout_width="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/radRM1" />
 
-        <RadioGroup
-            android:id="@+id/radGroup4to6"
-            android:layout_width="126dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+                    <RadioButton
+                        android:id="@+id/radRM5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/radRM5" />
 
-            <RadioButton
-                android:id="@+id/radRM20"
-                android:layout_width="126dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/radRM20" />
+                    <RadioButton
+                        android:id="@+id/radRM10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/radRM10" />
 
-            <RadioButton
-                android:id="@+id/radRM50"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/radRM50" />
+                </RadioGroup>
 
-            <RadioButton
-                android:id="@+id/radRM100"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/radRM100" />
-        </RadioGroup>
-    </RadioGroup>
+                <RadioGroup
+                    android:id="@+id/radGroup4to6"
+                    android:layout_width="126dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/radRM20"
+                        android:layout_width="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/radRM20" />
+
+                    <RadioButton
+                        android:id="@+id/radRM50"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/radRM50" />
+
+                    <RadioButton
+                        android:id="@+id/radRM100"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/radRM100" />
+                </RadioGroup>
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/txtDonate"
+                android:layout_width="252dp"
+                android:layout_height="50dp"
+                android:ems="10"
+                android:hint="@string/hintPleaseEnterAmountToDonate"
+                android:inputType="number"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroupAmountDonateRadioButton" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
