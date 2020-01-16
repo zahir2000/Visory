@@ -310,7 +310,7 @@
     <string name="messageHelp">We have notified volunteers. Alternatively, you may use the button below to call 999.</string>
     <string name="call">Call</string>
     <string name="title_hint">Title</string>
-    <string name="story_hint">Story goes here...</string>
+    <string name="story_hint">Story</string>
 
     <string-array name="language_array">
         <item>English</item>

@@ -7,57 +7,46 @@
     android:layout_height="match_parent"
     tools:context=".ui.SubmitStoryActivity"
     android:id="@+id/submit_story">
-    <TextView
-        android:id="@+id/textView2"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edit_text_title_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/open_sans"
-        android:text="@string/storyTitle"
-        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgStoryCover" />
+        app:layout_constraintTop_toBottomOf="@+id/imgStoryCover">
 
-    <EditText
-        android:id="@+id/editTextTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:hint="@string/title_hint"
-        android:ems="10"
-        android:fontFamily="@font/open_sans"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="@+id/textView2" />
+        <EditText
+            android:id="@+id/editTextTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="@font/open_sans"
+            android:hint="@string/title_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/textView5"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edit_text_story"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/open_sans"
-        android:text="@string/storyBody"
-        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_title_layout">
 
-    <EditText
-        android:id="@+id/editTextStory"
-        android:hint="@string/story_hint"
-        android:layout_width="330dp"
-        android:layout_height="180dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:fontFamily="@font/open_sans"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        <EditText
+            android:id="@+id/editTextStory"
+            android:layout_width="330dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:fontFamily="@font/open_sans"
+            android:gravity="start|top"
+            android:hint="@string/story_hint"
+            android:inputType="textMultiLine"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnSubmit"
@@ -71,7 +60,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextStory" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_story" />
 
     <TextView
         android:id="@+id/textDate"
