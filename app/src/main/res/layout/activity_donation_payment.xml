@@ -114,6 +114,7 @@
             android:ems="10"
             android:hint="@string/hintPleaseEnterAmountToDonate"
             android:inputType="number"
+            android:textAlignment="center"
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
