@@ -313,6 +313,10 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
                     it.startActivity(intent)
                 }
             }
+
+            R.id.button_blind_location_help ->{
+
+            }
         }
     }
 }

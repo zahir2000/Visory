@@ -87,6 +87,7 @@
     <string name="error_qb_credentials_empty">Error updating User, please try again</string>
     <string name="splash_app_version">v %s</string>
     <string name="text_learn_to_answer_calls">Learn to answer calls</string>
+    <string name="text_blind_location_help">Help Blind Person by Location</string>
     <string name="text_trivia_game">Trivia Game</string>
     <string name="text_notification_call">You will receive a notification when you get a call.</string>
     <string name="default_name">No Name</string>
@@ -316,4 +317,5 @@
         <item>English</item>
         <item>Malay</item>
     </string-array>
+    <string name="title_activity_show_blind_location">Map</string>
 </resources>
