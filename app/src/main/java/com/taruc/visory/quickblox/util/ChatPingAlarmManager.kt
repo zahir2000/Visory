@@ -12,6 +12,7 @@ import com.quickblox.chat.QBChatService
 import com.quickblox.core.QBEntityCallback
 import com.quickblox.core.exception.QBResponseException
 import org.jivesoftware.smackx.ping.PingFailedListener
+import java.lang.Exception
 import java.lang.ref.WeakReference
 import java.util.concurrent.TimeUnit
 
@@ -52,11 +53,11 @@ object ChatPingAlarmManager {
     fun onDestroy() {
         try {
             context.get()?.unregisterReceiver(alarmBroadcastReceiver)
-        } catch (e: IllegalArgumentException) {
+            alarmManager.cancel(pendingIntent)
+            pingFailedListener = null
+        } catch (e: Exception) {
             e.printStackTrace()
         }
-        alarmManager.cancel(pendingIntent)
-        pingFailedListener = null
     }
 
     fun addPingListener(listener: PingFailedListener) {
