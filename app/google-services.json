@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "243602294589-29724cgmnfkpfmeu67t88u7jp59orfu8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taruc.visory",
+            "certificate_hash": "bd74393b3040e1293e435ce5932e79a14c146526"
+          }
+        },
+        {
           "client_id": "243602294589-96tmoban40ve4ocnjgcs4qop4epmqt10.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
