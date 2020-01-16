@@ -24,10 +24,7 @@ import com.quickblox.users.QBUsers
 import com.quickblox.users.model.QBUser
 import com.squareup.picasso.Picasso
 import com.taruc.visory.R
-import com.taruc.visory.blind.ERROR_LOGIN_ALREADY_TAKEN_HTTP_STATUS
-import com.taruc.visory.blind.EXTRA_LOGIN_ERROR_MESSAGE
-import com.taruc.visory.blind.EXTRA_LOGIN_RESULT
-import com.taruc.visory.blind.EXTRA_LOGIN_RESULT_CODE
+import com.taruc.visory.blind.*
 import com.taruc.visory.fragments.SettingsFragment
 import com.taruc.visory.quickblox.DEFAULT_USER_PASSWORD
 import com.taruc.visory.quickblox.activities.CallActivity
@@ -78,6 +75,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
         fullName = loggedUserPrefs.getUserName()
 
         button_tutorial.setOnClickListener(this)
+        button_help_someone.setOnClickListener(this)
 
         val user = createQBUser()
         signUpNewUser(user)
@@ -313,9 +311,11 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
                     it.startActivity(intent)
                 }
             }
-
-            R.id.button_blind_location_help ->{
-
+            R.id.button_help_someone->{
+                activity?.let {
+                    val intent = Intent(it, ShowLocationActivity::class.java)
+                    it.startActivity(intent)
+                }
             }
         }
     }

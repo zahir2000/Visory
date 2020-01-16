@@ -318,4 +318,6 @@
         <item>Malay</item>
     </string-array>
     <string name="title_activity_show_blind_location">Map</string>
+    <string name="title_activity_show_location">Map</string>
+    <string name="helpSomeone">Help Someone</string>
 </resources>
