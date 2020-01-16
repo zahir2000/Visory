@@ -68,11 +68,6 @@ class GetHelpActivity : AppCompatActivity() {
 
                     rootRef.child(loggedUser.getUserID())
                         .child("longitude").removeValue()
-                        .addOnCompleteListener { task ->
-                            if(task.isSuccessful){
-                                shortToast("Location is not being recorded.")
-                            }
-                        }
                 }
                 override fun onCancelled(databaseError: DatabaseError) {}
             }
@@ -152,11 +147,6 @@ class GetHelpActivity : AppCompatActivity() {
 
                         rootRef.child(loggedUser.getUserID())
                             .child("longitude").setValue(lastLocation.longitude)
-                            .addOnCompleteListener { task ->
-                                if(task.isSuccessful){
-                                    shortToast("Location sent!")
-                                }
-                            }
                     }
                     override fun onCancelled(databaseError: DatabaseError) {}
                 }

@@ -57,7 +57,6 @@ class ShowLocationActivity : AppCompatActivity(), OnMapReadyCallback, LocationLi
                             val loc = LocationClass(snapshot.child("latitude").value.toString().toDouble(),snapshot.child("longitude").value.toString().toDouble())
                             location = (loc)
                             latlng = LatLng(location.latitude, location.longitude)
-                            shortToast(latitude)
                             mMap.addMarker(MarkerOptions().position(latlng).title(name).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)))
 
                             builder = LatLngBounds.Builder()
