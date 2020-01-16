@@ -73,21 +73,13 @@ class ShowLocationActivity : AppCompatActivity(), OnMapReadyCallback, LocationLi
         rootRef.addListenerForSingleValueEvent(eventListener)
     }
 
-    override fun onLocationChanged(location: Location?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onLocationChanged(location: Location?) {}
 
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 
-    override fun onProviderEnabled(provider: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onProviderEnabled(provider: String?) {}
 
-    override fun onProviderDisabled(provider: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onProviderDisabled(provider: String?) {}
 
     override fun onMarkerClick(p0: Marker?)=false
 }

@@ -44,7 +44,6 @@ class LoginService : Service(){
             context.stopService(intent)
         }
 
-        //todo: logout when user logout
         fun logout(context: Context) {
             val intent = Intent(context, LoginService::class.java)
             intent.putExtra(EXTRA_COMMAND_TO_SERVICE, COMMAND_LOGOUT)
