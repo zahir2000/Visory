@@ -15,6 +15,7 @@ import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.startActivity
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.*
 import com.karumi.dexter.Dexter
@@ -38,15 +39,15 @@ class GetHelpActivity : AppCompatActivity() {
     var isPermission:Boolean = false
     private val phoneNum = "999"
 
-    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_help)
 
         if(requestSinglePermission()){
             checkLocation()
-            getLocation()
         }
+
+        getLocation()
 
         btnCall.setOnClickListener {
             val callIntent = Intent(Intent.ACTION_DIAL)
@@ -75,8 +76,8 @@ class GetHelpActivity : AppCompatActivity() {
                 }
                 override fun onCancelled(databaseError: DatabaseError) {}
             }
-            uidRef.addListenerForSingleValueEvent(valueEventListener)
-        }
+        uidRef.addListenerForSingleValueEvent(valueEventListener)
+    }
 
     private fun checkLocation():Boolean{
         if(!isLocationEnabled()){
@@ -164,18 +165,11 @@ class GetHelpActivity : AppCompatActivity() {
                 latLng = LatLng(location.latitude, location.longitude)
             }
 
-            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) { }
 
-            }
+            override fun onProviderEnabled(provider: String?) {  }
 
-            override fun onProviderEnabled(provider: String?) {
-
-            }
-
-            override fun onProviderDisabled(provider: String?) {
-
-            }
-
+            override fun onProviderDisabled(provider: String?) { }
         })
     }
 
