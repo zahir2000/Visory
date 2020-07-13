@@ -130,6 +130,20 @@ class ObjectDetectorActivity : AppCompatActivity() {
 
         btnToggleCamera.setOnClickListener { cameraView.toggleFacing() }
 
+        cameraView.setOnClickListener{
+            cameraView.captureImage()
+            resultDialog.show()
+            result.visibility = View.GONE
+            imageResult.visibility = View.GONE
+        }
+
+        if(cameraView.isLongClickable){
+            cameraView.setOnLongClickListener {
+                cameraView.toggleFacing()
+                true
+            }
+        }
+
         btnDetectObject.setOnClickListener {
             cameraView.captureImage()
             resultDialog.show()

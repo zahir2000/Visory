@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
@@ -36,11 +37,15 @@ import com.taruc.visory.quickblox.util.signInUser
 import com.taruc.visory.quickblox.util.signUp
 import com.taruc.visory.quickblox.utils.EXTRA_IS_INCOMING_CALL
 import com.taruc.visory.quickblox.utils.Helper
+import com.taruc.visory.quickblox.utils.ViewDialog
 import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.UserCount
 import kotlinx.android.synthetic.main.fragment_volunteer_home.*
 import kotlinx.android.synthetic.main.profile_card.*
 import kotlinx.android.synthetic.main.user_stats.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class VolunteerHomeFragment : Fragment(), View.OnClickListener {
@@ -51,11 +56,14 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
     private var uid: String = ""
     private var fullName: String = ""
     private lateinit var con: ViewGroup
+    lateinit var dialog: ViewDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        Log.d("Dialog", "onCreateView")
 
         con = container!!
 
@@ -66,11 +74,12 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         navController = Navigation.findNavController(view)
         (activity as AppCompatActivity).supportActionBar?.title = "Home"
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        val loggedUserPrefs = LoggedUser(this.activity!!.baseContext)
+        val loggedUserPrefs = LoggedUser(this.requireActivity().baseContext)
         uid = loggedUserPrefs.getUserID()
         fullName = loggedUserPrefs.getUserName()
 
@@ -81,8 +90,9 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
         signUpNewUser(user)
 
         startLoginService()
-
         updateUI()
+
+        Log.d("Dialog", "onViewCreated")
     }
 
     override fun onResume() {
@@ -90,9 +100,11 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
 
         val isIncomingCall = Helper[EXTRA_IS_INCOMING_CALL, false]
         if (isCallServiceRunning(CallService::class.java)) {
-            CallActivity.start(this.activity!!.applicationContext, isIncomingCall)
+            CallActivity.start(this.requireActivity().applicationContext, isIncomingCall)
         }
         clearAppNotifications()
+
+        Log.d("Dialog", "onResume")
 
         loadUsers()
     }
@@ -115,7 +127,18 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("Dialog", "onCreate")
+
         setHasOptionsMenu(true)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        try {
+            dialog = ViewDialog(requireContext())
+            dialog.showDialog()
+        } catch (e: Exception){}
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -127,7 +150,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
         when (item.itemId) {
             R.id.home_settings -> {
                 val settingsFragment = SettingsFragment()
-                fragmentManager!!.beginTransaction()
+                requireFragmentManager().beginTransaction()
                     .setCustomAnimations(
                         R.anim.slide_in_right,
                         R.anim.slide_out_left,
@@ -154,7 +177,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
 
     private fun startLoginService() {
         if (Helper.hasQbUser()) {
-            LoginService.start(this.activity!!.applicationContext, Helper.getQbUser())
+            LoginService.start(this.requireActivity().applicationContext, Helper.getQbUser())
         }
     }
 
@@ -200,8 +223,8 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
     private fun startLoginService(qbUser: QBUser) {
         val intent = Intent(activity, LoginService::class.java)
         //val tempIntent = activity!!.startService(intent)
-        val pendingIntent = activity!!.createPendingResult(EXTRA_LOGIN_RESULT_CODE, intent, 0)
-        LoginService.start(activity!!.baseContext, qbUser, pendingIntent)
+        val pendingIntent = requireActivity().createPendingResult(EXTRA_LOGIN_RESULT_CODE, intent, 0)
+        LoginService.start(requireActivity().baseContext, qbUser, pendingIntent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -254,7 +277,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun updateUI() {
-        val loggedUserTypePref = LoggedUser(this.activity!!.baseContext)
+        val loggedUserTypePref = LoggedUser(this.requireActivity().baseContext)
         profile_joindate.text =
             getString(R.string.member_since, loggedUserTypePref.getUserJoinDate())
         profile_name.text = loggedUserTypePref.getUserName()
@@ -267,7 +290,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
             Picasso.get().load(loggedUserTypePref.getAvatarUrl()).into(imageView)
         }
 
-        val userCount = UserCount(this.context!!)
+        val userCount = UserCount(this.requireContext())
 
         Handler().postDelayed({
             if (userCount.getBviCount() != 0 && userCount.getVolCount() != 0) {
@@ -283,11 +306,15 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
                 } catch (e: Exception) {
                 }
             }
+
+            try {
+                dialog.hideDialog()
+            } catch (e: Exception){}
         }, 2000)
     }
 
     private fun isCallServiceRunning(serviceClass: Class<*>): Boolean {
-        val manager = activity!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val manager = requireActivity().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val services = manager.getRunningServices(Integer.MAX_VALUE)
         for (service in services) {
             if (CallService::class.java.name == service.service.className) {
@@ -299,7 +326,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
 
     private fun clearAppNotifications() {
         val notificationManager =
-            activity!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
     }
 

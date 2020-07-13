@@ -20,9 +20,9 @@ class SplashActivity : AppCompatActivity() {
         fill()
         Handler().postDelayed({
             val intent = Intent(this, LandingActivity::class.java)
-            startActivity(intent)
             finish()
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            startActivity(intent)
+            overridePendingTransition(0, 0)
         }, SPLASH_DELAY.toLong())
     }
 

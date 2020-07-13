@@ -12,9 +12,13 @@
         android:icon="@drawable/ic_favorite"
         android:title="@string/bottom_nav_text_stories" />
 
+    <!--
+
     <item
         android:id="@+id/navigation_donation"
         android:icon="@drawable/ic_attach_money"
         android:title="@string/bottom_nav_donation" />
+
+        -->
 
 </menu>

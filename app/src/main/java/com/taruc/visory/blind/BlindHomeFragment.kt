@@ -75,7 +75,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         (activity as AppCompatActivity).supportActionBar?.title = "Home"
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        val loggedUserPrefs = LoggedUser(this.activity!!.baseContext)
+        val loggedUserPrefs = LoggedUser(this.requireActivity().baseContext)
         uid = loggedUserPrefs.getUserID()
         fullName = loggedUserPrefs.getUserName()
 
@@ -105,7 +105,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         when (item.itemId) {
             R.id.home_settings -> {
                 val settingsFragment = SettingsFragment()
-                fragmentManager!!.beginTransaction()
+                requireFragmentManager().beginTransaction()
                     .setCustomAnimations(
                         R.anim.slide_in_right,
                         R.anim.slide_out_left,
@@ -138,7 +138,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
 
         val isIncomingCall = Helper.get(EXTRA_IS_INCOMING_CALL, false)
         if (isCallServiceRunning(CallService::class.java)) {
-            CallActivity.start(this.activity!!.applicationContext, isIncomingCall)
+            CallActivity.start(this.requireActivity().applicationContext, isIncomingCall)
         }
         clearAppNotifications()
 
@@ -148,7 +148,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun isCallServiceRunning(serviceClass: Class<*>): Boolean {
-        val manager = activity!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val manager = requireActivity().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val services = manager.getRunningServices(Integer.MAX_VALUE)
         for (service in services) {
             if (CallService::class.java.name == service.service.className) {
@@ -160,7 +160,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
 
     private fun clearAppNotifications() {
         val notificationManager =
-            activity!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
     }
 
@@ -198,7 +198,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun makeCall() {
-        viewDialog = ViewDialog(requireContext())
+        //viewDialog = ViewDialog(requireContext())
         viewDialog.showDialogFor5Seconds()
         var callAccepted = Helper[STOP_CALLING, false]
 
@@ -271,14 +271,14 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         }
 
         try {
-            val qbRtcClient = QBRTCClient.getInstance(this.activity!!.applicationContext)
+            val qbRtcClient = QBRTCClient.getInstance(this.requireActivity().applicationContext)
             val newQbRtcSession =
                 qbRtcClient.createNewSessionWithOpponents(opponentsList, conferenceType)
 
             WebRtcSessionManager.setCurrentSession(newQbRtcSession)
             sendPushMessage(opponentsList, fullName)
 
-            CallActivity.start(this.activity!!.applicationContext, false)
+            CallActivity.start(this.requireActivity().applicationContext, false)
         } catch (e: java.lang.Exception) {
             Toast.makeText(context, e.message.toString(), Toast.LENGTH_LONG).show()
         }
@@ -348,7 +348,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
 
     private fun startLoginService() {
         if (Helper.hasQbUser()) {
-            LoginService.start(this.activity!!.applicationContext, Helper.getQbUser())
+            LoginService.start(this.requireActivity().applicationContext, Helper.getQbUser())
         }
     }
 
@@ -394,8 +394,8 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     private fun startLoginService(qbUser: QBUser) {
         val intent = Intent(activity, LoginService::class.java)
         //val tempIntent = activity!!.startService(intent)
-        val pendingIntent = activity!!.createPendingResult(EXTRA_LOGIN_RESULT_CODE, intent, 0)
-        LoginService.start(activity!!.baseContext, qbUser, pendingIntent)
+        val pendingIntent = requireActivity().createPendingResult(EXTRA_LOGIN_RESULT_CODE, intent, 0)
+        LoginService.start(requireActivity().baseContext, qbUser, pendingIntent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

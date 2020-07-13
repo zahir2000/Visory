@@ -1,6 +1,7 @@
 package com.taruc.visory
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,14 +19,16 @@ import com.taruc.visory.quickblox.utils.PERMISSIONS
 import com.taruc.visory.quickblox.utils.ViewDialog
 import com.taruc.visory.utils.UserCount
 import com.taruc.visory.utils.loadUsers
+import java.lang.reflect.Executable
 
 class VolunteerHomeActivity : AppCompatActivity() {
 
-    lateinit var dialog: ViewDialog
+    private lateinit var dialog: ViewDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_volunteer_home)
+
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -40,12 +43,6 @@ class VolunteerHomeActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         loadUsers(this)
-
-        try {
-            dialog = ViewDialog(this)
-            dialog.showDialogFor5Seconds()
-        } catch (e: Exception) {
-        }
 
         if (Helper[CHECK_PERMISSIONS, true]) {
             PermissionsActivity.startForResult(this, false, PERMISSIONS)
@@ -67,6 +64,5 @@ class VolunteerHomeActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        dialog.hideDialog()
     }
 }
