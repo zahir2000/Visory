@@ -76,6 +76,7 @@
         <activity
             android:name=".ui.ForgotPassActivity"
             android:label="Forgot Password" />
+        <activity android:name=".volunteer.TutorialActivity" />
         <activity android:name=".BlindHomeActivity" />
         <activity android:name=".VolunteerHomeActivity" />
         <activity android:name=".ui.VerifyEmailActivity" />
