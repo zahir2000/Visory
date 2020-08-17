@@ -32,6 +32,7 @@
         <activity
             android:name=".blind.ShowLocationActivity"
             android:label="@string/title_activity_show_location"/>
+        <activity android:name=".ui.GetHelpActivity"/>
         <activity
             android:name=".mlkit.ObjectDetectorActivity"
             android:label="Object Detector" />
