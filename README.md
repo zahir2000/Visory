@@ -1,6 +1,8 @@
 # Visory
 
-An Android application which is still in development phase that is designed to help visually impaired individuals.
+An Android application written in Kotlin, under development that is designed to help visually impaired individuals.
+
+>Visit my website to get some insights on my thesis.
 
 This is a Final Year Project by ***Zahiriddin Rustamov*** & ***Jaloliddin Rustamov***.
 
