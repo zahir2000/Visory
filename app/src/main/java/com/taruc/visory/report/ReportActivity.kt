@@ -6,13 +6,14 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.taruc.visory.R
 import com.taruc.visory.quickblox.utils.ViewDialog
 
-class ReportActivity : AppCompatActivity() {
+class ReportActivity : AppCompatActivity(), Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +78,32 @@ class ReportActivity : AppCompatActivity() {
 
         override fun onDestroy() {
             super.onDestroy()
-            loadingDialog.hideDialog()
+
+            if(this::loadingDialog.isInitialized)
+                loadingDialog.hideDialog()
         }
+    }
+
+    override fun onPreferenceClick(preference: Preference?): Boolean {
+        when(preference?.key){
+            "poor_audio_video" -> { }
+            "no_audio_video" -> { }
+            "unexpected_call_end" -> { }
+            "inappropriate_behavior" -> { }
+            "no_help" -> { }
+            "custom_feedback" -> { }
+        }
+
+        return true
+    }
+
+    override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
+        when(preference?.key){
+            "custom_feedback" -> {
+                //TODO: Get result from Preferences
+            }
+        }
+
+        return true
     }
 }

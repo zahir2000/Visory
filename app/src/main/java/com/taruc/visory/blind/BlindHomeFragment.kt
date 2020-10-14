@@ -24,6 +24,8 @@ import com.quickblox.users.model.QBUser
 import com.quickblox.videochat.webrtc.QBRTCClient
 import com.quickblox.videochat.webrtc.QBRTCTypes
 import com.taruc.visory.R
+import com.taruc.visory.admin.FeedbackDetailsActivity
+import com.taruc.visory.admin.FeedbackFragment
 import com.taruc.visory.fragments.SettingsFragment
 import com.taruc.visory.mlkit.ObjectDetectorActivity
 import com.taruc.visory.quickblox.DEFAULT_USER_PASSWORD
@@ -167,8 +169,16 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.button_blind_detect_object -> {
+
+                /*val feedbackFragment = FeedbackFragment()
+                parentFragmentManager.beginTransaction()
+                    .replace(con.id, feedbackFragment)
+                    .addToBackStack(null)
+                    .commit()*/
+
                 activity?.let {
                     val intent = Intent(it, ObjectDetectorActivity::class.java)
+                    //val intent = Intent(it, FeedbackDetailsActivity::class.java)
                     it.startActivity(intent)
                 }
             }
@@ -198,7 +208,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun makeCall() {
-        //viewDialog = ViewDialog(requireContext())
+        viewDialog = ViewDialog(requireContext())
         viewDialog.showDialogFor5Seconds()
         var callAccepted = Helper[STOP_CALLING, false]
 

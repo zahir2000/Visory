@@ -235,7 +235,7 @@
     <string name="new_email">New Email</string>
     <string name="version">Version</string>
     <string name="version_number">1.0</string>
-    <string name="submit_report">Submit Report</string>
+    <string name="submit_feedback">Submit Feedback</string>
     <string name="skip_text">Skip</string>
     <string name="btnDonation">Donate</string>
     <string name="btnDonate">Donate</string>
@@ -320,4 +320,5 @@
     <string name="title_activity_show_blind_location">Map</string>
     <string name="title_activity_show_location">Map</string>
     <string name="helpSomeone">Help Someone</string>
+    <string name="action_search">Search</string>
 </resources>

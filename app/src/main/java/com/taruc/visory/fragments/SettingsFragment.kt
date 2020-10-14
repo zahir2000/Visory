@@ -96,7 +96,7 @@ class SettingsFragment : Fragment() {
                             val intent = Intent(it, LandingActivity::class.java)
                             it.startActivity(intent)
                             it.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-                            return@let true
+                            //return@let true
                         }
                     }
                     .setNegativeButton("Cancel"){ _, _ ->

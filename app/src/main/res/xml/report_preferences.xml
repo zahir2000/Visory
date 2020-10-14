@@ -14,7 +14,7 @@
 
         <CheckBoxPreference
             app:key="no_audio_video"
-            android:title="No audio or video quality">
+            android:title="No audio or video">
         </CheckBoxPreference>
 
         <CheckBoxPreference
@@ -44,6 +44,11 @@
         android:key="other_problem"
         android:icon="@drawable/ic_live_help">
 
+        <EditTextPreference
+            android:title="Custom Feedback"
+            android:summary="Enter your own feedback"
+            android:key="custom_feedback" />
+
         <Preference
             app:key="contact_us"
             android:title="Contact Us">
@@ -54,7 +59,7 @@
 
     <Preference
         app:key="submit_report"
-        android:title="Submit Report"
+        android:title="Submit Feedback"
         android:layout="@layout/report_button">
     </Preference>
 
