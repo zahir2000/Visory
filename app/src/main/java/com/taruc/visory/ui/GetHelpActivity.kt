@@ -43,11 +43,35 @@ class GetHelpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_help)
 
-        if(requestSinglePermission()){
+        /*if(requestSinglePermission()){
             checkLocation()
-        }
+        }*/
 
-        getLocation()
+        //getLocation()
+
+        Dexter.withActivity(this)
+            .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            .withListener(object:PermissionListener{
+                override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+                    if(isLocationEnabled()){
+                        getLocation()
+                    }
+                }
+
+                override fun onPermissionDenied(response: PermissionDeniedResponse?) {
+                    showAlert()
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permission: PermissionRequest?,
+                    token: PermissionToken?
+                ) {
+                    showAlert()
+                }
+
+            })
+            .check()
+
 
         btnCall.setOnClickListener {
             val callIntent = Intent(Intent.ACTION_DIAL)
@@ -84,8 +108,8 @@ class GetHelpActivity : AppCompatActivity() {
     private fun showAlert(){
         val dialog = AlertDialog.Builder(this)
 
-        dialog.setTitle("Enable Location!")
-            .setMessage("Please enable your location!")
+        dialog.setTitle("Location required!")
+            .setMessage("Please allow our app to access your location to help you.")
             .setPositiveButton("Settings", dialogClicker)
         dialog.show()
     }
@@ -104,8 +128,13 @@ class GetHelpActivity : AppCompatActivity() {
 
     private fun isLocationEnabled():Boolean{
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+        val loc:Boolean = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+        if(!loc){
+            return false
+        }
+        return true
     }
 
     private fun requestSinglePermission():Boolean{
