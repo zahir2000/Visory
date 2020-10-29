@@ -6,6 +6,7 @@ class Story{
     var sTitle: String? = null
     var sBody: String? = null
     var sDate: String? = null
+    //var status: String? = null
 
     constructor(uid: String?, imageUrl: String?, sTitle: String?, sBody: String?, sDate: String?) {
         this.uid = uid
@@ -13,6 +14,7 @@ class Story{
         this.sTitle = sTitle
         this.sBody = sBody
         this.sDate = sDate
+        //this.status = status
     }
 
     constructor():this("","","","",""){

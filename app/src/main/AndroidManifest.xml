@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.taruc.visory">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -24,15 +25,23 @@
         android:roundIcon="@mipmap/ic_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".admin.ManageStories">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.SubmitStoryActivity" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
             android:name=".blind.ShowLocationActivity"
-            android:label="@string/title_activity_show_location"/>
-        <activity android:name=".ui.GetHelpActivity"/>
+            android:label="@string/title_activity_show_location" />
+        <activity android:name=".ui.GetHelpActivity" />
         <activity
             android:name=".mlkit.ObjectDetectorActivity"
             android:label="Object Detector" />
@@ -67,11 +76,7 @@
             android:name=".blind.CallEndActivity"
             android:label="Call Ended" />
         <activity android:name=".ui.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.AboutActivity" />
         <activity

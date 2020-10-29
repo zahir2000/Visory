@@ -1,4 +1,4 @@
-package com.taruc.visory
+package com.taruc.visory.admin
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.taruc.visory.ui.SubmitStoryActivity
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
@@ -15,45 +16,22 @@ import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import com.taruc.visory.ui.StoryDetailsActivity
 import com.taruc.visory.utils.Story
+import com.taruc.visory.R
 
-class StoriesFragment : Fragment(), View.OnClickListener {
+class ManageStories : AppCompatActivity() {
 
     lateinit var sRecyclerView: RecyclerView
+    lateinit var viewAdapter: RecyclerView.Adapter<*>
     lateinit var ref : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+        setContentView(R.layout.activity_manage_stories)
+        //setHasOptionsMenu(true)
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.story_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.share_story -> {
-                val intent = Intent(context, SubmitStoryActivity::class.java)
-                startActivity(intent)
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_stories, container, false)
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        sRecyclerView = view.findViewById(R.id.sRecyclerView)
-        ref = FirebaseDatabase.getInstance().reference.child("approvedStories")
+        sRecyclerView = findViewById(R.id.sRecyclerView)
+        ref = FirebaseDatabase.getInstance().reference.child("pendingStories")
+        adapter = new
         sRecyclerView.layoutManager = LinearLayoutManager(context)
 
 
@@ -61,18 +39,18 @@ class StoriesFragment : Fragment(), View.OnClickListener {
             .setQuery(ref, Story::class.java)
             .build()
 
-        val firebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Story, StoriesFragment.StoryViewHolder>(option) {
+        val firebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Story, ManageStories.StoryViewHolder>(option) {
             override fun onCreateViewHolder(
                 parent: ViewGroup,
                 viewType: Int
-            ): StoriesFragment.StoryViewHolder {
+            ): ManageStories.StoryViewHolder {
                 val itemview =
-                    LayoutInflater.from(context).inflate(R.layout.cardview, parent, false)
-                return StoriesFragment.StoryViewHolder(itemview)
+                    LayoutInflater.from(context).inflate(R.layout.cardview_admin_stories, parent, false)
+                return ManageStories.StoryViewHolder(itemview)
             }
 
             override fun onBindViewHolder(
-                holder: StoriesFragment.StoryViewHolder,
+                holder: ManageStories.StoryViewHolder,
                 position: Int,
                 story: Story
             ) {
@@ -102,12 +80,31 @@ class StoriesFragment : Fragment(), View.OnClickListener {
 
         sRecyclerView.adapter = firebaseRecyclerAdapter
         firebaseRecyclerAdapter.startListening()
-        super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onClick(v: View?) {
+   //override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        //inflater.inflate(R.menu.story_menu, menu)
+        //super.onCreateOptionsMenu(menu, inflater)
+    //}
 
-    }
+   //override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        //when(item.itemId){
+            //R.id.share_story -> {
+                //val intent = Intent(context, SubmitStoryActivity::class.java)
+                //startActivity(intent)
+           // }
+       // }
+       // return super.onOptionsItemSelected(item)
+    //}
+
+    /*override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.activity_manage_stories, container, false)
+        return view
+    }*/
 
     class StoryViewHolder(itemView : View):RecyclerView.ViewHolder(itemView){
 
