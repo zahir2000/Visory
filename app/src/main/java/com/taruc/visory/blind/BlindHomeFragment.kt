@@ -24,8 +24,6 @@ import com.quickblox.users.model.QBUser
 import com.quickblox.videochat.webrtc.QBRTCClient
 import com.quickblox.videochat.webrtc.QBRTCTypes
 import com.taruc.visory.R
-import com.taruc.visory.admin.FeedbackDetailsActivity
-import com.taruc.visory.admin.FeedbackFragment
 import com.taruc.visory.fragments.SettingsFragment
 import com.taruc.visory.mlkit.ObjectDetectorActivity
 import com.taruc.visory.quickblox.DEFAULT_USER_PASSWORD

@@ -25,14 +25,6 @@
         android:roundIcon="@mipmap/ic_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".admin.ManageStories">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity android:name=".ui.SubmitStoryActivity" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -76,7 +68,11 @@
             android:name=".blind.CallEndActivity"
             android:label="Call Ended" />
         <activity android:name=".ui.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".ui.AboutActivity" />
         <activity
@@ -91,7 +87,6 @@
         <activity android:name=".ui.LandingActionsActivity" />
         <activity android:name=".ui.LandingActivity" />
         <activity android:name=".ui.WelcomeActivity" />
-        <activity android:name=".admin.FeedbackDetailsActivity" />
         <activity
             android:name=".quickblox.activities.CallActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"

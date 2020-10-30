@@ -50,6 +50,8 @@ class CallEndActivity : AppCompatActivity(), View.OnClickListener {
         )
 
         val uid = FirebaseDatabase.getInstance().getReference("callhistory").push().key
+        callHistory?.setCallId(uid.toString())
+
         val rootRef = FirebaseDatabase.getInstance().getReference("callhistory/$uid")
         rootRef.setValue(newCallHistory)
     }

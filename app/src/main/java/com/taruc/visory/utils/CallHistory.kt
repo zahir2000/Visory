@@ -4,12 +4,23 @@ import android.content.Context
 
 class CallHistory(context: Context){
     private val SHARED_PREF = "callHistoryPrefs"
+    private val CALL_ID = "callID"
     private val CALLER_ID = "callerID"
     private val CALLEE_ID = "calleeID"
     private val CALL_DATE = "callDate"
     private val CALL_TIME = "callTime"
 
     private val preference = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
+
+    fun getCallId(): String{
+        return preference.getString(CALL_ID, "")!!
+    }
+
+    fun setCallId(callId: String){
+        val editor = preference.edit()
+        editor.putString(CALL_ID, callId)
+        editor.apply()
+    }
 
     fun getCallerId(): String{
         return preference.getString(CALLER_ID, "")!!
@@ -58,5 +69,13 @@ class CallHistory(context: Context){
         editor.putString(CALL_DATE, "")
         editor.putString(CALL_TIME, "")
         editor.apply()
+    }
+
+    override fun toString(): String {
+        return "Call Id: " + getCallId() +
+                "Caller Id: " + getCallerId() +
+                "Callee Id: " + getCalleeId() +
+                "Call Date Time: " + getCallDate() +
+                "Call Time: " + getCallTime()
     }
 }

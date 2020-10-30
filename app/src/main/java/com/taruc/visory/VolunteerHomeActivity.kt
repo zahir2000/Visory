@@ -23,8 +23,6 @@ import java.lang.reflect.Executable
 
 class VolunteerHomeActivity : AppCompatActivity() {
 
-    private lateinit var dialog: ViewDialog
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_volunteer_home)
