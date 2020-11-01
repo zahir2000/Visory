@@ -22,6 +22,5 @@ class StoryDetailsActivity : AppCompatActivity() {
         txtTitle.text = title
         txtStory.text = story
         Picasso.get().load(img).into(imgCover)
-
     }
 }

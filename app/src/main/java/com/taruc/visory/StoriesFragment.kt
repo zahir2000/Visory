@@ -53,7 +53,7 @@ class StoriesFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         sRecyclerView = view.findViewById(R.id.sRecyclerView)
-        ref = FirebaseDatabase.getInstance().reference.child("approvedStories")
+        ref = FirebaseDatabase.getInstance().reference.child("stories")
         sRecyclerView.layoutManager = LinearLayoutManager(context)
 
 

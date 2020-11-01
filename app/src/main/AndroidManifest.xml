@@ -87,6 +87,7 @@
         <activity android:name=".ui.LandingActionsActivity" />
         <activity android:name=".ui.LandingActivity" />
         <activity android:name=".ui.WelcomeActivity" />
+        <activity android:name=".ui.StoryDetailsActivity"/>
         <activity
             android:name=".quickblox.activities.CallActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"

@@ -72,12 +72,12 @@ class SubmitStoryActivity : AppCompatActivity() {
         val title = editTextTitle.text.toString().trim()
         val story = editTextStory.text.toString()
         val date = getCurrentDate()
-        //val status = "pending"
+        val status = "pending"
         val uid = FirebaseDatabase.getInstance().getReference("stories").push().key
         val ref = FirebaseDatabase.getInstance().getReference("/pendingStories/$uid")
 
-        val storyObj = Story(uid, storyCoverUrl, title, story, date)
-        if(title.isEmpty()){
+        val storyObj = Story(uid, storyCoverUrl, title, story, date, status)
+        if(title.isEmpty() || story.isEmpty()){
             editTextTitle.error = "Please enter a title for the story!"
            return
         }
