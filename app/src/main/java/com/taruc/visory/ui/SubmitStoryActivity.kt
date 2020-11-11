@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.taruc.visory.R
+import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.Story
 import com.taruc.visory.utils.getCurrentDate
 import com.taruc.visory.utils.shortToast
@@ -27,6 +28,8 @@ class SubmitStoryActivity : AppCompatActivity() {
     lateinit var editTextStory: EditText
     lateinit var btnSubmit: Button
     lateinit var textDate: TextView
+    lateinit var user : LoggedUser
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,10 +76,13 @@ class SubmitStoryActivity : AppCompatActivity() {
         val story = editTextStory.text.toString()
         val date = getCurrentDate()
         val status = "pending"
-        val uid = FirebaseDatabase.getInstance().getReference("stories").push().key
-        val ref = FirebaseDatabase.getInstance().getReference("/pendingStories/$uid")
+        user = LoggedUser(this)
+        val userName = user.getUserName()
 
-        val storyObj = Story(uid, storyCoverUrl, title, story, date, status)
+        val uid = FirebaseDatabase.getInstance().getReference("stories").push().key
+        val ref = FirebaseDatabase.getInstance().getReference("/stories/$uid")
+
+        val storyObj = Story(uid, storyCoverUrl, title, story, date, status, userName)
         if(title.isEmpty() || story.isEmpty()){
             editTextTitle.error = "Please enter a title for the story!"
            return

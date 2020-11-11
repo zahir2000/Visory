@@ -7,17 +7,19 @@ class Story{
     var sBody: String? = null
     var sDate: String? = null
     var status: String? = null
+    var username: String? = null
 
-    constructor(uid: String?, imageUrl: String?, sTitle: String?, sBody: String?, sDate: String?, status: String?) {
+    constructor(uid: String?, imageUrl: String?, sTitle: String?, sBody: String?, sDate: String?, status: String?, username: String?) {
         this.uid = uid
         this.imageUrl = imageUrl
         this.sTitle = sTitle
         this.sBody = sBody
         this.sDate = sDate
         this.status = status
+        this.username = username
     }
 
-    constructor():this("","","","","", ""){
+    constructor():this("","","","","", "", ""){
 
     }
 }
