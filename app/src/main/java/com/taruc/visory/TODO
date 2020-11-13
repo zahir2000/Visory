@@ -3,3 +3,6 @@
 - Improve calling
 - Build admin feedback module
 - Overall system improvement
+
+Critical:
+- If no internet connection available, do not display or process any internet required items. Check if its possible to do async so once internet is available, you reload the screen.

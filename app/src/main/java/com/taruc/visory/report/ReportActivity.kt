@@ -12,10 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.taruc.visory.R
 import com.taruc.visory.quickblox.utils.ViewDialog
 import com.taruc.visory.utils.*
@@ -119,7 +116,8 @@ class ReportActivity : AppCompatActivity() {
             callHistory = CallHistory(requireContext())
 
             val userId = if (loggedUser.getUserType() == 1) callHistory.getCalleeId() else callHistory.getCallerId()
-            val feedback = Feedback(getCurrentFormattedDateTime(), "", userId, callHistory.getCallId())
+            val reportedUserId = if (loggedUser.getUserType() == 1) callHistory.getCallerId() else callHistory.getCalleeId()
+            val feedback = Feedback(ServerValue.TIMESTAMP, "", userId, reportedUserId, callHistory.getCallId(), "new")
 
             if (key.equals("submit_report")) {
                 val prefs = PreferenceManager.getDefaultSharedPreferences(context)

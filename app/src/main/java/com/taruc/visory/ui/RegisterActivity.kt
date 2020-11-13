@@ -21,6 +21,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
@@ -31,6 +33,7 @@ import com.taruc.visory.R
 import com.taruc.visory.quickblox.utils.ViewDialog
 import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_register.*
+import java.util.*
 
 
 class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -141,44 +144,43 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     }
 
     private fun register(view: View) {
-        var fName = edit_text_fname.text.toString()
-        var lName = edit_text_lname.text.toString()
-        val email = text_edit_email.text.toString()
-        val password = text_edit_password.text.toString()
+        var fName = edit_text_fname.text.toString().trim()
+        var lName = edit_text_lname.text.toString().trim()
+        val email = text_edit_email.text.toString().trim()
+        val password = text_edit_password.text.toString().trim()
 
         if(TextUtils.isEmpty(fName)){
             makeWarningSnackbar(view, "Please enter your first name")
-            //Toast.makeText(applicationContext, "Please enter your first name", Toast.LENGTH_SHORT).show()
             return
         }
 
         if(TextUtils.isEmpty(lName)){
             makeWarningSnackbar(view, "Please enter your last name")
-            //Toast.makeText(applicationContext, "Please enter your last name", Toast.LENGTH_SHORT).show()
             return
         }
 
         if(TextUtils.isEmpty(email)){
             makeWarningSnackbar(view, "Please enter your email")
-            //Toast.makeText(applicationContext, "Please enter your email", Toast.LENGTH_SHORT).show()
             return
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             makeWarningSnackbar(view, "Please enter a valid email")
-            //Toast.makeText(applicationContext, "Please enter a valid email", Toast.LENGTH_SHORT).show()
             return
         }
 
-        if(password.isEmpty()){
-            makeErrorSnackbar(view, "Password can't be empty.")
-            return
-        }else if(password.length !in 6..16){
-            makeErrorSnackbar(view, "Password must be between 6 to 16 characters.")
-            return
+        when {
+            password.isEmpty() -> {
+                makeErrorSnackbar(view, "Password can't be empty.")
+                return
+            }
+            password.length !in 6..16 -> {
+                makeErrorSnackbar(view, "Password must be between 6 to 16 characters.")
+                return
+            }
         }
 
-        fName = fName.capitalize()
-        lName = lName.capitalize()
+        fName = fName.capitalize(Locale.ROOT)
+        lName = lName.capitalize(Locale.ROOT)
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this){ task ->
@@ -236,6 +238,10 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                     //Toast.makeText(applicationContext,  "Email already exists.", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun validatePassword(){
+
     }
 
     public override fun onStart() {

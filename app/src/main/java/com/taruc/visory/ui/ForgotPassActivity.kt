@@ -7,7 +7,7 @@ import android.os.Handler
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
-import android.view.inputmethod.InputMethodManager
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.taruc.visory.R
 import com.taruc.visory.utils.*
@@ -40,21 +40,22 @@ class ForgotPassActivity : AppCompatActivity() {
 
     private fun resetEmail(view: View){
         val email = email_text.text.toString()
+        val inputEmail = findViewById<TextInputEditText>(R.id.email_text)
 
         if(TextUtils.isEmpty(email)){
-            hideKeyboard(view)
+            showKeyboard(inputEmail)
             makeWarningSnackbar(view, "Please enter your email")
             return
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            hideKeyboard(view)
+            showKeyboard(inputEmail)
             makeWarningSnackbar(view, "Please enter a valid email")
             return
         }
 
         auth.sendPasswordResetEmail(email).addOnCompleteListener(this){task ->
             if(task.isSuccessful){
-                hideKeyboard(view)
+                hideKeyboard(this, view)
                 makeSuccessSnackbar(view, "Reset email has been sent.")
 
                 Handler().postDelayed({
@@ -64,24 +65,14 @@ class ForgotPassActivity : AppCompatActivity() {
                 }, 3000)
             }
             else{
-                hideKeyboard(view)
+                hideKeyboard(this, view)
                 makeErrorSnackbar(view, "Email could not be sent. Possibly a wrong email.")
                 email_text.requestFocus()
                 Handler().postDelayed({
-                    showKeyboard()
+                    showKeyboard(inputEmail)
                 }, 3000)
             }
         }
-    }
-
-    private fun hideKeyboard(view: View){
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    private fun showKeyboard(){
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(email_text, InputMethodManager.SHOW_IMPLICIT)
     }
 
     override fun onSupportNavigateUp(): Boolean {

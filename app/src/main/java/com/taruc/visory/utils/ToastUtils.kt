@@ -76,13 +76,3 @@ fun makeWarningSnackbar(view: View, text: String){
     textSnack.setTextColor(Color.BLACK)
     snackbar.show()
 }
-
-fun hideKeyboard(activity: Activity, view: View){
-    val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-}
-
-fun showKeyboard(activity: Activity, view: View){
-    val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-}

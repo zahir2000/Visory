@@ -3,7 +3,7 @@ package com.taruc.visory.utils
 class CallHistoryClass(
     var callerId: String = "",
     var calleeId: String = "",
-    var callDateTime: String = "",
+    var callDateTime: MutableMap<String, String>,
     var callTime: String = ""
 ) {
     override fun toString(): String {

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ServerValue
 import com.quickblox.users.model.QBUser
 import com.taruc.visory.R
 import com.taruc.visory.quickblox.db.QbUsersDbManager
@@ -45,7 +46,7 @@ class CallEndActivity : AppCompatActivity(), View.OnClickListener {
         val newCallHistory = CallHistoryClass(
             callHistory?.getCallerId().toString(),
             callHistory?.getCalleeId().toString(),
-            callHistory?.getCallDate().toString(),
+            ServerValue.TIMESTAMP,
             callHistory?.getCallTime().toString()
         )
 
