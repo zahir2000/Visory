@@ -92,7 +92,11 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
                     ) {
                         finish()
                     } else {
-                        updateProfile(v, fName, lName)
+                        if (isInternetAvailable(this)){
+                            updateProfile(v, fName, lName)
+                        } else {
+                            makeErrorSnackbar(v, "An active internet connection is required.")
+                        }
                     }
                 } else {
                     if (fName.compareTo(getFirstName(loggedUser.getUserName())) == 0
@@ -101,7 +105,11 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
                     ) {
                         finish()
                     } else {
-                        updateProfile(v, fName, lName)
+                        if (isInternetAvailable(this)){
+                            updateProfile(v, fName, lName)
+                        } else {
+                            makeErrorSnackbar(v, "An active internet connection is required.")
+                        }
                     }
                 }
             }

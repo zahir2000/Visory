@@ -9,10 +9,7 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.taruc.visory.R
-import com.taruc.visory.utils.LoggedUser
-import com.taruc.visory.utils.makeErrorSnackbar
-import com.taruc.visory.utils.makeSuccessSnackbar
-import com.taruc.visory.utils.makeWarningSnackbar
+import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_change_password.*
 
 class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener {
@@ -48,7 +45,11 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener {
                 if(loggedUser.getProvider() == "fb" || loggedUser.getProvider() == "google"){
                     finish()
                 }else{
-                    updatePassword(v)
+                    if (isInternetAvailable(this)){
+                        updatePassword(v)
+                    } else {
+                        makeErrorSnackbar(v, "An active internet connection is required.")
+                    }
                 }
             }
         }

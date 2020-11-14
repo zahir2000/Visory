@@ -5,6 +5,8 @@ import android.app.Dialog
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -84,10 +86,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
 
         val user = createQBUser()
         signUpNewUser(user)
-
         startLoginService()
-
-        //Toast.makeText(context, volunteerUsers[0].fullName.toString(), Toast.LENGTH_SHORT).show()
 
         button_blind_detect_object.setOnClickListener(this)
         button_blind_help.setOnClickListener(this)
@@ -97,6 +96,25 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
+        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager.let {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    it.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
+                        override fun onAvailable(network: Network) {
+                            val user = createQBUser()
+                            signUpNewUser(user)
+                            Log.d("InternetConnection", "Internet is available")
+                        }
+
+                        override fun onLost(network: Network?) {
+                            Log.d("InternetConnection", "Internet is not available")
+                        }
+                    })
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -163,7 +181,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             if (!Helper[IS_CURRENTLY_CALLING, false]){
                 hideProgress()
             }
-        }, 2000)
+        }, 5000)
 
         Log.d("OnResume", "BlindHomeFragment resuming!")
     }
@@ -197,16 +215,8 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.button_blind_detect_object -> {
-
-                /*val feedbackFragment = FeedbackFragment()
-                parentFragmentManager.beginTransaction()
-                    .replace(con.id, feedbackFragment)
-                    .addToBackStack(null)
-                    .commit()*/
-
                 activity?.let {
                     val intent = Intent(it, ObjectDetectorActivity::class.java)
-                    //val intent = Intent(it, FeedbackDetailsActivity::class.java)
                     it.startActivity(intent)
                 }
             }
@@ -404,8 +414,9 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             override fun onError(e: QBResponseException) {
                 if (e.httpStatusCode == ERROR_LOGIN_ALREADY_TAKEN_HTTP_STATUS) {
                     signInCreatedUser(newUser)
+                    Log.d("QBUser", "Successfully created QB User")
                 } else {
-                    Toast.makeText(context, "Cannot create QB User", Toast.LENGTH_LONG).show()
+                    Log.d("QBUser", "Cannot create QB User")
                 }
             }
         })
@@ -456,10 +467,11 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             override fun onSuccess(result: QBUser, params: Bundle) {
                 Helper.saveQbUser(user)
                 updateUserOnServer(user)
+                Log.d("QBUser", "Sign in success")
             }
 
             override fun onError(responseException: QBResponseException) {
-                Toast.makeText(context, "Sign in error", Toast.LENGTH_LONG).show()
+                Log.d("QBUser", "Sign in error")
             }
         })
     }
@@ -469,10 +481,12 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         QBUsers.updateUser(user).performAsync(object : QBEntityCallback<QBUser> {
             override fun onSuccess(updUser: QBUser?, params: Bundle?) {
                 Log.d("QBUser", "Finished creating user in server")
+                hideProgress()
             }
 
             override fun onError(responseException: QBResponseException?) {
                 Log.d("QBUser", "Error creating user in server")
+                hideProgress()
             }
         })
     }

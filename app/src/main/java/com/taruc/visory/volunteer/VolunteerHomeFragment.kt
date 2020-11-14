@@ -5,6 +5,8 @@ import android.app.Dialog
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -41,11 +43,11 @@ import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.utils.LoadingDialog
 import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.UserCount
+import com.taruc.visory.utils.loadUsers
 import kotlinx.android.synthetic.main.fragment_volunteer_home.*
 import kotlinx.android.synthetic.main.profile_card.*
 import kotlinx.android.synthetic.main.user_stats.*
 import kotlin.collections.ArrayList
-
 
 class VolunteerHomeFragment : Fragment(), View.OnClickListener {
 
@@ -57,12 +59,42 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
     private lateinit var con: ViewGroup
     private var progressDialog: Dialog? = null
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.d("FragmentLifeCycle", "onAttach")
+
+        showProgress()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("FragmentLifeCycle", "onCreate")
+        setHasOptionsMenu(true)
+
+        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager.let {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    it.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
+                        override fun onAvailable(network: Network) {
+                            createNewUser()
+                            Log.d("InternetConnection", "Internet is available")
+                        }
+
+                        override fun onLost(network: Network?) {
+                            Log.d("InternetConnection", "Internet is not available")
+                        }
+                    })
+                }
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        Log.d("Dialog", "onCreateView")
+        Log.d("FragmentLifeCycle", "onCreateView")
 
         con = container!!
 
@@ -73,6 +105,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("FragmentLifeCycle", "onViewCreated")
 
         navController = Navigation.findNavController(view)
         (activity as AppCompatActivity).supportActionBar?.title = "Home"
@@ -85,13 +118,23 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
         button_tutorial.setOnClickListener(this)
         button_help_someone.setOnClickListener(this)
 
+        createNewUser()
+        startLoginService()
         updateUI()
+    }
 
-        Log.d("Dialog", "onViewCreated")
+    override fun onStart() {
+        super.onStart()
+        Log.d("FragmentLifeCycle", "onStart")
+
+        if (!checkIsLoggedInChat()) {
+            startLoginService()
+        }
     }
 
     override fun onResume() {
         super.onResume()
+        Log.d("FragmentLifeCycle", "onResume")
 
         val isIncomingCall = Helper[EXTRA_IS_INCOMING_CALL, false]
         if (isCallServiceRunning(CallService::class.java)) {
@@ -99,10 +142,9 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
         }
         clearAppNotifications()
 
-        Log.d("Dialog", "onResume")
-
-        createNewUser()
-        startLoginService()
+        Handler().postDelayed({
+            hideProgress()
+        }, 5000)
     }
 
     private fun showProgress(){
@@ -112,34 +154,6 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
 
     private fun hideProgress(){
         progressDialog?.let { if(it.isShowing)it.cancel() }
-    }
-
-    private fun loadUsers() {
-        val rules = ArrayList<GenericQueryRule>()
-        rules.add(GenericQueryRule("order", "desc date updated_at"))
-        val requestBuilder = QBPagedRequestBuilder()
-        requestBuilder.rules = rules
-        requestBuilder.perPage = 100
-
-        loadUsersByPagedRequestBuilder(object : QBEntityCallback<ArrayList<QBUser>> {
-            override fun onSuccess(result: ArrayList<QBUser>, params: Bundle) {
-                QbUsersDbManager.saveAllUsers(result, true)
-            }
-
-            override fun onError(responseException: QBResponseException) {}
-        }, requestBuilder)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("Dialog", "onCreate")
-
-        setHasOptionsMenu(true)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        showProgress()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -170,7 +184,6 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
     private fun checkIsLoggedInChat(): Boolean {
         if (!QBChatService.getInstance().isLoggedIn) {
             startLoginService()
-            //shortToast("Retrying to login")
             return false
         }
         return true
@@ -277,16 +290,23 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
         user.password = null
         QBUsers.updateUser(user).performAsync(object : QBEntityCallback<QBUser> {
             override fun onSuccess(updUser: QBUser?, params: Bundle?) {
-                //Toast.makeText(context, "Finished creating user in server", Toast.LENGTH_LONG).show()
+                Log.d("QBUser", "Finished creating user in server")
+                hideProgress()
             }
 
             override fun onError(responseException: QBResponseException?) {
-                Toast.makeText(context, "Error creating user in server.", Toast.LENGTH_LONG).show()
+                Log.d("QBUser", "Error creating user in server")
+                hideProgress()
             }
         })
     }
 
     private fun updateUI() {
+        updateUserInfo()
+        updateUserCount()
+    }
+
+    private fun updateUserInfo(){
         val loggedUserTypePref = LoggedUser(this.requireActivity().baseContext)
         profile_joindate.text =
             getString(R.string.member_since, loggedUserTypePref.getUserJoinDate())
@@ -299,29 +319,26 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
             val imageView = activity?.findViewById<ImageView>(R.id.image_profile_profile)
             Picasso.get().load(loggedUserTypePref.getAvatarUrl()).into(imageView)
         }
+    }
 
+    private fun updateUserCount() {
         val userCount = UserCount(this.requireContext())
 
-        Handler().postDelayed({
-            if (userCount.getBviCount() != 0 && userCount.getVolCount() != 0) {
-                try {
-                    user_stats_view.visibility = View.VISIBLE
-                    textViewBlindCount.text = userCount.getBviCount().toString()
-                    textViewVolunteerCount.text = userCount.getVolCount().toString()
-                } catch (e: Exception) {
-                }
-            } else {
-                try {
-                    user_stats_view.visibility = View.GONE
-                } catch (e: Exception) {
-                }
-            }
+        Log.d("UserCount", userCount.getVolCount().toString())
 
-            try {
-                hideProgress()
-                //dialog.hideDialog()
-            } catch (e: Exception){}
-        }, 2000)
+        try {
+            if (userCount.getBviCount() != 0 && userCount.getVolCount() != 0) {
+                user_stats_view.visibility = View.VISIBLE
+                textViewBlindCount.text = userCount.getBviCount().toString()
+                textViewVolunteerCount.text = userCount.getVolCount().toString()
+            } else {
+                user_stats_view.visibility = View.VISIBLE
+                textViewBlindCount.text = "0"
+                textViewVolunteerCount.text = "0"
+            }
+        } catch (e: Exception) { }
+
+        loadUsers(requireContext())
     }
 
     private fun isCallServiceRunning(serviceClass: Class<*>): Boolean {

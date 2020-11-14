@@ -6,20 +6,15 @@ import android.os.Handler
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthEmailException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.R
-import com.taruc.visory.utils.LoggedUser
-import com.taruc.visory.utils.makeErrorSnackbar
-import com.taruc.visory.utils.makeSuccessSnackbar
-import com.taruc.visory.utils.makeWarningSnackbar
+import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_change_email.*
 
 class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener {
@@ -54,8 +49,12 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener {
             R.id.button_change_email -> {
                 if(loggedUser.getProvider() == "fb" || loggedUser.getProvider() == "google"){
                     finish()
-                }else{
-                    updateEmail(v)
+                } else {
+                    if (isInternetAvailable(this)){
+                        updateEmail(v)
+                    } else {
+                        makeErrorSnackbar(v, "An active internet connection is required.")
+                    }
                 }
             }
         }

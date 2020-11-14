@@ -40,9 +40,6 @@ class LandingActivity : AppCompatActivity() {
             userTypePref.setUserType(2)
             startActivity(intent)
         }
-
-        val loggedUser = LoggedUser(this)
-        Log.d("LoggedUser", loggedUser.getUserID())
     }
 
     override fun onStart() {
