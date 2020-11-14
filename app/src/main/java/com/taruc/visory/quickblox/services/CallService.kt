@@ -11,9 +11,9 @@ import android.os.IBinder
 import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.quickblox.chat.QBChatService
 import com.quickblox.videochat.webrtc.*
 import com.quickblox.videochat.webrtc.callbacks.*
@@ -421,12 +421,18 @@ class CallService : Service(){
         val notifyPendingIntent = PendingIntent.getActivity(this, 0, notifyIntent,
             PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val notificationTitle = getString(R.string.notification_title)
-        var notificationText = getString(R.string.notification_text, "")
+        val isIncomingCall = Helper[EXTRA_IS_INCOMING_CALL, false]
+
+        var notificationTitle = getString(R.string.notification_title)
+        var notificationText = getString(R.string.notification_text_calling)
 
         val callTime = getCallTime()
         if (!TextUtils.isEmpty(callTime)) {
             notificationText = getString(R.string.notification_text, callTime)
+        }
+
+        if (!isIncomingCall) {
+            notificationTitle = getString(R.string.notification_text_bvi)
         }
 
         val bigTextStyle = NotificationCompat.BigTextStyle()
@@ -444,8 +450,15 @@ class CallService : Service(){
         builder.setContentTitle(notificationTitle)
         builder.setContentText(notificationText)
         builder.setWhen(System.currentTimeMillis())
-        builder.setSmallIcon(R.mipmap.ic_app_icon)
-        val bitmapIcon = BitmapFactory.decodeResource(resources, R.mipmap.ic_app_icon_round)
+        builder.setSmallIcon(R.drawable.ic_notification_icon)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            builder.color = getColor(R.color.colorPrimary)
+        } else {
+            builder.color = ContextCompat.getColor(applicationContext, R.color.colorPrimary);
+        }
+
+        val bitmapIcon = BitmapFactory.decodeResource(resources, R.drawable.ic_notification_icon)
         builder.setLargeIcon(bitmapIcon)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -631,9 +644,13 @@ class CallService : Service(){
             isRunning = true
 
             callTime = callTime?.plus(1000L)
-            val notification = initNotification()
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.notify(SERVICE_ID, notification)
+
+            val isIncomingCall = Helper[EXTRA_IS_INCOMING_CALL, false]
+            if (isIncomingCall) {
+                val notification = initNotification()
+                val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.notify(SERVICE_ID, notification)
+            }
 
             callTimerListener?.let {
                 val callTime = getCallTime()

@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import com.quickblox.chat.QBChatService
 import com.quickblox.chat.connections.tcp.QBTcpChatConnectionFabric
 import com.quickblox.chat.connections.tcp.QBTcpConfigurationBuilder

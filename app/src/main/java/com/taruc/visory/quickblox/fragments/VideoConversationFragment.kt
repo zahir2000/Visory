@@ -36,7 +36,6 @@ import org.webrtc.CameraVideoCapturer
 import org.webrtc.RendererCommon
 import org.webrtc.SurfaceViewRenderer
 import java.io.Serializable
-import java.lang.Exception
 import java.util.*
 
 const val CAMERA_ENABLED = "is_camera_enabled"
@@ -82,7 +81,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
     }
 
     override fun configureOutgoingScreen() {
-        val context = activity!!
+        val context = requireActivity()
         outgoingOpponentsRelativeLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.grey_transparent_50))
         allOpponentsTextView.setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
         ringingTextView.setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
@@ -93,7 +92,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
     }
 
     override fun configureToolbar() {
-        val context = activity!!
+        val context = requireActivity()
         toolbar.visibility = View.VISIBLE
         toolbar.setBackgroundColor(ContextCompat.getColor(context, R.color.black_transparent_50))
         toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.colorWhite))
@@ -111,7 +110,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
         allOpponents = Collections.synchronizedList(ArrayList(opponents.size))
         allOpponents.addAll(opponents)
 
-        timerCallText = activity!!.findViewById(R.id.timer_call)
+        timerCallText = requireActivity().findViewById(R.id.timer_call)
 
         isPeerToPeerCall = opponents.size == 1
     }
@@ -168,7 +167,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
 
         callHistory = CallHistory(requireContext())
 
-        val isIncomingCall = Helper.get(EXTRA_IS_INCOMING_CALL, false)
+        val isIncomingCall = Helper[EXTRA_IS_INCOMING_CALL, false]
         if(isIncomingCall){
             opponentViewHolders = SparseArray(opponents.size)
             isRemoteShown = false
@@ -192,7 +191,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
         if (!isPeerToPeerCall) {
             recyclerView = view.findViewById(R.id.grid_opponents)
 
-            val context = activity!!
+            val context = requireActivity()
             recyclerView.addItemDecoration(DividerItemDecoration(context, R.dimen.grid_item_divider))
             recyclerView.setHasFixedSize(true)
             val columnsCount = defineColumnsCount()
@@ -214,19 +213,19 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
 
         if(isIncomingCall){
             cameraToggle.visibility = View.INVISIBLE
-        }else{
+        } else {
             cameraToggle.visibility = View.VISIBLE
         }
 
-        cameraToggle.isChecked = Helper.get(CAMERA_ENABLED, true)
+        cameraToggle.isChecked = Helper[CAMERA_ENABLED, true]
         toggleCamera(cameraToggle.isChecked)
         actionVideoButtonsLayout = view.findViewById(R.id.element_set_video_buttons)
 
-        isCurrentCameraFront = Helper.get(IS_CURRENT_CAMERA_FRONT, true)
+        isCurrentCameraFront = Helper[IS_CURRENT_CAMERA_FRONT, true]
 
-        if (!isCurrentCameraFront) {
-            switchCamera(null)
-        }
+        //if (!isCurrentCameraFront) {
+        //    switchCamera(null)
+        //}
 
         actionButtonsEnabled(false)
         restoreSession()
@@ -283,7 +282,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
 
         gridWidth?.let {
             val cellSizeWidth = defineSize(it, columnsCount, itemMargin)
-            opponentsAdapter = OpponentsFromCallAdapter(context!!, this, opponents, cellSizeWidth,
+            opponentsAdapter = OpponentsFromCallAdapter(requireContext(), this, opponents, cellSizeWidth,
                 resources.getDimension(R.dimen.item_height).toInt())
             opponentsAdapter.setAdapterListener(this)
             recyclerView.adapter = opponentsAdapter
@@ -301,9 +300,9 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
     override fun onResume() {
         super.onResume()
         toggleCamera(cameraToggle.isChecked)
-        try{
-            switchCamera(null)
-        }catch (e: Exception){}
+        //try{
+        //    switchCamera(null)
+        //}catch (e: Exception){}
     }
 
     override fun onPause() {
@@ -653,7 +652,7 @@ class VideoConversationFragment : BaseConversationFragment(), Serializable,
     override fun onCallAcceptByUser(session: QBRTCSession, userId: Int?, userInfo: Map<String, String>?) {
         setStatusForOpponent(userId, getString(R.string.accepted))
         callHistory?.setCalleeId(userId.toString())
-        switchCamera(null)
+        //switchCamera(null)
     }
 
     override fun onReceiveHangUpFromUser(session: QBRTCSession, userId: Int?, userInfo: Map<String, String>?) {

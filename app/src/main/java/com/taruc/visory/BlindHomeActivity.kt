@@ -11,11 +11,8 @@ import com.taruc.visory.quickblox.activities.PermissionsActivity
 import com.taruc.visory.quickblox.utils.CHECK_PERMISSIONS
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.quickblox.utils.PERMISSIONS
-import com.taruc.visory.quickblox.utils.ViewDialog
 
 class BlindHomeActivity : AppCompatActivity() {
-
-    lateinit var viewDialog: ViewDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +30,6 @@ class BlindHomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        try {
-            viewDialog = ViewDialog(this)
-            viewDialog.showDialogFor5Seconds()
-        } catch (e: Exception) {
-        }
-
         if (Helper[CHECK_PERMISSIONS, true]) {
             PermissionsActivity.startForResult(this, false, PERMISSIONS)
         }
@@ -55,10 +46,5 @@ class BlindHomeActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         supportFragmentManager.popBackStackImmediate()
         return super.onSupportNavigateUp()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewDialog.hideDialog()
     }
 }

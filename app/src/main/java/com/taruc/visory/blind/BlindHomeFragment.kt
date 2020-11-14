@@ -1,11 +1,13 @@
 package com.taruc.visory.blind
 
 import android.app.ActivityManager
+import android.app.Dialog
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +40,8 @@ import com.taruc.visory.quickblox.utils.*
 import com.taruc.visory.ui.GetHelpActivity
 import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.fragment_blind_home.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 const val ERROR_LOGIN_ALREADY_TAKEN_HTTP_STATUS = 422
@@ -53,9 +57,8 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     private var fullName: String = ""
     private lateinit var volunteerUsers: ArrayList<QBUser>
     private var i = -1
-    lateinit var viewDialog: ViewDialog
     private lateinit var con: ViewGroup
-
+    private var loadingDialog: Dialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -121,30 +124,57 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.d("OnAttach", "BlindHomeFragment Attached")
+        showProgress()
+    }
+
     override fun onStart() {
         super.onStart()
 
         if (checkIsLoggedInChat()) {
-            volunteerUsers = ArrayList()
-            loadUsers()
-            loadVolunteers()
+            if (!::volunteerUsers.isInitialized){
+                volunteerUsers = ArrayList()
+            }
         } else {
             startLoginService()
         }
+
+        Log.d("onStart", "BlindHomeFragment starting!")
     }
 
     override fun onResume() {
         super.onResume()
 
-        val isIncomingCall = Helper.get(EXTRA_IS_INCOMING_CALL, false)
+        val isIncomingCall = false
         if (isCallServiceRunning(CallService::class.java)) {
             CallActivity.start(this.requireActivity().applicationContext, isIncomingCall)
         }
         clearAppNotifications()
 
-        volunteerUsers = ArrayList()
-        loadVolunteers()
-        loadUsers()
+        if (!::volunteerUsers.isInitialized){
+            volunteerUsers = ArrayList()
+            loadUsers()
+            loadVolunteers()
+        }
+
+        Handler().postDelayed({
+            if (!Helper[IS_CURRENTLY_CALLING, false]){
+                hideProgress()
+            }
+        }, 2000)
+
+        Log.d("OnResume", "BlindHomeFragment resuming!")
+    }
+
+    private fun showProgress(){
+        hideProgress()
+        loadingDialog = LoadingDialog.showLoadingDialog(this.requireContext())
+    }
+
+    private fun hideProgress(){
+        loadingDialog?.let { if(it.isShowing)it.cancel() }
     }
 
     private fun isCallServiceRunning(serviceClass: Class<*>): Boolean {
@@ -192,10 +222,15 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
                 callHistory.clear()
 
                 if (isInternetAvailable(requireContext())) {
-                    Helper.save(HANG_UP, false)
-                    Helper.save(CONNECTED_TO_USER, false)
+                    loadUsers()
+                    loadVolunteers()
+
+                    Helper.delete(HANG_UP)
+                    Helper.delete(CONNECTED_TO_USER)
+                    Helper.delete(STOP_CALLING)
+                    Helper.delete(IS_CURRENTLY_CALLING)
                     if (checkIsLoggedInChat()) {
-                        i = -1
+                        i = 0
                         makeCall()
                     }
                 } else {
@@ -206,69 +241,46 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun makeCall() {
-        viewDialog = ViewDialog(requireContext())
-        viewDialog.showDialogFor5Seconds()
-        var callAccepted = Helper[STOP_CALLING, false]
+        val timer = Timer()
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    Log.d("CallTimer", "Timer is running!")
 
-        i += 1
+                    val hangUp = Helper[HANG_UP, false]
+                    val connectedToUser = Helper[CONNECTED_TO_USER, false]
 
-        if (Helper[HANG_UP, false]) {
-            return
-        }
+                    if (connectedToUser || hangUp || i > 5) {
+                        Log.d("CallTimer", "Timer has stopped!")
+                        Helper.save(IS_CURRENTLY_CALLING, false)
+                        requireActivity().runOnUiThread{
+                            hideProgress()
+                        }
+                        timer.cancel()
+                    }
 
-        startCall(true, i)
+                    if (!connectedToUser && !hangUp && i <= 5) {
+                        Log.d("CallTimer", "Timer is making a call!")
+                        Helper.save(IS_CURRENTLY_CALLING, true)
+                        requireActivity().runOnUiThread {
+                            showProgress()
+                            startCall(true, i++)
+                        }
+                    }
 
-        if (Helper[HANG_UP, false]) {
-            return
-        }
-
-        Handler().postDelayed({
-            if (Helper[HANG_UP, false]) {
-                return@postDelayed
-            }
-            callAccepted = Helper[STOP_CALLING, false]
-
-            if (callAccepted) {
-                return@postDelayed
-            }
-
-            viewDialog = ViewDialog(requireContext())
-            viewDialog.showDialogFor5Seconds()
-        }, 10000)
-
-        if (callAccepted) {
-            return
-        }
-
-        Handler().postDelayed({
-            if (Helper[HANG_UP, false]) {
-                return@postDelayed
-            }
-
-            callAccepted = Helper[STOP_CALLING, false]
-
-            if (!callAccepted) {
-                if (i < (volunteerUsers.size - 1) && !Helper[HANG_UP, false] && i < 5) {
-                    makeCall()
+                    if (i > 5){
+                        requireActivity().runOnUiThread {
+                            //TODO: Display screen to inform to call later.
+                            shortToast("Please try calling again later.")
+                        }
+                    }
                 }
-                else if ((i + 1) == volunteerUsers.size || (i + 1) == 5) {
-                    //No response after calling everyone
-                    shortToast("Please try calling again later")
-                }
-            } else {
-                return@postDelayed
-            }
-        }, 13000)
+            },
+            0, 13000
+        )
     }
 
     private fun startCall(isVideoCall: Boolean, callerIndex: Int) {
-        val usersCount = volunteerUsers.size
-
-        if (usersCount == 0) {
-            loadUsers()
-            loadVolunteers()
-        }
-
         val opponentsList = ArrayList<Int>()
         opponentsList.add(volunteerUsers[callerIndex].id)
 
@@ -288,11 +300,13 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
 
             CallActivity.start(this.requireActivity().applicationContext, false)
         } catch (e: java.lang.Exception) {
-            Toast.makeText(context, e.message.toString(), Toast.LENGTH_LONG).show()
+            Log.d("CallError", e.message.toString())
         }
     }
 
     private fun loadVolunteers() {
+        //TODO: Make an array to store volunteers that did not respond, and remove them from the calling list
+
         try {
             //So we don't keep adding same users again and again
             volunteerUsers.clear()
@@ -303,26 +317,31 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             val userLanguage = loggedUser.getUserLanguage()
 
             for (i in 0 until dbSize) {
-                if (usersFromDb[i].tags.contains("volunteer") && usersFromDb[i].tags.contains(userLanguage)) {
+                if (usersFromDb[i].tags.contains("volunteer") && usersFromDb[i].tags.contains(
+                        userLanguage
+                    )) {
                     volunteerUsers.add(usersFromDb[i])
                 }
             }
 
             if(volunteerUsers.size < 5){
                 for (i in 0 until dbSize) {
-                    if (usersFromDb[i].tags.contains("volunteer")) {
+                    if (usersFromDb[i].tags.contains("volunteer") && !usersFromDb[i].tags.contains(
+                            userLanguage
+                        )) {
                         if(usersFromDb[i].tags.contains(userLanguage)){
-                            //volunteerUsers.add(usersFromDb[i])
-                        }else{
                             volunteerUsers.add(usersFromDb[i])
                         }
                     }
                 }
             }
 
-            //for(i in 0 until volunteerUsers.size){
-            //    shortToast(volunteerUsers[i].login)
-            //}
+            for(i in 0 until volunteerUsers.size){
+                Log.d(
+                    "VolunteerList",
+                    volunteerUsers[i].login + " and email: " + volunteerUsers[i].fullName
+                )
+            }
 
         } catch (e: Exception) {
             Toast.makeText(context, e.message.toString(), Toast.LENGTH_SHORT).show()
@@ -348,7 +367,6 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     private fun checkIsLoggedInChat(): Boolean {
         if (!QBChatService.getInstance().isLoggedIn) {
             startLoginService()
-            //shortToast("Retrying to login")
             return false
         }
         return true
@@ -402,7 +420,11 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     private fun startLoginService(qbUser: QBUser) {
         val intent = Intent(activity, LoginService::class.java)
         //val tempIntent = activity!!.startService(intent)
-        val pendingIntent = requireActivity().createPendingResult(EXTRA_LOGIN_RESULT_CODE, intent, 0)
+        val pendingIntent = requireActivity().createPendingResult(
+            EXTRA_LOGIN_RESULT_CODE,
+            intent,
+            0
+        )
         LoginService.start(requireActivity().baseContext, qbUser, pendingIntent)
     }
 
@@ -446,11 +468,11 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         user.password = null
         QBUsers.updateUser(user).performAsync(object : QBEntityCallback<QBUser> {
             override fun onSuccess(updUser: QBUser?, params: Bundle?) {
-                //Toast.makeText(context, "Finished creating user in server", Toast.LENGTH_LONG).show()
+                Log.d("QBUser", "Finished creating user in server")
             }
 
             override fun onError(responseException: QBResponseException?) {
-                Toast.makeText(context, "Error creating user in server", Toast.LENGTH_LONG).show()
+                Log.d("QBUser", "Error creating user in server")
             }
         })
     }

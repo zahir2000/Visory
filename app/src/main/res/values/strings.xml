@@ -109,6 +109,8 @@
 
     <string name="hang_up_call">Hang up</string>
     <string name="notification_title">A visually impaired person needs your help</string>
+    <string name="notification_text_calling">Touch takes you to the call</string>
+    <string name="notification_text_bvi">Volunteer is waiting for you!</string>
     <string name="notification_text">Touch takes you back to the call %1$s</string>
 
     <!--Pref manager-->

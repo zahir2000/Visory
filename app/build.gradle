@@ -134,4 +134,6 @@ dependencies {
     implementation "com.quickblox:quickblox-android-sdk-videochat-webrtc:3.9.2"
     implementation "com.quickblox:quickblox-android-sdk-conference:3.9.2"
     implementation "com.quickblox:quickblox-android-sdk-customobjects:3.9.2"
+
+    implementation 'com.airbnb.android:lottie:3.5.0'
 }

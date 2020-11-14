@@ -10,6 +10,8 @@ const val STOP_CALLING = "stop_calling"
 
 const val HANG_UP = "hang_up"
 
+const val IS_CURRENTLY_CALLING = "currently_calling"
+
 const val CHECK_PERMISSIONS = "check_permissions"
 
 const val CONNECTED_TO_USER = "connected_to_user"

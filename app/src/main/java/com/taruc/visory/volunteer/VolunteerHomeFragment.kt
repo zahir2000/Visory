@@ -1,6 +1,7 @@
 package com.taruc.visory.volunteer
 
 import android.app.ActivityManager
+import android.app.Dialog
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
@@ -37,14 +38,12 @@ import com.taruc.visory.quickblox.util.signInUser
 import com.taruc.visory.quickblox.util.signUp
 import com.taruc.visory.quickblox.utils.EXTRA_IS_INCOMING_CALL
 import com.taruc.visory.quickblox.utils.Helper
-import com.taruc.visory.quickblox.utils.ViewDialog
+import com.taruc.visory.utils.LoadingDialog
 import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.UserCount
 import kotlinx.android.synthetic.main.fragment_volunteer_home.*
 import kotlinx.android.synthetic.main.profile_card.*
 import kotlinx.android.synthetic.main.user_stats.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -56,7 +55,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
     private var uid: String = ""
     private var fullName: String = ""
     private lateinit var con: ViewGroup
-    lateinit var dialog: ViewDialog
+    private var progressDialog: Dialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,10 +85,6 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
         button_tutorial.setOnClickListener(this)
         button_help_someone.setOnClickListener(this)
 
-        val user = createQBUser()
-        signUpNewUser(user)
-
-        startLoginService()
         updateUI()
 
         Log.d("Dialog", "onViewCreated")
@@ -106,7 +101,17 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
 
         Log.d("Dialog", "onResume")
 
-        loadUsers()
+        createNewUser()
+        startLoginService()
+    }
+
+    private fun showProgress(){
+        hideProgress()
+        progressDialog = LoadingDialog.showLoadingDialog(this.requireContext())
+    }
+
+    private fun hideProgress(){
+        progressDialog?.let { if(it.isShowing)it.cancel() }
     }
 
     private fun loadUsers() {
@@ -134,11 +139,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
-        try {
-            dialog = ViewDialog(requireContext())
-            dialog.showDialog()
-        } catch (e: Exception){}
+        showProgress()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -177,8 +178,17 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
 
     private fun startLoginService() {
         if (Helper.hasQbUser()) {
+            Log.d("VolunteerQBUser", Helper.getQbUser().fullName)
             LoginService.start(this.requireActivity().applicationContext, Helper.getQbUser())
+        } else {
+            Log.d("VolunteerQBUser", "Not Found! Creating new user now!")
+            createNewUser()
         }
+    }
+
+    private fun createNewUser(){
+        val user = createQBUser()
+        signUpNewUser(user)
     }
 
     private fun createQBUser(): QBUser {
@@ -308,7 +318,8 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
             }
 
             try {
-                dialog.hideDialog()
+                hideProgress()
+                //dialog.hideDialog()
             } catch (e: Exception){}
         }, 2000)
     }

@@ -1,6 +1,6 @@
 package com.taruc.visory.fragments
 
-
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -22,8 +22,6 @@ import com.taruc.visory.quickblox.db.QbUsersDbManager
 import com.taruc.visory.quickblox.services.LoginService
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.ui.LandingActivity
-import com.taruc.visory.utils.LoggedUser
-
 
 class SettingsFragment : Fragment() {
 
@@ -88,15 +86,15 @@ class SettingsFragment : Fragment() {
                         mGoogleSignInClient?.signOut()
                         auth.signOut()
 
-                        val loggedUser = LoggedUser(requireContext())
-                        loggedUser.setAvatarUrl("")
+                        val sharedPreference =  requireContext().getSharedPreferences("sharedPrefs",
+                            Context.MODE_PRIVATE)
+                        sharedPreference.edit().clear().apply()
 
-                        activity?.onBackPressed()
+                        activity?.finishAffinity()
                         activity?.let{
                             val intent = Intent(it, LandingActivity::class.java)
                             it.startActivity(intent)
                             it.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-                            //return@let true
                         }
                     }
                     .setNegativeButton("Cancel"){ _, _ ->
@@ -111,7 +109,7 @@ class SettingsFragment : Fragment() {
         }
 
         private fun logoutFromQuickblox() {
-            LoginService.logout(this.context!!)
+            LoginService.logout(this.requireContext())
             removeAllUserData()
         }
 

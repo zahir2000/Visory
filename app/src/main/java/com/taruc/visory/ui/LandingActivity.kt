@@ -2,6 +2,7 @@ package com.taruc.visory.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -39,6 +40,9 @@ class LandingActivity : AppCompatActivity() {
             userTypePref.setUserType(2)
             startActivity(intent)
         }
+
+        val loggedUser = LoggedUser(this)
+        Log.d("LoggedUser", loggedUser.getUserID())
     }
 
     override fun onStart() {

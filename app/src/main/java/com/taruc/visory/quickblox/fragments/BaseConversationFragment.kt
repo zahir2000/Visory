@@ -155,6 +155,7 @@ abstract class BaseConversationFragment : BaseToolBarFragment(), CallActivity.Cu
 
         handUpVideoCall.setOnClickListener {
             Helper.save(HANG_UP, true)
+            Helper.save(IS_CURRENTLY_CALLING, false)
 
             actionButtonsEnabled(false)
             handUpVideoCall.isEnabled = false

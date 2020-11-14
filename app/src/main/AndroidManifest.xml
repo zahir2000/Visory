@@ -26,6 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.SubmitStoryActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -42,25 +43,28 @@
             android:label="Report a Problem" />
         <activity
             android:name=".settings.ChangeEmailActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="com.taruc.visory.settings.ChangeEmailActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".settings.ChangePasswordActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="com.taruc.visory.settings.ChangePasswordActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".settings.PersonalDetailsActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="com.taruc.visory.settings.PersonalDetailsActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -91,11 +95,11 @@
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".ui.LoginActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".ui.LandingActionsActivity" />
         <activity android:name=".ui.LandingActivity" />
         <activity android:name=".ui.WelcomeActivity" />
-        <activity android:name=".ui.StoryDetailsActivity"/>
+        <activity android:name=".ui.StoryDetailsActivity" />
         <activity
             android:name=".quickblox.activities.CallActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
@@ -146,10 +150,16 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name="com.quickblox.messages.services.fcm.QBFcmPushInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".quickblox.services.PushListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
     </application>

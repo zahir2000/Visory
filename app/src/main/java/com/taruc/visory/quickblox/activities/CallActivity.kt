@@ -41,7 +41,6 @@ private const val REQUEST_PERMISSION_SETTING = 545
 
 class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCallback<QBRTCSession>,
     QBRTCClientSessionCallbacks, ConversationCallback {
-
     private val currentCallStateCallbackList = ArrayList<CurrentCallStateCallback>()
     private lateinit var showIncomingCallWindowTaskHandler: Handler
     private var connectionListener: ConnectionListenerImpl? = null
@@ -67,8 +66,8 @@ class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCall
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setContentView(R.layout.activity_call)
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_call)
     }
 
     private fun initScreen() {
@@ -90,7 +89,7 @@ class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCall
             if (intent != null && intent.extras != null) {
                 isInComingCall = intent?.extras?.getBoolean(EXTRA_IS_INCOMING_CALL) ?: true
             } else {
-                isInComingCall = Helper.get(EXTRA_IS_INCOMING_CALL, false)
+                isInComingCall = Helper[EXTRA_IS_INCOMING_CALL, false]
             }
 
             if (!isInComingCall) {
@@ -156,8 +155,8 @@ class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCall
     }
 
     private fun checkPermission() {
-        val cam = Helper.get(PERMISSIONS[0], true)
-        val mic = Helper.get(PERMISSIONS[1], true)
+        val cam = Helper[PERMISSIONS[0], true]
+        val mic = Helper[PERMISSIONS[1], true]
 
         if (isVideoCall && checkPermissions(PERMISSIONS)) {
             if (cam) {
