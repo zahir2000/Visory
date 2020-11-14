@@ -43,12 +43,6 @@ class GetHelpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_help)
 
-        /*if(requestSinglePermission()){
-            checkLocation()
-        }*/
-
-        //getLocation()
-
         Dexter.withActivity(this)
             .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
             .withListener(object:PermissionListener{
@@ -82,7 +76,7 @@ class GetHelpActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-            val loggedUser = LoggedUser(applicationContext)
+            val loggedUser = LoggedUser(this)
             val rootRef = FirebaseDatabase.getInstance().getReference("users")
             val uidRef = rootRef.child(String.format("%s", loggedUser.getUserID()))
             val valueEventListener = object : ValueEventListener {
