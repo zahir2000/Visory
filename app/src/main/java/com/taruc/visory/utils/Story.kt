@@ -8,9 +8,9 @@ class Story{
     var sDate: String? = null
     var status: String? = null
     var username: String? = null
-    var email: String? = null
+    var userID: String? = null
 
-    constructor(uid: String?, imageUrl: String?, sTitle: String?, sBody: String?, sDate: String?, status: String?, username: String?, email: String?) {
+    constructor(uid: String?, imageUrl: String?, sTitle: String?, sBody: String?, sDate: String?, status: String?, username: String?, userID: String?) {
         this.uid = uid
         this.imageUrl = imageUrl
         this.sTitle = sTitle
@@ -18,7 +18,7 @@ class Story{
         this.sDate = sDate
         this.status = status
         this.username = username
-        this.email = email
+        this.userID = userID
     }
 
     constructor():this("","","","","", "", "",""){
