@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.taruc.visory.R
+import com.taruc.visory.StoriesFragment
 import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.Story
 import com.taruc.visory.utils.getCurrentDate
@@ -92,6 +93,7 @@ class SubmitStoryActivity : AppCompatActivity() {
         ref.setValue(storyObj).addOnCompleteListener{task ->
             if (task.isSuccessful){
                 shortToast("Story has been shared!")
+                finish()
             }
         }
     }

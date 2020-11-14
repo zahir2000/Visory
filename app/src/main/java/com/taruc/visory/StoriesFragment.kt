@@ -20,6 +20,7 @@ class StoriesFragment : Fragment(), View.OnClickListener {
 
     lateinit var sRecyclerView: RecyclerView
     lateinit var ref : DatabaseReference
+    val status = "approved"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +55,12 @@ class StoriesFragment : Fragment(), View.OnClickListener {
 
         sRecyclerView = view.findViewById(R.id.sRecyclerView)
         ref = FirebaseDatabase.getInstance().reference.child("stories")
+        val query  = ref.orderByChild("status").equalTo("approved")
         sRecyclerView.layoutManager = LinearLayoutManager(context)
 
 
         val option = FirebaseRecyclerOptions.Builder<Story>()
-            .setQuery(ref, Story::class.java)
+            .setQuery(query, Story::class.java)
             .build()
 
         val firebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Story, StoriesFragment.StoryViewHolder>(option) {
