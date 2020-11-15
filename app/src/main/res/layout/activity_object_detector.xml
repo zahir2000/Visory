@@ -62,6 +62,9 @@
 
         </LinearLayout>
 
+        <include
+            layout="@layout/empty_space" />
+
         <Button
             android:id="@+id/btnToggleCamera"
             style="@style/ButtonStyle.Secondary"
