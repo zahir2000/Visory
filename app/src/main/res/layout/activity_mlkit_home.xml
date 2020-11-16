@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            style="@style/ScrollViewChild"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/button_mlkit_general"
+                style="@style/ButtonStyle.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:contentDescription="Detect a number of objects by taking an image"
+                android:text="@string/button_mlkit_general"
+                android:textSize="36.0sp" />
+
+            <Button
+                android:id="@+id/button_mlkit_text"
+                style="@style/ButtonStyle.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="12.0dip"
+                android:contentDescription="Detect text by taking or loading an image"
+                android:text="@string/button_mlkit_text"
+                android:textSize="36.0sp" />
+
+            <Button
+                android:id="@+id/button_mlkit_label"
+                style="@style/ButtonStyle.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="12.0dip"
+                android:contentDescription="Recognize images by taking or loading an image"
+                android:text="Image Recognition"
+                android:textSize="36.0sp" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

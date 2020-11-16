@@ -2,7 +2,7 @@ package com.taruc.visory.quickblox.utils
 
 import android.Manifest
 
-val PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+val PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE)
 
 const val EXTRA_LOGIN_RESULT = "login_result"
 
@@ -37,3 +37,6 @@ const val COMMAND_LOGIN = 1
 const val COMMAND_LOGOUT = 2
 
 const val EXTRA_PENDING_INTENT = "pending_Intent"
+
+const val MLKIT_TEXT_DETECTION = "mlkit_text_detection"
+const val MLKIT_IMAGE_LABELING = "mlkit_image_labeling"

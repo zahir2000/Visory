@@ -29,8 +29,7 @@ import com.quickblox.videochat.webrtc.QBRTCClient
 import com.quickblox.videochat.webrtc.QBRTCTypes
 import com.taruc.visory.R
 import com.taruc.visory.fragments.SettingsFragment
-import com.taruc.visory.mlkit.ObjectDetectorActivity
-import com.taruc.visory.mlkit.TextDetectionActivity
+import com.taruc.visory.mlkit.MLKitHomeActivity
 import com.taruc.visory.quickblox.DEFAULT_USER_PASSWORD
 import com.taruc.visory.quickblox.activities.CallActivity
 import com.taruc.visory.quickblox.db.QbUsersDbManager
@@ -45,7 +44,6 @@ import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.fragment_blind_home.*
 import java.util.*
 import kotlin.collections.ArrayList
-
 
 const val ERROR_LOGIN_ALREADY_TAKEN_HTTP_STATUS = 422
 const val EXTRA_LOGIN_RESULT_CODE = 1002
@@ -217,7 +215,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         when (view.id) {
             R.id.button_blind_detect_object -> {
                 activity?.let {
-                    val intent = Intent(it, TextDetectionActivity::class.java)
+                    val intent = Intent(it, MLKitHomeActivity::class.java)
                     it.startActivity(intent)
                 }
             }

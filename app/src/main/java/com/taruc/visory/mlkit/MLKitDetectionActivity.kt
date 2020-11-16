@@ -12,19 +12,23 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.Point
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.view.View
+import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.exifinterface.media.ExifInterface
 import com.taruc.visory.R
-import kotlinx.android.synthetic.main.activity_text_detection.*
+import com.taruc.visory.quickblox.utils.MLKIT_IMAGE_LABELING
+import com.taruc.visory.quickblox.utils.MLKIT_TEXT_DETECTION
+import kotlinx.android.synthetic.main.activity_mlkit_detection.*
 import java.io.IOException
 
 private const val REQUEST_IMAGE_CAPTURE = 1001
@@ -32,22 +36,39 @@ private const val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1
 private const val MY_PERMISSIONS_REQUEST_CAMERA = 2
 private const val CAMERA_REQUEST_CODE: Int = 143
 
-class TextDetectionActivity : AppCompatActivity(), TextDetectionActivityPresenter.View {
-    private lateinit var presenter: TextDetectionActivityPresenter
+class MLKitDetectionActivity : AppCompatActivity(), MLKitActivityPresenter.View {
+    private lateinit var presenter: MLKitActivityPresenter
     private var imageUri: Uri? = null
     private var preview: ImageView? = null
     private lateinit var b: Dialog
     private lateinit var cameraBtn: TextView
     private lateinit var galleryBtn: TextView
+    private var mlkitType: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_text_detection)
+        setContentView(R.layout.activity_mlkit_detection)
+
+        mlkitType = intent.getStringExtra("type")
+        updateUI()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        this.presenter = TextDetectionActivityPresenter(this)
+        this.presenter = MLKitActivityPresenter(this)
         preview = findViewById(R.id.imageView)
         setUpNewImageListener()
+    }
+
+    private fun updateUI(){
+        when(mlkitType) {
+            MLKIT_IMAGE_LABELING -> {
+                title = "Image Recognition"
+                button_mlkit_detection.text = "Recognize Object"
+            }
+
+            MLKIT_TEXT_DETECTION -> {
+                title = "Text Detection"
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -61,7 +82,13 @@ class TextDetectionActivity : AppCompatActivity(), TextDetectionActivityPresente
     }
 
     override fun showText(text: String) {
+        text_detection_scroll_view.visibility = View.VISIBLE
+
         dateTextView.text = text
+        dateTextView.contentDescription = "Detected text is $text"
+        Handler().postDelayed({
+            dateTextView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+        }, 100)
     }
 
     override fun showProgress() {
@@ -88,7 +115,7 @@ class TextDetectionActivity : AppCompatActivity(), TextDetectionActivityPresente
                 data?.data?.let {
                     val selectedImageBitmap = resizeImage(it)
                     imageView.setImageBitmap(selectedImageBitmap)
-                    presenter.runTextRecognition(selectedImageBitmap!!)
+                    runDetection(selectedImageBitmap!!)
                 }
             }
             REQUEST_IMAGE_CAPTURE -> if (resultCode == Activity.RESULT_OK) {
@@ -104,7 +131,7 @@ class TextDetectionActivity : AppCompatActivity(), TextDetectionActivityPresente
                 val height = size.y
                 val lp = imageView.layoutParams as ConstraintLayout.LayoutParams
                 imageView.layoutParams.height =
-                    height - fab.height - text_detection_scroll_view.height - lp.topMargin
+                    height - button_mlkit_detection.height - text_detection_scroll_view.height - lp.topMargin
 
                 val bitmap = getBitmapFromContentUri(this.contentResolver, imageUri)
 
@@ -122,6 +149,18 @@ class TextDetectionActivity : AppCompatActivity(), TextDetectionActivityPresente
                 }
                 val resizedBitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false)
                 preview!!.setImageBitmap(resizedBitmap)
+                runDetection(bitmap)
+            }
+        }
+    }
+
+    private fun runDetection(bitmap: Bitmap){
+        when(mlkitType) {
+            MLKIT_IMAGE_LABELING -> {
+                presenter.runImageLabeling(bitmap)
+            }
+
+            MLKIT_TEXT_DETECTION -> {
                 presenter.runTextRecognition(bitmap)
             }
         }
@@ -229,7 +268,7 @@ class TextDetectionActivity : AppCompatActivity(), TextDetectionActivityPresente
     }
 
     private fun setUpNewImageListener() {
-        fab.setOnClickListener {
+        button_mlkit_detection.setOnClickListener {
             showDetectionMenu()
         }
     }

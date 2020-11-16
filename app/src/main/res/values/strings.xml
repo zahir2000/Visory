@@ -324,4 +324,6 @@
     <string name="helpSomeone">Help Someone</string>
     <string name="action_search">Search</string>
     <string name="sender_id">243602294589</string>
+    <string name="button_mlkit_general">General Object Detection</string>
+    <string name="button_mlkit_text">Text Detection</string>
 </resources>
