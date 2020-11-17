@@ -52,6 +52,12 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
         edit_text_last_name.setText(getLastName(loggedUser.getUserName()))
         edit_text_pd_email.setText(loggedUser.getUserEmail())
 
+        if (loggedUser.getUserContact() != ""){
+            text_edit_pd_contact.setText(loggedUser.getUserContact())
+        } else {
+            text_edit_pd_contact.setText("")
+        }
+
         if (loggedUser.getUserType() == 2) {
             profile_image_card_view.visibility = View.GONE
         } else {
@@ -84,6 +90,7 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
             R.id.button_update_profile -> {
                 val fName = edit_text_first_name.text.toString()
                 val lName = edit_text_last_name.text.toString()
+                val contact = text_edit_pd_contact.text.toString()
 
                 if (loggedUser.getUserType() == 1) {
                     if (fName.compareTo(getFirstName(loggedUser.getUserName())) == 0
@@ -93,7 +100,7 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
                         finish()
                     } else {
                         if (isInternetAvailable(this)){
-                            updateProfile(v, fName, lName)
+                            updateProfile(v, fName, lName, contact)
                         } else {
                             makeErrorSnackbar(v, "An active internet connection is required.")
                         }
@@ -106,7 +113,7 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
                         finish()
                     } else {
                         if (isInternetAvailable(this)){
-                            updateProfile(v, fName, lName)
+                            updateProfile(v, fName, lName, contact)
                         } else {
                             makeErrorSnackbar(v, "An active internet connection is required.")
                         }
@@ -141,7 +148,7 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    private fun updateProfile(view: View, fName: String, lName: String) {
+    private fun updateProfile(view: View, fName: String, lName: String, contact: String) {
         if (TextUtils.isEmpty(fName)) {
             makeWarningSnackbar(view, "Please enter your first name")
             return
@@ -159,6 +166,10 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
                 rootRef.child(loggedUser.getUserID())
                     .child("lname").setValue(lName)
+
+                rootRef.child(loggedUser.getUserID())
+                    .child("contactNo").setValue(contact)
+                loggedUser.setUserContact(contact)
 
                 rootRef.child(loggedUser.getUserID())
                     .child("language").setValue(selectedLanguage)

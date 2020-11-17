@@ -9,6 +9,7 @@ class LoggedUser(context: Context){
     private val USER_TYPE = "userType"
     private val USER_NAME = "userName"
     private val USER_EMAIL = "userEmail"
+    private val USER_CONTACT = "userContactNo"
     private val USER_JOINDATE = "userJoinDate"
     private val USER_LANGUAGE = "userLanguage"
     private val PROVIDER = "provider"
@@ -52,6 +53,16 @@ class LoggedUser(context: Context){
     fun setUserEmail(userEmail: String){
         val editor = preference.edit()
         editor.putString(USER_EMAIL, userEmail)
+        editor.apply()
+    }
+
+    fun getUserContact(): String{
+        return preference.getString(USER_CONTACT, "")!!
+    }
+
+    fun setUserContact(userContact: String){
+        val editor = preference.edit()
+        editor.putString(USER_CONTACT, userContact)
         editor.apply()
     }
 
@@ -103,11 +114,12 @@ class LoggedUser(context: Context){
         }
     }
 
-    fun setUserData(userID: String, userName: String, userEmail: String, userJoinDate: String, userType: Int, userLanguage:String, provider: String){
+    fun setUserData(userID: String, userName: String, userEmail: String, userContact:String, userJoinDate: String, userType: Int, userLanguage:String, provider: String){
         val editor = preference.edit()
         editor.putString(USER_ID, userID)
         editor.putString(USER_NAME, userName)
         editor.putString(USER_EMAIL, userEmail)
+        editor.putString(USER_CONTACT, userContact)
         editor.putString(USER_JOINDATE, userJoinDate)
         editor.putInt(USER_TYPE, userType)
         editor.putString(USER_LANGUAGE, userLanguage)

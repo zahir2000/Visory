@@ -84,6 +84,21 @@
                     tools:targetApi="o" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_pd_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_edit_pd_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="phone"
+                    android:hint="Contact Number"
+                    android:inputType="phone"
+                    tools:targetApi="o" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <Spinner
                 android:id="@+id/edit_language_spinner"
                 android:layout_marginTop="@dimen/spacing_sm"

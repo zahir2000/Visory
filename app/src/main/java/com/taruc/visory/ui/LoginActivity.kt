@@ -4,12 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.util.Patterns
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.facebook.login.LoginManager
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseUiException
 import com.firebase.ui.auth.IdpResponse
@@ -176,6 +178,7 @@ class LoginActivity : AppCompatActivity() {
                                     "lname"
                                 ).value.toString()
                             val userEmail = dataSnapshot.child("email").value.toString()
+                            val userContact = dataSnapshot.child("contactNo").value.toString()
                             val userJoinDate = dataSnapshot.child("datejoined").value.toString()
                             val userLanguage = dataSnapshot.child("language").value.toString()
                             val role =
@@ -193,6 +196,7 @@ class LoginActivity : AppCompatActivity() {
                                 uid,
                                 userName,
                                 userEmail,
+                                userContact,
                                 userJoinDate,
                                 role,
                                 userLanguage,
@@ -259,6 +263,10 @@ class LoginActivity : AppCompatActivity() {
         val loggedUserTypePref = LoggedUser(this)
 
         if (requestCode == RC_SIGN_IN) {
+            if (LoginManager.getInstance() != null){
+                LoginManager.getInstance().logOut()
+            }
+
             val response = IdpResponse.fromResultIntent(data)
             val viewDialog = ViewDialog(this)
             viewDialog.showDialog()
@@ -277,6 +285,7 @@ class LoginActivity : AppCompatActivity() {
                             getFirstName(name),
                             getLastName(name),
                             user.email!!,
+                            "",
                             userType,
                             getCurrentDate(),
                             "English"
@@ -286,6 +295,7 @@ class LoginActivity : AppCompatActivity() {
                                 FirebaseAuth.getInstance().currentUser!!.uid,
                                 name,
                                 user.email!!,
+                                "",
                                 getCurrentDate(),
                                 userType,
                                 "English",
@@ -304,6 +314,7 @@ class LoginActivity : AppCompatActivity() {
                                         "lname"
                                     ).value.toString()
                                 val userEmail = dataSnapshot.child("email").value.toString()
+                                val userContact = dataSnapshot.child("contactNo").value.toString()
                                 val userJoinDate = dataSnapshot.child("datejoined").value.toString()
                                 val role =
                                     Integer.parseInt(dataSnapshot.child("role").value.toString())
@@ -320,6 +331,7 @@ class LoginActivity : AppCompatActivity() {
                                     FirebaseAuth.getInstance().currentUser!!.uid,
                                     userName,
                                     userEmail,
+                                    userContact,
                                     userJoinDate,
                                     role,
                                     "English",
@@ -353,6 +365,7 @@ class LoginActivity : AppCompatActivity() {
                 if (e is FirebaseUiException) {
                     Toast.makeText(applicationContext, "Login is cancelled.", Toast.LENGTH_SHORT)
                         .show()
+                    Log.d("FirebaseUiException", e.message.toString())
                 } else {
                     Toast.makeText(
                         applicationContext,
@@ -394,6 +407,7 @@ class LoginActivity : AppCompatActivity() {
                             getFirstName(name),
                             getLastName(name),
                             user.email!!,
+                            "",
                             userType,
                             getCurrentDate(),
                             "English"
@@ -404,6 +418,7 @@ class LoginActivity : AppCompatActivity() {
                             FirebaseAuth.getInstance().currentUser!!.uid,
                             name,
                             user.email!!,
+                            "",
                             getCurrentDate(),
                             userType,
                             "English",
@@ -421,6 +436,7 @@ class LoginActivity : AppCompatActivity() {
                                         "lname"
                                     ).value.toString()
                                 val userEmail = dataSnapshot.child("email").value.toString()
+                                val userContact = dataSnapshot.child("contactNo").value.toString()
                                 val userJoinDate = dataSnapshot.child("datejoined").value.toString()
                                 val role =
                                     Integer.parseInt(dataSnapshot.child("role").value.toString())
@@ -437,6 +453,7 @@ class LoginActivity : AppCompatActivity() {
                                     FirebaseAuth.getInstance().currentUser!!.uid,
                                     userName,
                                     userEmail,
+                                    userContact,
                                     userJoinDate,
                                     role,
                                     "English",

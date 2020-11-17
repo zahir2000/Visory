@@ -77,8 +77,8 @@ class MLKitDetectionActivity : AppCompatActivity(), MLKitActivityPresenter.View 
     }
 
     override fun showNoTextMessage() {
-        Toast.makeText(this, "No text detected", Toast.LENGTH_LONG).show()
-        //dateTextView.text = "No text has been detected"
+        //Toast.makeText(this, "No text detected", Toast.LENGTH_LONG).show()
+        dateTextView.text = "No text has been detected"
     }
 
     override fun showText(text: String) {
@@ -125,31 +125,35 @@ class MLKitDetectionActivity : AppCompatActivity(), MLKitActivityPresenter.View 
                     return
                 }
 
-                val display = windowManager.defaultDisplay
-                val size = Point()
-                display.getSize(size)
-                val height = size.y
-                val lp = imageView.layoutParams as ConstraintLayout.LayoutParams
-                imageView.layoutParams.height =
-                    height - button_mlkit_detection.height - text_detection_scroll_view.height - lp.topMargin
-
                 val bitmap = getBitmapFromContentUri(this.contentResolver, imageUri)
+                runDetection(bitmap!!)
 
-                val maxSize = imageView.height
-                val outWidth: Int
-                val outHeight: Int
-                val inWidth: Int = bitmap!!.width
-                val inHeight: Int = bitmap.height
-                if (inWidth > inHeight) {
-                    outWidth = maxSize
-                    outHeight = inHeight * maxSize / inWidth
-                } else {
-                    outHeight = maxSize
-                    outWidth = inWidth * maxSize / inHeight
-                }
-                val resizedBitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false)
-                preview!!.setImageBitmap(resizedBitmap)
-                runDetection(bitmap)
+                Handler().postDelayed({
+                    val display = windowManager.defaultDisplay
+                    val size = Point()
+                    display.getSize(size)
+                    val height = size.y
+                    val lp = imageView.layoutParams as ConstraintLayout.LayoutParams
+                    imageView.layoutParams.height =
+                        (height / 2) - button_mlkit_detection.height - text_detection_scroll_view.height - lp.topMargin
+
+
+
+                    val maxSize = imageView.height
+                    val outWidth: Int
+                    val outHeight: Int
+                    val inWidth: Int = bitmap.width
+                    val inHeight: Int = bitmap.height
+                    if (inWidth > inHeight) {
+                        outWidth = maxSize
+                        outHeight = inHeight * maxSize / inWidth
+                    } else {
+                        outHeight = maxSize
+                        outWidth = inWidth * maxSize / inHeight
+                    }
+                    val resizedBitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false)
+                    preview!!.setImageBitmap(resizedBitmap)
+                }, 1000)
             }
         }
     }

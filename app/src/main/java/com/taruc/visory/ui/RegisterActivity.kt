@@ -1,9 +1,14 @@
 package com.taruc.visory.ui
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.telephony.PhoneNumberUtils
+import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.Menu
@@ -14,6 +19,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.facebook.login.LoginManager
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -21,8 +27,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
@@ -30,10 +34,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.R
+import com.taruc.visory.quickblox.utils.CONTACT_REGEX
 import com.taruc.visory.quickblox.utils.ViewDialog
 import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.*
+import java.util.regex.Pattern
 
 
 class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -76,7 +82,8 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         }
 
         val providers = arrayListOf(
-            AuthUI.IdpConfig.FacebookBuilder().build())
+            AuthUI.IdpConfig.FacebookBuilder().build()
+        )
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -106,7 +113,8 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                         .setAvailableProviders(providers)
                         .setIsSmartLockEnabled(false)
                         .build(),
-                    RC_SIGN_IN)
+                    RC_SIGN_IN
+                )
             }
             else{
                 makeErrorSnackbar(it, getString(R.string.active_internet_connection))
@@ -147,6 +155,8 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         var fName = edit_text_fname.text.toString().trim()
         var lName = edit_text_lname.text.toString().trim()
         val email = text_edit_email.text.toString().trim()
+        val contact = text_edit_contact.text.toString().trim()
+
         val password = text_edit_password.text.toString().trim()
 
         if(TextUtils.isEmpty(fName)){
@@ -165,6 +175,11 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             makeWarningSnackbar(view, "Please enter a valid email")
+            return
+        }
+
+        if(TextUtils.isEmpty(contact)){
+            makeWarningSnackbar(view, "Please enter your contact number")
             return
         }
 
@@ -195,6 +210,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                         fName,
                         lName,
                         email,
+                        contact,
                         userType,
                         getCurrentDate(),
                         selectedLanguage
@@ -207,7 +223,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                                 //Toast.makeText(applicationContext,  "Email sent.", Toast.LENGTH_SHORT).show()
                             }
                             else {
-                                makeWarningSnackbar(view,"Email could not be sent.")
+                                makeWarningSnackbar(view, "Email could not be sent.")
                                 //Toast.makeText(applicationContext,  "Email could not be sent.", Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -220,6 +236,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                             FirebaseAuth.getInstance().currentUser!!.uid,
                             userName,
                             email,
+                            contact,
                             getCurrentDate(),
                             userType,
                             selectedLanguage,
@@ -261,6 +278,10 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
 
+            if (LoginManager.getInstance() != null){
+                LoginManager.getInstance().logOut()
+            }
+
             val viewDialog = ViewDialog(this)
             viewDialog.showDialog()
 
@@ -279,6 +300,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                             getFirstName(name),
                             getLastName(name),
                             user.email!!,
+                            "",
                             userType,
                             getCurrentDate(),
                             selectedLanguage
@@ -288,6 +310,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                                 FirebaseAuth.getInstance().currentUser!!.uid,
                                 name,
                                 user.email!!,
+                                "",
                                 getCurrentDate(),
                                 userType,
                                 selectedLanguage,
@@ -302,8 +325,11 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                         val uidRef = rootRef.child(String.format("%s", uid))
                         val valueEventListener = object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                val userName = dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child("lname").value.toString()
+                                val userName = dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child(
+                                    "lname"
+                                ).value.toString()
                                 val userEmail = dataSnapshot.child("email").value.toString()
+                                val userContact = dataSnapshot.child("contactNo").value.toString()
                                 val userJoinDate = dataSnapshot.child("datejoined").value.toString()
                                 val role = Integer.parseInt(dataSnapshot.child("role").value.toString())
 
@@ -318,6 +344,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                                     uid,
                                     userName,
                                     userEmail,
+                                    userContact,
                                     userJoinDate,
                                     role,
                                     selectedLanguage,
@@ -336,15 +363,21 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                     try {
                         viewDialog.hideDialog()
                         val intent = Intent(this, WelcomeActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                         finish()
-                    } catch (e: Exception) {}
+                    } catch (e: Exception) {
+                    }
                 }, 3000)
             } else {
                 viewDialog.hideDialog()
-                Toast.makeText(applicationContext, "" + response!!.error!!.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "" + response!!.error!!.message,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         else if (requestCode == RC_SIGN_IN_GOOGLE) {
@@ -379,6 +412,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                             getFirstName(name),
                             getLastName(name),
                             user.email!!,
+                            "",
                             userType,
                             getCurrentDate(),
                             selectedLanguage
@@ -389,6 +423,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                             FirebaseAuth.getInstance().currentUser!!.uid,
                             name,
                             user.email!!,
+                            "",
                             getCurrentDate(),
                             userType,
                             selectedLanguage,
@@ -402,8 +437,11 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                         val uidRef = rootRef.child(String.format("%s", uid))
                         val valueEventListener = object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                val userName = dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child("lname").value.toString()
+                                val userName = dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child(
+                                    "lname"
+                                ).value.toString()
                                 val userEmail = dataSnapshot.child("email").value.toString()
+                                val userContact = dataSnapshot.child("contactNo").value.toString()
                                 val userJoinDate = dataSnapshot.child("datejoined").value.toString()
                                 val role = Integer.parseInt(dataSnapshot.child("role").value.toString())
 
@@ -418,6 +456,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                                     uid,
                                     userName,
                                     userEmail,
+                                    userContact,
                                     userJoinDate,
                                     role,
                                     selectedLanguage,
@@ -437,16 +476,22 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                         try {
                             viewDialog.hideDialog()
                             val intent = Intent(this, WelcomeActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            intent.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                             finish()
-                        } catch (e: Exception) {}
+                        } catch (e: Exception) {
+                        }
                     }, 3000)
                 } else {
                     // If sign in fails, display a message to the user.
                     viewDialog.hideDialog()
-                    Toast.makeText(applicationContext, task.exception.toString(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        task.exception.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
     }

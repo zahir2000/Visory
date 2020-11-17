@@ -40,6 +40,7 @@ import com.taruc.visory.quickblox.util.signInUser
 import com.taruc.visory.quickblox.util.signUp
 import com.taruc.visory.quickblox.utils.EXTRA_IS_INCOMING_CALL
 import com.taruc.visory.quickblox.utils.Helper
+import com.taruc.visory.report.loggedUser
 import com.taruc.visory.utils.LoadingDialog
 import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.UserCount
@@ -88,6 +89,9 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
                 }
             }
         }
+
+        val loggedUser = LoggedUser(requireContext())
+        Log.d("ContactNo", loggedUser.getUserContact())
     }
 
     override fun onCreateView(

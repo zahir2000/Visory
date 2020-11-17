@@ -45,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_md"
             android:padding="@dimen/spacing_md"
-            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
             android:background="@drawable/card"
             android:importantForAccessibility="no">
