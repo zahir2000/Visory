@@ -34,7 +34,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.taruc.visory.R
-import com.taruc.visory.quickblox.utils.CONTACT_REGEX
 import com.taruc.visory.quickblox.utils.ViewDialog
 import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_register.*

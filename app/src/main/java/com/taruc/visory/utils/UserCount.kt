@@ -73,11 +73,14 @@ fun loadUsers(context: Context){
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for(ds in dataSnapshot.children){
                     val role = ds.child("role").value
-                    val roleVal = role.toString().toInt()
-                    if(roleVal == 1){
-                        userCount.setVolCount(userCount.getVolCount() + 1)
-                    }else if(roleVal == 2){
-                        userCount.setBviCount(userCount.getBviCount() + 1)
+                    //Log.d("Role", role.toString())
+                    if (role != null){
+                        val roleVal = role.toString().toInt()
+                        if(roleVal == 1){
+                            userCount.setVolCount(userCount.getVolCount() + 1)
+                        }else if(roleVal == 2){
+                            userCount.setBviCount(userCount.getBviCount() + 1)
+                        }
                     }
                 }
             }

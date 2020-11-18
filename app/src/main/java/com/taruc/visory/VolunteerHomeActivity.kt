@@ -7,10 +7,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import com.taruc.visory.quickblox.activities.PermissionsActivity
 import com.taruc.visory.quickblox.utils.CHECK_PERMISSIONS
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.quickblox.utils.PERMISSIONS
+import com.taruc.visory.ui.TOPIC
 import com.taruc.visory.utils.*
 
 class VolunteerHomeActivity : AppCompatActivity() {
@@ -18,6 +20,8 @@ class VolunteerHomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_volunteer_home)
+
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 

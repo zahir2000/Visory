@@ -12,12 +12,14 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.startActivity
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.*
+import com.google.gson.Gson
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -25,11 +27,19 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.taruc.visory.R
+import com.taruc.visory.jalal.NotificationData
+import com.taruc.visory.jalal.PushNotification
+import com.taruc.visory.jalal.RetrofitInstance
 import com.taruc.visory.utils.LocationClass
 import com.taruc.visory.utils.LoggedUser
 import com.taruc.visory.utils.shortToast
 import kotlinx.android.synthetic.main.activity_get_help.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
+const val TOPIC = "/topics/blindLocation"
 
 class GetHelpActivity : AppCompatActivity() {
 
@@ -38,6 +48,7 @@ class GetHelpActivity : AppCompatActivity() {
     private lateinit var latLng: LatLng
     var isPermission:Boolean = false
     private val phoneNum = "999"
+    private val TAG = "HelpActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +60,16 @@ class GetHelpActivity : AppCompatActivity() {
                 override fun onPermissionGranted(response: PermissionGrantedResponse?) {
                     if(isLocationEnabled()){
                         getLocation()
+
+                        val title = "A visually impaired needs your help!"
+                        val message = "A visually impaired has requested for assistance. Open this to see if they are nearby you."
+
+                        PushNotification(
+                            NotificationData(title, message),
+                            TOPIC
+                        ).also {
+                            sendNotification(it)
+                        }
                     }
                 }
 
@@ -71,6 +92,20 @@ class GetHelpActivity : AppCompatActivity() {
             val callIntent = Intent(Intent.ACTION_DIAL)
             callIntent.data = Uri.parse("tel:$phoneNum")
             startActivity(callIntent)
+        }
+    }
+
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+
+            if (response.isSuccessful) {
+                Log.d(TAG, "Response: ${Gson().toJson(response)}")
+            } else {
+                Log.d(TAG, response.errorBody().toString())
+            }
+        } catch (e: Exception){
+            Log.e(TAG, e.toString())
         }
     }
 

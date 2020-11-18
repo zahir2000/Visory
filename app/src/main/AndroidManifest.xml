@@ -127,6 +127,13 @@
 
         <service android:name=".quickblox.services.LoginService" />
         <service android:name=".quickblox.services.CallService" />
+        <service android:name=".jalal.FirebaseService"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
