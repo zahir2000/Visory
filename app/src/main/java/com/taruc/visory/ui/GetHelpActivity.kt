@@ -61,7 +61,9 @@ class GetHelpActivity : AppCompatActivity() {
                     if(isLocationEnabled()){
                         getLocation()
 
-                        val title = "A visually impaired needs your help!"
+                        val loggedUser=LoggedUser(applicationContext)
+
+                        val title = "${loggedUser.getUserName()} needs your help."
                         val message = "A visually impaired has requested for assistance. Open this to see if they are nearby you."
 
                         PushNotification(
