@@ -147,10 +147,6 @@ class ShowLocationActivity : AppCompatActivity(), OnMapReadyCallback, LocationLi
 
                 myLoc = LatLng(location.latitude, location.longitude)
                 val cu: CameraUpdate = CameraUpdateFactory.newLatLngZoom(myLoc, 10F)
-                //builder = LatLngBounds.Builder()
-                //builder.include(myLoc)
-                //val bounds = builder.build()
-                //val cu: CameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds,100)
                 mMap.moveCamera(cu)
                 locationManager.removeUpdates(this)
             }
