@@ -49,6 +49,13 @@ class SubmitStoryActivity : AppCompatActivity() {
 
         }
         btnSubmit.setOnClickListener {
+            if(editTextTitle.text.isEmpty()){
+                editTextTitle.error = "Please enter a title for the story!"
+            }
+
+            if(editTextStory.text.isEmpty()){
+                editTextStory.error = "Story cannot be empty!"
+            }
             uploadImageToFirebaseStorage()
         }
 
@@ -85,9 +92,12 @@ class SubmitStoryActivity : AppCompatActivity() {
         val ref = FirebaseDatabase.getInstance().getReference("/stories/$uid")
 
         val storyObj = Story(uid, storyCoverUrl, title, story, date, status, userName, userID)
-        if(title.isEmpty() || story.isEmpty()){
+        if(title.isEmpty()){
             editTextTitle.error = "Please enter a title for the story!"
-           return
+        }
+
+        if(story.isEmpty()){
+            editTextStory.error = "Story cannot be empty!"
         }
 
         ref.setValue(storyObj).addOnCompleteListener{task ->
