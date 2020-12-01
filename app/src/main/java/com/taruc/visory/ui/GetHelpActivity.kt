@@ -49,7 +49,7 @@ class GetHelpActivity : AppCompatActivity() {
     private lateinit var latLng: LatLng
 
     //var isPermission: Boolean = false
-    private val phoneNum = "000"
+    private val phoneNum = "999"
     private val TAG = "HelpActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
