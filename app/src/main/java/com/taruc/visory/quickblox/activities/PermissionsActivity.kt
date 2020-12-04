@@ -142,7 +142,7 @@ class PermissionsActivity : BaseActivity(), View.OnClickListener {
         if (grantResults.size > 1) {
             for (index in grantResults.indices) {
                 if (grantResults[index] != 0) {
-                    longToast(getString(R.string.permission_unavailable,PermissionFeatures.values()[index]))
+                    //longToast(getString(R.string.permission_unavailable, PermissionFeatures.values()[index]))
                 }
             }
         }

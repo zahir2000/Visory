@@ -1,5 +1,6 @@
 package com.taruc.visory
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -7,10 +8,16 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
+import com.taruc.visory.jalal.FirebaseService
 import com.taruc.visory.quickblox.activities.PermissionsActivity
+import com.taruc.visory.quickblox.utils.CALL_TOPIC
 import com.taruc.visory.quickblox.utils.CHECK_PERMISSIONS
 import com.taruc.visory.quickblox.utils.Helper
 import com.taruc.visory.quickblox.utils.PERMISSIONS
+import com.taruc.visory.utils.LoggedUser
 
 class BlindHomeActivity : AppCompatActivity() {
 
@@ -20,8 +27,6 @@ class BlindHomeActivity : AppCompatActivity() {
         val navView: BottomNavigationView = findViewById(R.id.nav_view_blind)
 
         val navController = findNavController(R.id.nav_host_fragment_blind)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_blind_home, R.id.nav_stories_blind, R.id.nav_donation_blind
@@ -30,9 +35,26 @@ class BlindHomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        updateToken()
+
         if (Helper[CHECK_PERMISSIONS, true]) {
             PermissionsActivity.startForResult(this, false, PERMISSIONS)
         }
+    }
+
+    private fun updateToken(){
+        val loggedUser = LoggedUser(this)
+        FirebaseService.sharedPref = this.getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+            FirebaseService.token = it.token
+        }
+
+        FirebaseDatabase.getInstance().getReference("Tokens").child(loggedUser.getUserID()).setValue(Token(FirebaseService.token!!))
+    }
+
+    inner class Token(val token:String){
+        constructor():this(""){}
     }
 
     override fun onBackPressed() {

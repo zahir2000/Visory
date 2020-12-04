@@ -56,17 +56,23 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun updatePassword(view: View) {
-        val currentPassword = edit_text_existing_password.text.toString()
-        val newPassword = edit_text_new_password.text.toString()
+        val currentPassword = edit_text_existing_password.text.toString().trim()
+        val newPassword = edit_text_new_password.text.toString().trim()
 
         if(TextUtils.isEmpty(currentPassword)){
             makeWarningSnackbar(view, "Please enter your current password")
             return
         }
 
-        if(TextUtils.isEmpty(newPassword)){
-            makeWarningSnackbar(view, "Please enter your new password")
-            return
+        when {
+            newPassword.isEmpty() -> {
+                makeErrorSnackbar(view, "Password can't be empty.")
+                return
+            }
+            newPassword.length !in 6..16 -> {
+                makeErrorSnackbar(view, "Password must be between 6 to 16 characters.")
+                return
+            }
         }
 
         val credential = EmailAuthProvider.getCredential(loggedUser.getUserEmail(), currentPassword)

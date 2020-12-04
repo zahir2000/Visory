@@ -267,6 +267,8 @@ class LoginActivity : AppCompatActivity() {
                 LoginManager.getInstance().logOut()
             }
 
+            Log.d("LoginActivity", resultCode.toString())
+
             val response = IdpResponse.fromResultIntent(data)
             val viewDialog = ViewDialog(this)
             viewDialog.showDialog()
@@ -359,23 +361,26 @@ class LoginActivity : AppCompatActivity() {
                     } catch (e: Exception) {
                     }
                 }, 3000)
-            } else {
+            }
+
+            else if (resultCode == Activity.RESULT_CANCELED) {
+                viewDialog.hideDialog()
+                Toast.makeText(applicationContext, "Login is cancelled.", Toast.LENGTH_SHORT).show()
+            }
+
+            else {
                 viewDialog.hideDialog()
                 val e = response?.error
                 if (e is FirebaseUiException) {
-                    Toast.makeText(applicationContext, "Login is cancelled.", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(applicationContext, "Login is cancelled.", Toast.LENGTH_SHORT).show()
                     Log.d("FirebaseUiException", e.message.toString())
                 } else {
-                    Toast.makeText(
-                        applicationContext,
-                        "" + response!!.error!!.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(applicationContext,"" + response!!.error!!.message,Toast.LENGTH_SHORT).show()
                 }
             }
         } else if (requestCode == RC_SIGN_IN_GOOGLE) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
@@ -483,11 +488,16 @@ class LoginActivity : AppCompatActivity() {
                         } catch (e: Exception) {
                         }
                     }, 3000)
-                } else {
+                }
+                else if (task.isCanceled){
+                    // If sign in cancelled, display a message to the user.
+                    viewDialog.hideDialog()
+                    Toast.makeText(applicationContext, "Login is cancelled", Toast.LENGTH_SHORT).show()
+                }
+                else {
                     // If sign in fails, display a message to the user.
                     viewDialog.hideDialog()
-                    Toast.makeText(applicationContext, "Authentication failed", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(applicationContext, "Authentication failed", Toast.LENGTH_SHORT).show()
                 }
             }
     }

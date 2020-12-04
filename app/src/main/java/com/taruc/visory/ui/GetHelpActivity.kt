@@ -70,7 +70,7 @@ class GetHelpActivity : AppCompatActivity() {
                             "A visually impaired has requested for assistance. Open this to see if they are nearby you."
 
                         PushNotification(
-                            NotificationData(title, message),
+                            NotificationData(title, message, ""),
                             TOPIC
                         ).also {
                             sendNotification(it)

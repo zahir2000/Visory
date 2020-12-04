@@ -393,7 +393,7 @@ class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCall
             if(Helper[CONNECTED_TO_USER, false]){
                 val intent = Intent(this, CallEndActivity::class.java)
                 startActivity(intent)
-            }else if(callAccepted){
+            } else if(callAccepted){
                 val intent = Intent(this, com.taruc.visory.volunteer.CallEndActivity::class.java)
                 startActivity(intent)
             }

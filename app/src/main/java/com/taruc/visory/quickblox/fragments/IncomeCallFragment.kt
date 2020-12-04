@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.*
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.google.gson.Gson
 import com.quickblox.chat.QBChatService
 import com.quickblox.core.QBEntityCallback
 import com.quickblox.core.exception.QBResponseException
@@ -23,9 +25,15 @@ import com.quickblox.users.model.QBUser
 import com.quickblox.videochat.webrtc.QBRTCSession
 import com.quickblox.videochat.webrtc.QBRTCTypes
 import com.taruc.visory.R
+import com.taruc.visory.jalal.NotificationData
+import com.taruc.visory.jalal.PushNotification
+import com.taruc.visory.jalal.RetrofitInstance
 import com.taruc.visory.quickblox.db.QbUsersDbManager
 import com.taruc.visory.quickblox.util.loadUsersByPagedRequestBuilder
 import com.taruc.visory.quickblox.utils.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.Serializable
 import java.util.ArrayList
 import java.util.concurrent.TimeUnit
@@ -276,6 +284,27 @@ class IncomeCallFragment : Fragment(), Serializable, View.OnClickListener {
         stopCallNotification()
 
         incomeCallFragmentCallbackListener.onAcceptCurrentSession()
+
+        PushNotification(
+            NotificationData("", "", ""),
+            CALL_TOPIC_END
+        ).also {
+            sendNotification(it)
+        }
+    }
+
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+
+            if (response.isSuccessful) {
+                Log.d("VolunteerHomeActivity", "Response: ${Gson().toJson(response)}")
+            } else {
+                Log.d("VolunteerHomeActivity", response.errorBody().toString())
+            }
+        } catch (e: java.lang.Exception){
+            Log.e("VolunteerHomeActivity", e.toString())
+        }
     }
 
     private fun reject() {

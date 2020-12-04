@@ -1,6 +1,6 @@
 buildscript {
     ext{
-        kotlin = '1.4.10'
+        kotlin = '1.4.20'
         dimensionDefault = 'default'
     }
     repositories {

@@ -370,7 +370,12 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                     } catch (e: Exception) {
                     }
                 }, 3000)
-            } else {
+            }
+            else if (resultCode == Activity.RESULT_CANCELED) {
+                viewDialog.hideDialog()
+                Toast.makeText(applicationContext, "Login is cancelled.", Toast.LENGTH_SHORT).show()
+            }
+            else {
                 viewDialog.hideDialog()
                 Toast.makeText(
                     applicationContext,

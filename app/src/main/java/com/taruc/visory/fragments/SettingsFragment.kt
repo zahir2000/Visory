@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +17,17 @@ import androidx.preference.PreferenceFragmentCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.quickblox.users.QBUsers
 import com.taruc.visory.R
 import com.taruc.visory.quickblox.db.QbUsersDbManager
 import com.taruc.visory.quickblox.services.LoginService
+import com.taruc.visory.quickblox.utils.CALL_TOPIC
+import com.taruc.visory.quickblox.utils.CALL_TOPIC_END
 import com.taruc.visory.quickblox.utils.Helper
+import com.taruc.visory.quickblox.utils.TOPIC
 import com.taruc.visory.ui.LandingActivity
+import com.taruc.visory.utils.LoggedUser
 
 class SettingsFragment : Fragment() {
 
@@ -48,6 +54,7 @@ class SettingsFragment : Fragment() {
 
     class MySettingsFragment : PreferenceFragmentCompat() {
         private lateinit var auth: FirebaseAuth
+        private val TAG = "SettingsFragment"
 
         override fun onCreateView(
             inflater: LayoutInflater,
@@ -69,6 +76,21 @@ class SettingsFragment : Fragment() {
 
             if(key.equals("logout_button")){
                 val builder = AlertDialog.Builder(requireContext())
+
+                val loggedUser = LoggedUser(requireContext())
+                when (loggedUser.getUserType()){
+                    1 -> {
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(TOPIC).addOnFailureListener {
+                            Log.d(TAG, "TOPIC was unsuccessful")
+                        }
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(CALL_TOPIC).addOnFailureListener {
+                            Log.d(TAG, "CALL_TOPIC was unsuccessful")
+                        }
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(CALL_TOPIC_END).addOnFailureListener {
+                            Log.d(TAG, "CALL_TOPIC_END was unsuccessful")
+                        }
+                    }
+                }
 
                 val gso =
                     GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

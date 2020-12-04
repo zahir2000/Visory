@@ -1,6 +1,7 @@
 package com.taruc.visory.settings
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -36,6 +37,7 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
     private var newAvatarUrl: String = ""
     private var selectedLanguage: String = ""
     private var changedLanguage = false
+    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,9 +90,9 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.button_update_profile -> {
-                val fName = edit_text_first_name.text.toString()
-                val lName = edit_text_last_name.text.toString()
-                val contact = text_edit_pd_contact.text.toString()
+                val fName = edit_text_first_name.text.toString().trim()
+                val lName = edit_text_last_name.text.toString().trim()
+                val contact = text_edit_pd_contact.text.toString().trim()
 
                 if (loggedUser.getUserType() == 1) {
                     if (fName.compareTo(getFirstName(loggedUser.getUserName())) == 0

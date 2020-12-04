@@ -39,4 +39,15 @@ const val COMMAND_LOGOUT = 2
 const val EXTRA_PENDING_INTENT = "pending_Intent"
 
 const val MLKIT_TEXT_DETECTION = "mlkit_text_detection"
+
 const val MLKIT_IMAGE_LABELING = "mlkit_image_labeling"
+
+const val TOPIC = "/topics/blindLocation"
+
+const val CALL_TOPIC = "/topics/calling"
+
+const val CALL_TOPIC_END = "/topics/endcalls"
+
+const val VOLUNTEER_RESPONDED = "volunteer_responded"
+
+const val VOLUNTEER_RESPONDED_ID = "volunteer_responded_id"

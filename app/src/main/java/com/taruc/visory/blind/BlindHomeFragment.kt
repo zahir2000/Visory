@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.gson.Gson
 import com.quickblox.chat.QBChatService
 import com.quickblox.core.QBEntityCallback
 import com.quickblox.core.exception.QBResponseException
@@ -29,6 +31,10 @@ import com.quickblox.videochat.webrtc.QBRTCClient
 import com.quickblox.videochat.webrtc.QBRTCTypes
 import com.taruc.visory.R
 import com.taruc.visory.fragments.SettingsFragment
+import com.taruc.visory.jalal.FirebaseService
+import com.taruc.visory.jalal.NotificationData
+import com.taruc.visory.jalal.PushNotification
+import com.taruc.visory.jalal.RetrofitInstance
 import com.taruc.visory.mlkit.MLKitHomeActivity
 import com.taruc.visory.quickblox.DEFAULT_USER_PASSWORD
 import com.taruc.visory.quickblox.activities.CallActivity
@@ -42,6 +48,9 @@ import com.taruc.visory.quickblox.utils.*
 import com.taruc.visory.ui.GetHelpActivity
 import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.fragment_blind_home.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -60,6 +69,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
     private var i = -1
     private lateinit var con: ViewGroup
     private var loadingDialog: Dialog? = null
+    private val TAG = "BlindHomeFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -211,6 +221,20 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         notificationManager.cancelAll()
     }
 
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+
+            if (response.isSuccessful) {
+                Log.d(TAG, "Response: ${Gson().toJson(response)}")
+            } else {
+                Log.d(TAG, response.errorBody().toString())
+            }
+        } catch (e: java.lang.Exception){
+            Log.e(TAG, e.toString())
+        }
+    }
+
     override fun onClick(view: View) {
         when (view.id) {
             R.id.button_blind_detect_object -> {
@@ -226,8 +250,74 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.button_blind_make_call -> {
+                if (isInternetAvailable(requireContext())){
+                    showProgress()
+
+                    loadUsers()
+                    loadVolunteers()
+
+                    makeSuccessSnackbar(view, "Calling available volunteers.")
+                    val loggedUser = LoggedUser(requireContext())
+
+                    val title = "Receiving a call."
+                    val message = "${loggedUser.getUserName()} needs your help. Answer by clicking this notification."
+
+                    PushNotification(
+                        NotificationData(title, message, loggedUser.getUserID()),
+                        CALL_TOPIC
+                    ).also {
+                        sendNotification(it)
+                    }
+
+                    var counter = 0
+                    Helper.delete(HANG_UP)
+                    Helper.delete(CONNECTED_TO_USER)
+                    Helper.delete(STOP_CALLING)
+                    Helper.delete(IS_CURRENTLY_CALLING)
+                    Helper.delete(VOLUNTEER_RESPONDED_ID)
+
+                    Helper.save(IS_CURRENTLY_CALLING, true)
+
+                    val timer = Timer()
+                    timer.scheduleAtFixedRate(
+                        object : TimerTask() {
+                            override fun run() {
+                                counter++
+                                if (Helper[VOLUNTEER_RESPONDED_ID, ""] != ""){
+                                    requireActivity().runOnUiThread {
+                                        startCall(Helper[VOLUNTEER_RESPONDED_ID])
+                                        Helper.delete(VOLUNTEER_RESPONDED_ID)
+                                    }
+
+                                    if (Helper[STOP_CALLING, false]){
+                                        Helper.delete(IS_CURRENTLY_CALLING)
+                                        timer.cancel()
+                                    }
+                                }
+
+                                if (counter == 12){
+                                    hideProgress()
+                                    requireActivity().runOnUiThread {
+                                        PushNotification(
+                                            NotificationData("", "", ""),
+                                            CALL_TOPIC_END
+                                        ).also {
+                                            sendNotification(it)
+                                        }
+
+                                        Helper.delete(IS_CURRENTLY_CALLING)
+                                        makeErrorSnackbar(view, "We were unable to find an available volunteer. Please try again.")
+                                    }
+                                    timer.cancel()
+                                }
+                            }
+                        },
+                        0, 5000
+                    )
+                }
+
                 //calls last person who used the app
-                val callHistory = CallHistory(this.requireContext())
+                /*val callHistory = CallHistory(this.requireContext())
                 callHistory.clear()
 
                 if (isInternetAvailable(requireContext())) {
@@ -244,7 +334,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
                     }
                 } else {
                     makeErrorSnackbar(view, getString(R.string.active_internet_connection_call))
-                }
+                }*/
             }
         }
     }
@@ -307,6 +397,48 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             WebRtcSessionManager.setCurrentSession(newQbRtcSession)
             sendPushMessage(opponentsList, fullName)
 
+            CallActivity.start(this.requireActivity().applicationContext, false)
+        } catch (e: java.lang.Exception) {
+            Log.d("CallError", e.message.toString())
+        }
+    }
+
+    private fun startCall(callerId: String){
+        val opponentsList = ArrayList<Int>()
+
+        var found: QBUser? = null
+
+        Log.d("HelpActivity", "Caller Id is $callerId")
+
+        volunteerUsers.forEach {
+            if (it.login == callerId){
+                found = it
+            }
+        }
+
+        if (found != null){
+            hideProgress()
+            opponentsList.add(found?.id!!)
+        } else {
+            hideProgress()
+            requireActivity().runOnUiThread {
+                Helper.delete(IS_CURRENTLY_CALLING)
+                view?.let { makeErrorSnackbar(it, "We were unable to find an available volunteer. Please try again.") }
+            }
+            return
+        }
+
+        Log.d("HelpActivity", "Found user to call: ${found?.fullName}")
+
+        val conferenceType = QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO
+
+        try {
+            val qbRtcClient = QBRTCClient.getInstance(this.requireActivity().applicationContext)
+            val newQbRtcSession =
+                qbRtcClient.createNewSessionWithOpponents(opponentsList, conferenceType)
+
+            WebRtcSessionManager.setCurrentSession(newQbRtcSession)
+            sendPushMessage(opponentsList, fullName)
             CallActivity.start(this.requireActivity().applicationContext, false)
         } catch (e: java.lang.Exception) {
             Log.d("CallError", e.message.toString())

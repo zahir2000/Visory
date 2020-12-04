@@ -61,8 +61,8 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun updateEmail(view: View) {
-        val newEmail = edit_text_new_email.text.toString()
-        val currentPassword = edit_text_current_password.text.toString()
+        val newEmail = edit_text_new_email.text.toString().trim()
+        val currentPassword = edit_text_current_password.text.toString().trim()
 
         if(TextUtils.isEmpty(newEmail)){
             makeWarningSnackbar(view, "Please enter your new email")
