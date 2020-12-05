@@ -106,10 +106,12 @@
         <activity android:name=".ui.VerifyEmailActivity" />
         <activity
             android:name=".ui.RegisterActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:label="Register" />
         <activity
             android:name=".ui.LoginActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:label="Login" />
         <activity android:name=".ui.LandingActionsActivity" />
         <activity android:name=".ui.LandingActivity" />
         <activity android:name=".ui.WelcomeActivity" />

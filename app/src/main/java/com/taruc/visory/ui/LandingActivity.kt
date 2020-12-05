@@ -31,13 +31,15 @@ class LandingActivity : AppCompatActivity() {
 
         buttonVolunteer.setOnClickListener {
             val intent = Intent(this, LandingActionsActivity::class.java)
-            userTypePref.setUserType(1)
+            intent.putExtra("USER_TYPE", 1)
+            //userTypePref.setUserType(1)
             startActivity(intent)
         }
 
         buttonBlind.setOnClickListener {
             val intent = Intent(this, LandingActionsActivity::class.java)
-            userTypePref.setUserType(2)
+            intent.putExtra("USER_TYPE", 2)
+            //userTypePref.setUserType(2)
             startActivity(intent)
         }
     }
@@ -46,9 +48,7 @@ class LandingActivity : AppCompatActivity() {
         super.onStart()
         try {
             updateUI()
-        } catch (e: Exception) {
-
-        }
+        } catch (e: Exception) { }
     }
 
     private fun updateUI() {

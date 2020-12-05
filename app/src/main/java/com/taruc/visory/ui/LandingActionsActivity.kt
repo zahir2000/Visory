@@ -25,8 +25,10 @@ class LandingActionsActivity : AppCompatActivity(), View.OnClickListener {
         //get which button was clicked = userType
         //userType = intent.getIntExtra("userType", 0)
 
-        val userTypePref = UserType(this)
-        userType = userTypePref.getUserType()
+        //val userTypePref = UserType(this)
+        //userType = userTypePref.getUserType()
+
+        userType = intent.getIntExtra("USER_TYPE", 0)
 
         //change content based on user
         // 1 = Volunteer
@@ -64,13 +66,13 @@ class LandingActionsActivity : AppCompatActivity(), View.OnClickListener {
         when (view.id) {
             R.id.button_login -> {
                 val intent = Intent(this, LoginActivity::class.java)
-                //intent.putExtra("userType", userType)
+                intent.putExtra("USER_TYPE", userType)
                 startActivity(intent)
             }
 
             R.id.button_register_submit -> {
                 val intent = Intent(this, RegisterActivity::class.java)
-                //intent.putExtra("userType", userType)
+                intent.putExtra("USER_TYPE", userType)
                 startActivity(intent)
             }
         }

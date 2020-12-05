@@ -126,4 +126,17 @@ class LoggedUser(context: Context){
         editor.putString(PROVIDER, provider)
         editor.apply()
     }
+
+    fun setUserData(userId: String, user: User, provider: String){
+        val editor = preference.edit()
+        editor.putString(USER_ID, userId)
+        editor.putString(USER_NAME, "${user.fname} ${user.lname}")
+        editor.putString(USER_EMAIL, user.email)
+        editor.putString(USER_CONTACT, user.contactNo)
+        editor.putString(USER_JOINDATE, user.datejoined)
+        editor.putInt(USER_TYPE, user.role)
+        editor.putString(USER_LANGUAGE, user.language)
+        editor.putString(PROVIDER, provider)
+        editor.apply()
+    }
 }

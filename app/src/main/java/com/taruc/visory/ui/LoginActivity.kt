@@ -32,12 +32,13 @@ import com.taruc.visory.quickblox.utils.ViewDialog
 import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_login.*
 
+private const val RC_SIGN_IN_FB = 2000
+private const val RC_SIGN_IN_GOOGLE = 2004
+
 class LoginActivity : AppCompatActivity() {
 
     private var userType: Int = 0
     private lateinit var auth: FirebaseAuth
-    private val RC_SIGN_IN = 2000
-    private val RC_SIGN_IN_GOOGLE = 2004
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var textInputPassword: TextInputEditText
     private lateinit var textInputEmail: TextInputEditText
@@ -53,16 +54,15 @@ class LoginActivity : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar?.setDisplayHomeAsUpEnabled(true)
 
-        //userType = intent.getIntExtra("userType", 0)
-        val userTypePref = UserType(this)
-        userType = userTypePref.getUserType()
+        //Retrieve user role
+        userType = intent.getIntExtra("USER_TYPE", 0)
 
+        //Locate login input controls
         textInputPassword = findViewById(R.id.text_edit_password)
         textInputEmail = findViewById(R.id.text_edit_email)
-        setTitle(R.string.label_login)
 
+        //Initialize FB login
         val facebookConfig = arrayListOf(AuthUI.IdpConfig.FacebookBuilder().build())
-
         button_facebook.setOnClickListener {
             hideKeyboard(this, it)
 
@@ -73,13 +73,14 @@ class LoginActivity : AppCompatActivity() {
                         .setAvailableProviders(facebookConfig)
                         .setIsSmartLockEnabled(false)
                         .build(),
-                    RC_SIGN_IN
+                    RC_SIGN_IN_FB
                 )
             } else {
                 makeErrorSnackbar(it, getString(R.string.active_internet_connection))
             }
         }
 
+        //Initialize Google login
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -100,8 +101,13 @@ class LoginActivity : AppCompatActivity() {
 
         forgot_password_button.setOnClickListener {
             hideKeyboard(this, it)
-            val intent = Intent(this, ForgotPassActivity::class.java)
-            startActivity(intent)
+
+            if (isInternetAvailable(applicationContext)) {
+                val intent = Intent(this, ForgotPassActivity::class.java)
+                startActivity(intent)
+            } else {
+                makeErrorSnackbar(it, getString(R.string.active_internet_connection))
+            }
         }
 
         login_button_submit.setOnClickListener {
@@ -154,6 +160,11 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
+        //Email login after successful validation
+        loginEmail(view, email, password)
+    }
+
+    private fun loginEmail(view: View, email: String, password: String) {
         val loggedUserTypePref = LoggedUser(this)
 
         auth.signInWithEmailAndPassword(email, password)
@@ -164,28 +175,22 @@ class LoginActivity : AppCompatActivity() {
 
                     // Sign in success, update UI with the signed-in user's information
                     makeSuccessSnackbar(view, "Login Successful")
-                    //Toast.makeText(applicationContext, "Login Successful", Toast.LENGTH_SHORT).show()
-                    val user = auth.currentUser
 
+                    val user = auth.currentUser
                     val uid = FirebaseAuth.getInstance().currentUser!!.uid
                     val rootRef = FirebaseDatabase.getInstance().getReference("users")
-                    //val uidRef = rootRef.child(String.format("%s/role", uid))
                     val uidRef = rootRef.child(String.format("%s", uid))
                     val valueEventListener = object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val userName =
-                                dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child(
-                                    "lname"
-                                ).value.toString()
+
+                            val userName = dataSnapshot.child("fname").value.toString() + " " +
+                                        dataSnapshot.child("lname").value.toString()
                             val userEmail = dataSnapshot.child("email").value.toString()
                             val userContact = dataSnapshot.child("contactNo").value.toString()
                             val userJoinDate = dataSnapshot.child("datejoined").value.toString()
                             val userLanguage = dataSnapshot.child("language").value.toString()
-                            val role =
-                                Integer.parseInt(dataSnapshot.child("role").value!!.toString())
-
-                            val avatarUrl: String? =
-                                dataSnapshot.child("avatarurl").value.toString()
+                            val role = Integer.parseInt(dataSnapshot.child("role").value!!.toString())
+                            val avatarUrl: String? = dataSnapshot.child("avatarurl").value.toString()
                             if (avatarUrl != null && avatarUrl.isNotEmpty()) {
                                 loggedUserTypePref.setAvatarUrl(avatarUrl)
                             }
@@ -202,54 +207,38 @@ class LoginActivity : AppCompatActivity() {
                                 userLanguage,
                                 getString(R.string.provider_email)
                             )
-
                         }
 
-                        override fun onCancelled(databaseError: DatabaseError) {
-                        }
+                        override fun onCancelled(databaseError: DatabaseError) { }
                     }
                     uidRef.addListenerForSingleValueEvent(valueEventListener)
 
                     Handler().postDelayed({
                         try {
+                            viewDialog.hideDialog()
+                            var intent: Intent? = null
+
                             if (auth.currentUser != null) {
-                                if (auth.currentUser!!.isEmailVerified) {
-                                    viewDialog.hideDialog()
-                                    val intent = Intent(this, WelcomeActivity::class.java)
-                                    intent.flags =
-                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    startActivity(intent)
-                                    overridePendingTransition(
-                                        R.anim.slide_in_right,
-                                        R.anim.slide_out_left
-                                    )
-                                    finish()
+                                intent = if (auth.currentUser!!.isEmailVerified) {
+                                    Intent(this, WelcomeActivity::class.java)
                                 } else {
-                                    viewDialog.hideDialog()
-                                    val intent = Intent(this, VerifyEmailActivity::class.java)
-                                    intent.flags =
-                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    startActivity(intent)
-                                    overridePendingTransition(
-                                        R.anim.slide_in_right,
-                                        R.anim.slide_out_left
-                                    )
-                                    finish()
+                                    Intent(this, VerifyEmailActivity::class.java)
                                 }
                             }
+
+                            intent?.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                            finish()
                         } catch (e: Exception) {
                             viewDialog.hideDialog()
                         }
-                    }, 3000)
+                    }, 2000)
                 } else {
                     // If sign in fails, display a message to the user.
                     makeErrorSnackbar(view, "Email and/or password is incorrect. Please try again")
                 }
             }
-    }
-
-    public override fun onStart() {
-        super.onStart()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -260,9 +249,9 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val loggedUserTypePref = LoggedUser(this)
 
-        if (requestCode == RC_SIGN_IN) {
+        val loggedUserTypePref = LoggedUser(this)
+        if (requestCode == RC_SIGN_IN_FB) {
             if (LoginManager.getInstance() != null){
                 LoginManager.getInstance().logOut()
             }
@@ -275,13 +264,12 @@ class LoginActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
                 if (auth.currentUser != null) {
+                    val uid = FirebaseAuth.getInstance().currentUser!!.uid
+                    val rootRef = FirebaseDatabase.getInstance().getReference("users")
+
                     if (response?.isNewUser!!) {
                         val user = FirebaseAuth.getInstance().currentUser
-                        val database = FirebaseDatabase.getInstance()
-                        val myRef = database.getReference("users")
-
                         val name: String = user!!.displayName!!
-                        val key = FirebaseAuth.getInstance().currentUser!!.uid
 
                         val newUser = User(
                             getFirstName(name),
@@ -292,38 +280,28 @@ class LoginActivity : AppCompatActivity() {
                             getCurrentDate(),
                             "English"
                         )
-                        myRef.child(key).setValue(newUser).addOnCompleteListener {
+
+                        //Store new user details into database
+                        rootRef.child(uid).setValue(newUser).addOnCompleteListener {
+                            //Store new user details into preferences
                             loggedUserTypePref.setUserData(
                                 FirebaseAuth.getInstance().currentUser!!.uid,
-                                name,
-                                user.email!!,
-                                "",
-                                getCurrentDate(),
-                                userType,
-                                "English",
+                                newUser,
                                 getString(R.string.provider_fb)
                             )
                         }
                     } else {
-                        val uid = FirebaseAuth.getInstance().currentUser!!.uid
-                        val rootRef = FirebaseDatabase.getInstance().getReference("users")
-                        //val uidRef = rootRef.child(String.format("%s/role", uid))
                         val uidRef = rootRef.child(String.format("%s", uid))
                         val valueEventListener = object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                val userName =
-                                    dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child(
-                                        "lname"
-                                    ).value.toString()
+                                val userName = dataSnapshot.child("fname").value.toString() + " " +
+                                        dataSnapshot.child("lname").value.toString()
                                 val userEmail = dataSnapshot.child("email").value.toString()
                                 val userContact = dataSnapshot.child("contactNo").value.toString()
                                 val userJoinDate = dataSnapshot.child("datejoined").value.toString()
-                                val role =
-                                    Integer.parseInt(dataSnapshot.child("role").value.toString())
-
-                                val avatarUrl: String? =
-                                    dataSnapshot.child("avatarurl").value.toString()
-                                if (avatarUrl != null && avatarUrl.isNotEmpty()) {
+                                val role = Integer.parseInt(dataSnapshot.child("role").value.toString())
+                                val avatarUrl: String = dataSnapshot.child("avatarurl").value.toString()
+                                if (avatarUrl.isNotEmpty()) {
                                     loggedUserTypePref.setAvatarUrl(avatarUrl)
                                 }
 
@@ -339,11 +317,9 @@ class LoginActivity : AppCompatActivity() {
                                     "English",
                                     getString(R.string.provider_fb)
                                 )
-
                             }
 
-                            override fun onCancelled(databaseError: DatabaseError) {
-                            }
+                            override fun onCancelled(databaseError: DatabaseError) { }
                         }
                         uidRef.addListenerForSingleValueEvent(valueEventListener)
                     }
@@ -352,27 +328,21 @@ class LoginActivity : AppCompatActivity() {
                 Handler().postDelayed({
                     try {
                         viewDialog.hideDialog()
-                        val intent = Intent(this, WelcomeActivity::class.java)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-                        finish()
-                    } catch (e: Exception) {
-                    }
-                }, 3000)
+                        onLoginSuccessful()
+                    } catch (e: Exception) { }
+                }, 2000)
             }
 
             else if (resultCode == Activity.RESULT_CANCELED) {
                 viewDialog.hideDialog()
-                Toast.makeText(applicationContext, "Login is cancelled.", Toast.LENGTH_SHORT).show()
+                longToast("Login is cancelled.")
             }
 
             else {
                 viewDialog.hideDialog()
                 val e = response?.error
                 if (e is FirebaseUiException) {
-                    Toast.makeText(applicationContext, "Login is cancelled.", Toast.LENGTH_SHORT).show()
+                    longToast("There was an issue with login. Please try again.")
                     Log.d("FirebaseUiException", e.message.toString())
                 } else {
                     Toast.makeText(applicationContext,"" + response!!.error!!.message,Toast.LENGTH_SHORT).show()
@@ -382,7 +352,7 @@ class LoginActivity : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 
             try {
-                // Google Sign In was successful, authenticate with Firebase
+                //Successful Google Sign In, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {
@@ -399,106 +369,95 @@ class LoginActivity : AppCompatActivity() {
 
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    if (task.result?.additionalUserInfo?.isNewUser!!) {
-                        val user = auth.currentUser
-                        val database = FirebaseDatabase.getInstance()
-                        val myRef = database.getReference("users")
-
-                        val name = user!!.displayName!!
-                        val key = FirebaseAuth.getInstance().currentUser!!.uid
-
-                        val newUser = User(
-                            getFirstName(name),
-                            getLastName(name),
-                            user.email!!,
-                            "",
-                            userType,
-                            getCurrentDate(),
-                            "English"
-                        )
-                        myRef.child(key).setValue(newUser)
-
-                        loggedUserTypePref.setUserData(
-                            FirebaseAuth.getInstance().currentUser!!.uid,
-                            name,
-                            user.email!!,
-                            "",
-                            getCurrentDate(),
-                            userType,
-                            "English",
-                            getString(R.string.provider_google)
-                        )
-                    } else {
-                        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+                when {
+                    task.isSuccessful -> {
                         val rootRef = FirebaseDatabase.getInstance().getReference("users")
-                        //val uidRef = rootRef.child(String.format("%s/role", uid))
-                        val uidRef = rootRef.child(String.format("%s", uid))
-                        val valueEventListener = object : ValueEventListener {
-                            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                val userName =
-                                    dataSnapshot.child("fname").value.toString() + " " + dataSnapshot.child(
-                                        "lname"
-                                    ).value.toString()
-                                val userEmail = dataSnapshot.child("email").value.toString()
-                                val userContact = dataSnapshot.child("contactNo").value.toString()
-                                val userJoinDate = dataSnapshot.child("datejoined").value.toString()
-                                val role =
-                                    Integer.parseInt(dataSnapshot.child("role").value.toString())
+                        val uid = FirebaseAuth.getInstance().currentUser!!.uid
 
-                                val avatarUrl: String? =
-                                    dataSnapshot.child("avatarurl").value.toString()
-                                if (avatarUrl != null && avatarUrl.isNotEmpty()) {
-                                    loggedUserTypePref.setAvatarUrl(avatarUrl)
-                                }
+                        if (task.result?.additionalUserInfo?.isNewUser!!) {
+                            val user = auth.currentUser
+                            val name = user!!.displayName!!
 
-                                //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
-                                //if data is modified, it can directly be done using another activity.
+                            val newUser = User(
+                                getFirstName(name),
+                                getLastName(name),
+                                user.email!!,
+                                "",
+                                userType,
+                                getCurrentDate(),
+                                "English"
+                            )
+
+                            rootRef.child(uid).setValue(newUser).addOnCompleteListener {
                                 loggedUserTypePref.setUserData(
                                     FirebaseAuth.getInstance().currentUser!!.uid,
-                                    userName,
-                                    userEmail,
-                                    userContact,
-                                    userJoinDate,
-                                    role,
-                                    "English",
+                                    newUser,
                                     getString(R.string.provider_google)
                                 )
-
                             }
+                        } else {
+                            val uidRef = rootRef.child(String.format("%s", uid))
+                            val valueEventListener = object : ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    val userName = dataSnapshot.child("fname").value.toString() + " " +
+                                            dataSnapshot.child("lname").value.toString()
+                                    val userEmail = dataSnapshot.child("email").value.toString()
+                                    val userContact = dataSnapshot.child("contactNo").value.toString()
+                                    val userJoinDate = dataSnapshot.child("datejoined").value.toString()
+                                    val role = Integer.parseInt(dataSnapshot.child("role").value.toString())
+                                    val avatarUrl: String = dataSnapshot.child("avatarurl").value.toString()
+                                    if (avatarUrl.isNotEmpty()) {
+                                        loggedUserTypePref.setAvatarUrl(avatarUrl)
+                                    }
 
-                            override fun onCancelled(databaseError: DatabaseError) {
+                                    //store user details inside sharedPreferences so we don't need to load user data each time the app is opened
+                                    //if data is modified, it can directly be done using another activity.
+                                    loggedUserTypePref.setUserData(
+                                        FirebaseAuth.getInstance().currentUser!!.uid,
+                                        userName,
+                                        userEmail,
+                                        userContact,
+                                        userJoinDate,
+                                        role,
+                                        "English",
+                                        getString(R.string.provider_google)
+                                    )
+                                }
+
+                                override fun onCancelled(databaseError: DatabaseError) { }
                             }
+                            uidRef.addListenerForSingleValueEvent(valueEventListener)
                         }
-                        uidRef.addListenerForSingleValueEvent(valueEventListener)
+
+                        longToast("Login is successful.")
+
+                        Handler().postDelayed({
+                            try {
+                                viewDialog.hideDialog()
+                                onLoginSuccessful()
+                            } catch (e: Exception) {
+                            }
+                        }, 2000)
                     }
-
-                    Toast.makeText(applicationContext, "Login is successful", Toast.LENGTH_SHORT)
-                        .show()
-
-                    Handler().postDelayed({
-                        try {
-                            viewDialog.hideDialog()
-                            val intent = Intent(this, WelcomeActivity::class.java)
-                            intent.flags =
-                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            startActivity(intent)
-                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-                            finish()
-                        } catch (e: Exception) {
-                        }
-                    }, 3000)
-                }
-                else if (task.isCanceled){
-                    // If sign in cancelled, display a message to the user.
-                    viewDialog.hideDialog()
-                    Toast.makeText(applicationContext, "Login is cancelled", Toast.LENGTH_SHORT).show()
-                }
-                else {
-                    // If sign in fails, display a message to the user.
-                    viewDialog.hideDialog()
-                    Toast.makeText(applicationContext, "Authentication failed", Toast.LENGTH_SHORT).show()
+                    task.isCanceled -> {
+                        // If sign in cancelled, display a message to the user.
+                        viewDialog.hideDialog()
+                        longToast("Login is cancelled.")
+                    }
+                    else -> {
+                        // If sign in fails, display a message to the user.
+                        viewDialog.hideDialog()
+                        longToast("There was an issue with login. Please try again.")
+                    }
                 }
             }
+    }
+
+    private fun onLoginSuccessful() {
+        val intent = Intent(this, WelcomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        finish()
     }
 }
