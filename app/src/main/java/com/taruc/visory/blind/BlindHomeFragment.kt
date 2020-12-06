@@ -281,6 +281,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
                     if (Helper[VOLUNTEER_RESPONDED_ID, ""] != ""){
                         requireActivity().runOnUiThread {
                             startCall(Helper[VOLUNTEER_RESPONDED_ID])
+                            Log.d("HelpActivity", "Starting call!")
                             Helper.delete(VOLUNTEER_RESPONDED_ID)
                         }
 
@@ -333,6 +334,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         volunteerUsers.forEach {
             if (it.login == callerId){
                 found = it
+                Log.d("HelpActivity", "Found the user!")
             }
         }
 
@@ -377,14 +379,14 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
             val userLanguage = loggedUser.getUserLanguage()
 
             for (i in 0 until dbSize) {
-                if (usersFromDb[i].tags.contains("volunteer") && usersFromDb[i].tags.contains(
-                        userLanguage
-                    )) {
+                if (usersFromDb[i].tags.contains("volunteer")) { //&& usersFromDb[i].tags.contains(userLanguage)) {
                     volunteerUsers.add(usersFromDb[i])
                 }
             }
 
+            /*
             if(volunteerUsers.size < 5){
+
                 for (i in 0 until dbSize) {
                     if (usersFromDb[i].tags.contains("volunteer") && !usersFromDb[i].tags.contains(
                             userLanguage
@@ -395,6 +397,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
                     }
                 }
             }
+            */
 
             for(i in 0 until volunteerUsers.size){
                 Log.d(
