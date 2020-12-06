@@ -326,4 +326,6 @@
     <string name="sender_id">243602294589</string>
     <string name="button_mlkit_general">General Object Detection</string>
     <string name="button_mlkit_text">Text Detection</string>
+    <string name="call_volunteer_title">Receiving a call.</string>
+    <string name="call_volunteer_snackbar">Calling available volunteers.</string>
 </resources>

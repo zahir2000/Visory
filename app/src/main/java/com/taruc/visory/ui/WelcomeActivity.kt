@@ -18,28 +18,23 @@ class WelcomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_welcome)
 
         startPermissionsActivity()
-
-        setTitle(R.string.label_welcome)
         val user = LoggedUser(this)
         val name = user.getUserName()
+
         text_welcome_header.text = getString(R.string.welcome_header_name, name)
         text_welcome_body1.text = getString(R.string.welcome_body_text1)
 
-        if(user.getUserType() == 1){
+        if (user.getUserType() == 1) {
             text_welcome_body2.text = getString(R.string.welcome_body2_volunteer)
-        }else{
+        } else {
             text_welcome_body2.text = getString(R.string.welcome_body2_blind)
         }
 
-
-        val loggedUserType = LoggedUser(this)
-
         button_welcome_submit.setOnClickListener{
-            if(loggedUserType.getUserType() == 1){
+            if(user.getUserType() == 1){
                 val intent = Intent(applicationContext, VolunteerHomeActivity::class.java)
                 startActivity(intent)
-            }
-            else{
+            } else {
                 val intent = Intent(applicationContext, BlindHomeActivity::class.java)
                 startActivity(intent)
             }

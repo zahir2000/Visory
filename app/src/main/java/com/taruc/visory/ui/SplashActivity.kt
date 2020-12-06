@@ -9,7 +9,7 @@ import android.widget.Toast
 import com.taruc.visory.R
 import com.taruc.visory.utils.LoggedUser
 
-private const val SPLASH_DELAY = 1500
+private const val SPLASH_DELAY = 1400
 
 class SplashActivity : AppCompatActivity() {
 

@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import androidx.annotation.*
-import androidx.annotation.IntRange
 import com.taruc.visory.R
 import com.taruc.visory.quickblox.App
 import java.util.*

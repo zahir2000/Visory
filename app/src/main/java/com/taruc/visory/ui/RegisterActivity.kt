@@ -258,10 +258,6 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         if (requestCode == RC_SIGN_IN_FB) {
             val response = IdpResponse.fromResultIntent(data)
 
-            if (LoginManager.getInstance() != null){
-                LoginManager.getInstance().logOut()
-            }
-
             val viewDialog = ViewDialog(this)
             viewDialog.showDialog()
 

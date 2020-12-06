@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -46,10 +47,10 @@ class SettingsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fragmentManager
-            ?.beginTransaction()
-            ?.replace(R.id.settings_fragment, MySettingsFragment())
-            ?.commit()
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.settings_fragment, MySettingsFragment())
+            .commit()
     }
 
     class MySettingsFragment : PreferenceFragmentCompat() {
@@ -75,59 +76,82 @@ class SettingsFragment : Fragment() {
             val key = preference?.key
 
             if(key.equals("logout_button")){
-                val builder = AlertDialog.Builder(requireContext())
-
-                val loggedUser = LoggedUser(requireContext())
-                when (loggedUser.getUserType()){
-                    1 -> {
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic(TOPIC).addOnFailureListener {
-                            Log.d(TAG, "TOPIC was unsuccessful")
-                        }
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic(CALL_TOPIC).addOnFailureListener {
-                            Log.d(TAG, "CALL_TOPIC was unsuccessful")
-                        }
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic(CALL_TOPIC_END).addOnFailureListener {
-                            Log.d(TAG, "CALL_TOPIC_END was unsuccessful")
-                        }
-                    }
-                }
-
-                val gso =
-                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build()
-
-                val mGoogleSignInClient = GoogleSignIn.getClient(this.requireActivity(), gso)
-
-                builder
-                    .setTitle("Logout")
-                    .setMessage("Are you sure you want to logout?")
-                    .setPositiveButton("Yes, log out"){ _, _ ->
-                        logoutFromQuickblox()
-                        mGoogleSignInClient?.signOut()
-                        auth.signOut()
-
-                        val sharedPreference =  requireContext().getSharedPreferences("sharedPrefs",
-                            Context.MODE_PRIVATE)
-                        sharedPreference.edit().clear().apply()
-
-                        activity?.finishAffinity()
-                        activity?.let{
-                            val intent = Intent(it, LandingActivity::class.java)
-                            it.startActivity(intent)
-                            it.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-                        }
-                    }
-                    .setNegativeButton("Cancel"){ _, _ ->
-                        Toast.makeText(context, "Good to see you back!", Toast.LENGTH_SHORT).show()
-                    }
-
-                val alertDialog = builder.create()
-                alertDialog.show()
+                logoutFromVisory()
             }
 
             return false
+        }
+
+        private fun logoutFromVisory() {
+            val builder = AlertDialog.Builder(requireContext())
+
+            //Unsubscribe from Notification Topics for Volunteer
+            val loggedUser = LoggedUser(requireContext())
+            when (loggedUser.getUserType()){
+                1 -> {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(TOPIC).addOnFailureListener {
+                        Log.d(TAG, "TOPIC was unsuccessful")
+                    }
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(CALL_TOPIC).addOnFailureListener {
+                        Log.d(TAG, "CALL_TOPIC was unsuccessful")
+                    }
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(CALL_TOPIC_END).addOnFailureListener {
+                        Log.d(TAG, "CALL_TOPIC_END was unsuccessful")
+                    }
+                }
+            }
+
+            builder
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to logout?")
+                .setPositiveButton("Yes, log out"){ _, _ ->
+                    //Logout from Quickblox
+                    logoutFromQuickblox()
+
+                    //Determine if Google or Facebook credentials used for login
+                    if (loggedUser.getProvider() == getString(R.string.provider_fb)) {
+                        logoutFromFacebook()
+                    } else if (loggedUser.getProvider() == getString(R.string.provider_google)) {
+                        logoutFromGoogle()
+                    }
+
+                    //Logout from Firebase Authentication
+                    auth.signOut()
+
+                    val sharedPreference =  requireContext().getSharedPreferences("sharedPrefs",
+                        Context.MODE_PRIVATE)
+                    sharedPreference.edit().clear().apply()
+
+                    activity?.finishAffinity()
+                    activity?.let{
+                        val intent = Intent(it, LandingActivity::class.java)
+                        it.startActivity(intent)
+                        it.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                    }
+                }
+                .setNegativeButton("Cancel"){ _, _ ->
+                    Toast.makeText(context, "Good to see you back!", Toast.LENGTH_SHORT).show()
+                }
+
+            val alertDialog = builder.create()
+            alertDialog.show()
+        }
+
+        private fun logoutFromFacebook() {
+            if (LoginManager.getInstance() != null){
+                LoginManager.getInstance().logOut()
+            }
+        }
+
+        private fun logoutFromGoogle() {
+            val gso =
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build()
+
+            val mGoogleSignInClient = GoogleSignIn.getClient(this.requireActivity(), gso)
+            mGoogleSignInClient?.signOut()
         }
 
         private fun logoutFromQuickblox() {

@@ -11,10 +11,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class UserCount(context: Context){
-    val SHARED_PREF = "sharedUserCountPrefs"
-    val VOL_COUNT = "volCount"
-    val BVI_COUNT = "bviCount"
-    val UPD_DATE = "lastUpdateDate"
+    private val SHARED_PREF = "sharedUserCountPrefs"
+    private val VOL_COUNT = "volCount"
+    private val BVI_COUNT = "bviCount"
+    private val UPD_DATE = "lastUpdateDate"
     val preference: SharedPreferences = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
 
     fun getVolCount(): Int{

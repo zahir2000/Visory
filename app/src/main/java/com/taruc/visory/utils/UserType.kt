@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 
 class UserType(context: Context){
-    val SHARED_PREF = "sharedPrefs"
-    val USER_TYPE = "userType"
+    private val SHARED_PREF = "sharedPrefs"
+    private val USER_TYPE = "userType"
     val preference: SharedPreferences = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
 
     fun getUserType(): Int{

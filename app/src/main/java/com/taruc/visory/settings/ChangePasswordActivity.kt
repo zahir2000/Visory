@@ -75,7 +75,8 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        val credential = EmailAuthProvider.getCredential(loggedUser.getUserEmail(), currentPassword)
+        val credential = EmailAuthProvider
+            .getCredential(loggedUser.getUserEmail(), currentPassword)
         val user = auth.currentUser
 
         user?.reauthenticate(credential)?.addOnCompleteListener{task ->

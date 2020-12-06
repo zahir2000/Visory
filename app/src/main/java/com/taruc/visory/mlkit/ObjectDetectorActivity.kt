@@ -17,6 +17,7 @@ import com.taruc.visory.R
 import com.wonderkiln.camerakit.*
 import kotlinx.android.synthetic.main.activity_object_detector.*
 import java.lang.StringBuilder
+import java.util.*
 import java.util.concurrent.Executors
 
 class ObjectDetectorActivity : AppCompatActivity() {
@@ -103,14 +104,14 @@ class ObjectDetectorActivity : AppCompatActivity() {
                 val builder = StringBuilder()
 
                 if(results.size == 1){
-                    builder.append(results[0].title.capitalize() + "\nwith\n" + "%.0f".format(results[0].confidence * 100) + "% reliance")
+                    builder.append(results[0].title.capitalize(Locale.ROOT) + "\nwith\n" + "%.0f".format(results[0].confidence * 100) + "% reliance")
                 }else if(results.size == 2){
                     if(results[0].confidence.compareTo(results[1].confidence) > 0){
-                        builder.append("First Possible Object:\n" + results[0].title.capitalize() + " with " + "%.0f".format(results[0].confidence * 100) + "% reliance")
-                        builder.append("\n\nSecond Possible Object:\n" + results[1].title.capitalize() + " with " + "%.0f".format(results[1].confidence * 100) + "% reliance")
+                        builder.append("First Possible Object:\n" + results[0].title.capitalize(Locale.ROOT) + " with " + "%.0f".format(results[0].confidence * 100) + "% reliance")
+                        builder.append("\n\nSecond Possible Object:\n" + results[1].title.capitalize(Locale.ROOT) + " with " + "%.0f".format(results[1].confidence * 100) + "% reliance")
                     }else{
-                        builder.append("First Possible Object:\n" + results[1].title.capitalize() + " with " + "%.0f".format(results[1].confidence * 100) + "% reliance")
-                        builder.append("\n\nSecond Possible Object:\n" + results[0].title.capitalize() + " with " + "%.0f".format(results[0].confidence * 100) + "% reliance")
+                        builder.append("First Possible Object:\n" + results[1].title.capitalize(Locale.ROOT) + " with " + "%.0f".format(results[1].confidence * 100) + "% reliance")
+                        builder.append("\n\nSecond Possible Object:\n" + results[0].title.capitalize(Locale.ROOT) + " with " + "%.0f".format(results[0].confidence * 100) + "% reliance")
                     }
                 }else{
                     builder.append("Sorry, we could not identify this object. Please try again or change your location to area with more light.")

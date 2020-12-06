@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.taruc.visory">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -114,7 +113,8 @@
             android:label="Login" />
         <activity android:name=".ui.LandingActionsActivity" />
         <activity android:name=".ui.LandingActivity" />
-        <activity android:name=".ui.WelcomeActivity" />
+        <activity android:name=".ui.WelcomeActivity"
+            android:label="Welcome" />
         <activity android:name=".ui.StoryDetailsActivity" />
         <activity
             android:name=".quickblox.activities.CallActivity"

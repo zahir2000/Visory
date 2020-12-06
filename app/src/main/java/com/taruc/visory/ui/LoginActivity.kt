@@ -176,7 +176,6 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     makeSuccessSnackbar(view, "Login Successful")
 
-                    val user = auth.currentUser
                     val uid = FirebaseAuth.getInstance().currentUser!!.uid
                     val rootRef = FirebaseDatabase.getInstance().getReference("users")
                     val uidRef = rootRef.child(String.format("%s", uid))
@@ -252,10 +251,6 @@ class LoginActivity : AppCompatActivity() {
 
         val loggedUserTypePref = LoggedUser(this)
         if (requestCode == RC_SIGN_IN_FB) {
-            if (LoginManager.getInstance() != null){
-                LoginManager.getInstance().logOut()
-            }
-
             Log.d("LoginActivity", resultCode.toString())
 
             val response = IdpResponse.fromResultIntent(data)

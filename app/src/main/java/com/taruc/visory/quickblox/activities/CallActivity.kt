@@ -86,10 +86,10 @@ class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCall
             checkPermission()
             addConversationFragment(isInComingCall)
         } else {
-            if (intent != null && intent.extras != null) {
-                isInComingCall = intent?.extras?.getBoolean(EXTRA_IS_INCOMING_CALL) ?: true
+            isInComingCall = if (intent != null && intent.extras != null) {
+                intent?.extras?.getBoolean(EXTRA_IS_INCOMING_CALL) ?: true
             } else {
-                isInComingCall = Helper[EXTRA_IS_INCOMING_CALL, false]
+                Helper[EXTRA_IS_INCOMING_CALL, false]
             }
 
             if (!isInComingCall) {
@@ -236,7 +236,7 @@ class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCall
                     callService.stopRingtone()
                     hangUpCurrentSession()
                 }
-                longToast("Call was stopped by timer")
+                longToast("Call answer time has ended.")
             }
         }
     }

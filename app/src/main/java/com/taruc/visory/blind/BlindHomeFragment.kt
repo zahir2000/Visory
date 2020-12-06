@@ -135,7 +135,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         when (item.itemId) {
             R.id.home_settings -> {
                 val settingsFragment = SettingsFragment()
-                requireFragmentManager().beginTransaction()
+                parentFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.slide_in_right,
                         R.anim.slide_out_left,
@@ -251,161 +251,81 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
 
             R.id.button_blind_make_call -> {
                 if (isInternetAvailable(requireContext())){
-                    showProgress()
-
-                    loadUsers()
-                    loadVolunteers()
-
-                    makeSuccessSnackbar(view, "Calling available volunteers.")
-                    val loggedUser = LoggedUser(requireContext())
-
-                    val title = "Receiving a call."
-                    val message = "${loggedUser.getUserName()} needs your help. Answer by clicking this notification."
-
-                    PushNotification(
-                        NotificationData(title, message, loggedUser.getUserID()),
-                        CALL_TOPIC
-                    ).also {
-                        sendNotification(it)
-                    }
-
-                    var counter = 0
-                    Helper.delete(HANG_UP)
-                    Helper.delete(CONNECTED_TO_USER)
-                    Helper.delete(STOP_CALLING)
-                    Helper.delete(IS_CURRENTLY_CALLING)
-                    Helper.delete(VOLUNTEER_RESPONDED_ID)
-
-                    Helper.save(IS_CURRENTLY_CALLING, true)
-
-                    val timer = Timer()
-                    timer.scheduleAtFixedRate(
-                        object : TimerTask() {
-                            override fun run() {
-                                counter++
-                                if (Helper[VOLUNTEER_RESPONDED_ID, ""] != ""){
-                                    requireActivity().runOnUiThread {
-                                        startCall(Helper[VOLUNTEER_RESPONDED_ID])
-                                        Helper.delete(VOLUNTEER_RESPONDED_ID)
-                                    }
-
-                                    if (Helper[STOP_CALLING, false]){
-                                        Helper.delete(IS_CURRENTLY_CALLING)
-                                        timer.cancel()
-                                    }
-                                }
-
-                                if (counter == 12){
-                                    hideProgress()
-                                    requireActivity().runOnUiThread {
-                                        PushNotification(
-                                            NotificationData("", "", ""),
-                                            CALL_TOPIC_END
-                                        ).also {
-                                            sendNotification(it)
-                                        }
-
-                                        Helper.delete(IS_CURRENTLY_CALLING)
-                                        makeErrorSnackbar(view, "We were unable to find an available volunteer. Please try again.")
-                                    }
-                                    timer.cancel()
-                                }
-                            }
-                        },
-                        0, 5000
-                    )
+                    makeCall(view)
                 }
-
-                //calls last person who used the app
-                /*val callHistory = CallHistory(this.requireContext())
-                callHistory.clear()
-
-                if (isInternetAvailable(requireContext())) {
-                    loadUsers()
-                    loadVolunteers()
-
-                    Helper.delete(HANG_UP)
-                    Helper.delete(CONNECTED_TO_USER)
-                    Helper.delete(STOP_CALLING)
-                    Helper.delete(IS_CURRENTLY_CALLING)
-                    if (checkIsLoggedInChat()) {
-                        i = 0
-                        makeCall()
-                    }
-                } else {
-                    makeErrorSnackbar(view, getString(R.string.active_internet_connection_call))
-                }*/
             }
         }
     }
 
-    private fun makeCall() {
+    private fun makeCall(view: View) {
+        showProgress()
+        makeSuccessSnackbar(view, getString(R.string.call_volunteer_snackbar))
+
+        loadUsers()
+        loadVolunteers()
+        createCallNotification()
+
+        var counter = 0
+        Helper.delete(HANG_UP)
+        Helper.delete(CONNECTED_TO_USER)
+        Helper.delete(STOP_CALLING)
+        Helper.delete(IS_CURRENTLY_CALLING)
+        Helper.delete(VOLUNTEER_RESPONDED_ID)
+        Helper.save(IS_CURRENTLY_CALLING, true)
+
         val timer = Timer()
         timer.scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {
-                    Log.d("CallTimer", "Timer is running!")
+                    counter++
+                    if (Helper[VOLUNTEER_RESPONDED_ID, ""] != ""){
+                        requireActivity().runOnUiThread {
+                            startCall(Helper[VOLUNTEER_RESPONDED_ID])
+                            Helper.delete(VOLUNTEER_RESPONDED_ID)
+                        }
 
-                    val hangUp = Helper[HANG_UP, false]
-                    val connectedToUser = Helper[CONNECTED_TO_USER, false]
+                        if (Helper[STOP_CALLING, false]){
+                            Helper.delete(IS_CURRENTLY_CALLING)
+                            timer.cancel()
+                        }
+                    }
 
-                    if (connectedToUser || hangUp || i > 5) {
-                        Log.d("CallTimer", "Timer has stopped!")
-                        Helper.save(IS_CURRENTLY_CALLING, false)
-                        requireActivity().runOnUiThread{
-                            hideProgress()
+                    if (counter == 12){
+                        hideProgress()
+                        requireActivity().runOnUiThread {
+                            PushNotification(
+                                NotificationData("", "", ""),
+                                CALL_TOPIC_END
+                            ).also {
+                                sendNotification(it)
+                            }
+
+                            Helper.delete(IS_CURRENTLY_CALLING)
+                            makeErrorSnackbar(view, "We were unable to find an available volunteer. Please try again.")
                         }
                         timer.cancel()
                     }
-
-                    if (!connectedToUser && !hangUp && i <= 5) {
-                        Log.d("CallTimer", "Timer is making a call!")
-                        Helper.save(IS_CURRENTLY_CALLING, true)
-                        requireActivity().runOnUiThread {
-                            showProgress()
-                            startCall(true, i++)
-                        }
-                    }
-
-                    if (i > 5){
-                        requireActivity().runOnUiThread {
-                            //TODO: Display screen to inform to call later.
-                            shortToast("Please try calling again later.")
-                        }
-                    }
                 }
             },
-            0, 13000
+            0, 5000
         )
     }
 
-    private fun startCall(isVideoCall: Boolean, callerIndex: Int) {
-        val opponentsList = ArrayList<Int>()
-        opponentsList.add(volunteerUsers[callerIndex].id)
+    private fun createCallNotification() {
+        val loggedUser = LoggedUser(requireContext())
+        val title = getString(R.string.call_volunteer_title)
+        val message = "${loggedUser.getUserName()} needs your help. Answer by clicking this notification."
 
-        val conferenceType = if (isVideoCall) {
-            QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO
-        } else {
-            QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_AUDIO
-        }
-
-        try {
-            val qbRtcClient = QBRTCClient.getInstance(this.requireActivity().applicationContext)
-            val newQbRtcSession =
-                qbRtcClient.createNewSessionWithOpponents(opponentsList, conferenceType)
-
-            WebRtcSessionManager.setCurrentSession(newQbRtcSession)
-            sendPushMessage(opponentsList, fullName)
-
-            CallActivity.start(this.requireActivity().applicationContext, false)
-        } catch (e: java.lang.Exception) {
-            Log.d("CallError", e.message.toString())
+        PushNotification(
+            NotificationData(title, message, loggedUser.getUserID()),
+            CALL_TOPIC
+        ).also {
+            sendNotification(it)
         }
     }
 
     private fun startCall(callerId: String){
         val opponentsList = ArrayList<Int>()
-
         var found: QBUser? = null
 
         Log.d("HelpActivity", "Caller Id is $callerId")
@@ -431,7 +351,6 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
         Log.d("HelpActivity", "Found user to call: ${found?.fullName}")
 
         val conferenceType = QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO
-
         try {
             val qbRtcClient = QBRTCClient.getInstance(this.requireActivity().applicationContext)
             val newQbRtcSession =

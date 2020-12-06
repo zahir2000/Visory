@@ -22,12 +22,6 @@ class LandingActionsActivity : AppCompatActivity(), View.OnClickListener {
         val actionbar = supportActionBar
         actionbar?.setDisplayHomeAsUpEnabled(true)
 
-        //get which button was clicked = userType
-        //userType = intent.getIntExtra("userType", 0)
-
-        //val userTypePref = UserType(this)
-        //userType = userTypePref.getUserType()
-
         userType = intent.getIntExtra("USER_TYPE", 0)
 
         //change content based on user

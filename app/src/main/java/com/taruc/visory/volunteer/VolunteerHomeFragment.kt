@@ -169,7 +169,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
         when (item.itemId) {
             R.id.home_settings -> {
                 val settingsFragment = SettingsFragment()
-                requireFragmentManager().beginTransaction()
+                parentFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.slide_in_right,
                         R.anim.slide_out_left,

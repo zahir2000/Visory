@@ -102,10 +102,10 @@ abstract class BaseConversationFragment : BaseToolBarFragment(), CallActivity.Cu
     protected abstract fun configureOutgoingScreen()
 
     protected open fun initFields() {
-        if (QBChatService.getInstance().user == null) {
-            currentUser = Helper.getQbUser()
+        currentUser = if (QBChatService.getInstance().user == null) {
+            Helper.getQbUser()
         } else {
-            currentUser = QBChatService.getInstance().user
+            QBChatService.getInstance().user
         }
 
         arguments?.let {

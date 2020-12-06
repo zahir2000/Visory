@@ -140,12 +140,6 @@ class ReportActivity : AppCompatActivity() {
                     }
                 }
 
-                /*
-                val feedbackOptions = FeedbackOptions("No help was provided")
-                val rootRef = FirebaseDatabase.getInstance().reference.child("FeedbackOptions").child("no_help")
-                rootRef.setValue(feedbackOptions)
-                */
-
                 if(feedbackCounter != 0){
                     view?.let { makeSuccessSnackbar(it, "Feedback has been successfully submitted.") }
                     loadingDialog = ViewDialog(requireContext())

@@ -36,7 +36,7 @@ fun configRTCTimers(context: Context) {
     val answerTimeInterval = getPreferenceInt(sharedPref, context,
         R.string.pref_answer_time_interval_key,
         R.string.pref_answer_time_interval_default_value).toLong()
-    QBRTCConfig.setAnswerTimeInterval(10)
+    QBRTCConfig.setAnswerTimeInterval(25)
 
     val disconnectTimeInterval = getPreferenceInt(sharedPref, context,
         R.string.pref_disconnect_time_interval_key,
