@@ -166,26 +166,20 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                rootRef.child(loggedUser.getUserID())
-                    .child("lname").setValue(lName)
-
-                rootRef.child(loggedUser.getUserID())
-                    .child("contactNo").setValue(contact)
-                loggedUser.setUserContact(contact)
-
-                rootRef.child(loggedUser.getUserID())
-                    .child("language").setValue(selectedLanguage)
-                loggedUser.setUserLanguage(selectedLanguage)
-
                 if (loggedUser.getUserType() == 1) {
                     uploadImageToFirebaseStorage()
                 }
 
-                rootRef.child(loggedUser.getUserID())
-                    .child("fname").setValue(fName).addOnCompleteListener { task ->
+                uidRef.child("lname").setValue(lName)
+                uidRef.child("contactNo").setValue(contact)
+                uidRef.child("language").setValue(selectedLanguage)
+                uidRef.child("fname").setValue(fName).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             makeSuccessSnackbar(view, "Profile details updated successfully.")
+
                             loggedUser.setUserName("$fName $lName")
+                            loggedUser.setUserLanguage(selectedLanguage)
+                            loggedUser.setUserContact(contact)
 
                             Handler().postDelayed({
                                 finish()
@@ -195,7 +189,6 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
                         }
                     }
             }
-
             override fun onCancelled(databaseError: DatabaseError) {}
         }
         uidRef.addListenerForSingleValueEvent(valueEventListener)
@@ -220,11 +213,9 @@ class PersonalDetailsActivity : AppCompatActivity(), View.OnClickListener,
                     val uidRef = rootRef.child(String.format("%s", loggedUser.getUserID()))
                     val valueEventListener = object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            rootRef.child(loggedUser.getUserID())
-                                .child("avatarurl").setValue(newAvatarUrl)
+                            uidRef.child("avatarurl").setValue(newAvatarUrl)
                         }
-
-                        override fun onCancelled(databaseError: DatabaseError) {}
+                        override fun onCancelled(databaseError: DatabaseError) { }
                     }
                     uidRef.addListenerForSingleValueEvent(valueEventListener)
                 }
