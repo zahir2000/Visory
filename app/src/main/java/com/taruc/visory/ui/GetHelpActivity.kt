@@ -94,9 +94,6 @@ class GetHelpActivity : AppCompatActivity() {
 
 
         btnCall.setOnClickListener {
-//            val callIntent = Intent(Intent.ACTION_DIAL)
-//            callIntent.data = Uri.parse("tel:$phoneNum")
-//            startActivity(callIntent)
             callEmergency()
         }
     }
@@ -160,13 +157,6 @@ class GetHelpActivity : AppCompatActivity() {
         uidRef.addListenerForSingleValueEvent(valueEventListener)
     }
 
-//    private fun checkLocation():Boolean{
-//        if(!isLocationEnabled()){
-//            showLocAlert()
-//        }
-//        return isLocationEnabled()
-//    }
-
     private fun showLocAlert() {
         val dialog = AlertDialog.Builder(this)
 
@@ -206,7 +196,7 @@ class GetHelpActivity : AppCompatActivity() {
 
     private fun openCallPermission() {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        intent.data = Uri.parse("package:"+packageName)
+        intent.data = Uri.parse("package:" + packageName)
         startActivity(intent)
     }
 
@@ -220,29 +210,6 @@ class GetHelpActivity : AppCompatActivity() {
         }
         return true
     }
-
-//    private fun requestSinglePermission():Boolean{
-//        Dexter.withActivity(this)
-//            .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-//            .withListener(object : PermissionListener {
-//                override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-//                    isPermission = true
-//                }
-//
-//                override fun onPermissionRationaleShouldBeShown(
-//                    permission: PermissionRequest?,
-//                    token: PermissionToken?
-//                ) {
-//                }
-//
-//                override fun onPermissionDenied(response: PermissionDeniedResponse?) {
-//                    if (response!!.isPermanentlyDenied) {
-//                        isPermission = false
-//                    }
-//                }
-//            }).check()
-//        return isPermission
-//    }
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
