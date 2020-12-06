@@ -186,8 +186,6 @@ class ShowLocationActivity : AppCompatActivity(), OnMapReadyCallback, LocationLi
                             location = (loc)
                             latlng = LatLng(location.latitude, location.longitude)
                             mMap.addMarker(MarkerOptions().position(latlng).title(name).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)))
-
-
                         }
                     }
                 }

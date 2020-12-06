@@ -48,7 +48,6 @@ class GetHelpActivity : AppCompatActivity() {
     private lateinit var locationManager: LocationManager
     private lateinit var latLng: LatLng
 
-    //var isPermission: Boolean = false
     private val phoneNum = "999"
     private val TAG = "HelpActivity"
 
