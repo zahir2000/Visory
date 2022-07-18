@@ -63,18 +63,18 @@ class StoriesFragment : Fragment(), View.OnClickListener {
             .setQuery(query, Story::class.java)
             .build()
 
-        val firebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Story, StoriesFragment.StoryViewHolder>(option) {
+        val firebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Story, StoryViewHolder>(option) {
             override fun onCreateViewHolder(
                 parent: ViewGroup,
                 viewType: Int
-            ): StoriesFragment.StoryViewHolder {
+            ): StoryViewHolder {
                 val itemview =
                     LayoutInflater.from(context).inflate(R.layout.cardview, parent, false)
-                return StoriesFragment.StoryViewHolder(itemview)
+                return StoryViewHolder(itemview)
             }
 
             override fun onBindViewHolder(
-                holder: StoriesFragment.StoryViewHolder,
+                holder: StoryViewHolder,
                 position: Int,
                 story: Story
             ) {
@@ -107,9 +107,7 @@ class StoriesFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onClick(v: View?) {
-
-    }
+    override fun onClick(v: View?) { }
 
     class StoryViewHolder(itemView : View):RecyclerView.ViewHolder(itemView){
 

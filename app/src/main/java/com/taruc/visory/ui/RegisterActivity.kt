@@ -1,14 +1,9 @@
 package com.taruc.visory.ui
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.telephony.PhoneNumberUtils
-import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
@@ -20,7 +15,6 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.facebook.login.LoginManager
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -39,7 +33,6 @@ import com.taruc.visory.quickblox.utils.ViewDialog
 import com.taruc.visory.utils.*
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.*
-import java.util.regex.Pattern
 
 private const val RC_SIGN_IN_FB: Int = 2420
 private const val RC_SIGN_IN_GOOGLE: Int = 2024
@@ -82,7 +75,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         val providers = arrayListOf(
             AuthUI.IdpConfig.FacebookBuilder().build()
         )
-        button_facebook.setOnClickListener{
+        button_login_facebook.setOnClickListener{
             hideKeyboard(this, it)
 
             if(isInternetAvailable(applicationContext)){
@@ -134,7 +127,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val fromLogin = intent.getBooleanExtra("fromLogin", false)
         if(!fromLogin){
             menuInflater.inflate(R.menu.register_menu, menu)

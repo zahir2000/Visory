@@ -129,7 +129,7 @@ class ShowLocationActivity : AppCompatActivity(), OnMapReadyCallback, LocationLi
     @SuppressLint("MissingPermission")
     private fun getLocation() {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0f, object : LocationListener{
-            override fun onLocationChanged(location: Location?) {
+            override fun onLocationChanged(location: Location) {
                 lastLocation = LocationClass(location!!.latitude,location.longitude)
 
                 val loggedUser = LoggedUser(applicationContext)
@@ -155,9 +155,9 @@ class ShowLocationActivity : AppCompatActivity(), OnMapReadyCallback, LocationLi
 
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) { }
 
-            override fun onProviderEnabled(provider: String?) {  }
+            override fun onProviderEnabled(provider: String) {  }
 
-            override fun onProviderDisabled(provider: String?) { }
+            override fun onProviderDisabled(provider: String) { }
         })
     }
 
@@ -195,13 +195,13 @@ class ShowLocationActivity : AppCompatActivity(), OnMapReadyCallback, LocationLi
         rootRef.addListenerForSingleValueEvent(eventListener)
     }
 
-    override fun onLocationChanged(location: Location?) {}
+    override fun onLocationChanged(location: Location) {}
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 
-    override fun onProviderEnabled(provider: String?) {}
+    override fun onProviderEnabled(provider: String) {}
 
-    override fun onProviderDisabled(provider: String?) {}
+    override fun onProviderDisabled(provider: String) {}
 
-    override fun onMarkerClick(p0: Marker?)=false
+    override fun onMarkerClick(p0: Marker)=false
 }

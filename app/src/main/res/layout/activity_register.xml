@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/button_facebook"
+                android:id="@+id/button_login_facebook"
                 style="@style/ButtonStyle.Primary"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

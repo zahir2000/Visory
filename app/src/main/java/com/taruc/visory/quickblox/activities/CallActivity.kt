@@ -226,7 +226,7 @@ class CallActivity : BaseActivity(), CallCallbackListener, QBRTCSessionStateCall
     }
 
     private fun initIncomingCallTask() {
-        showIncomingCallWindowTaskHandler = Handler(Looper.myLooper())
+        showIncomingCallWindowTaskHandler = Handler(Looper.myLooper()!!)
         showIncomingCallWindowTask = Runnable {
             if (callService.currentSessionExist()) {
                 val currentSessionState = callService.getCurrentSessionState()

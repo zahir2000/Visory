@@ -9,7 +9,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.taruc.visory.jalal.FirebaseService
 import com.taruc.visory.quickblox.activities.PermissionsActivity
@@ -46,8 +45,10 @@ class BlindHomeActivity : AppCompatActivity() {
         val loggedUser = LoggedUser(this)
         FirebaseService.sharedPref = this.getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
 
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
-            FirebaseService.token = it.token
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            if(token != null){
+                FirebaseService.token = token
+            }
         }
 
         FirebaseDatabase.getInstance().getReference("Tokens").child(loggedUser.getUserID()).setValue(Token(FirebaseService.token!!))

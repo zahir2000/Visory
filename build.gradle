@@ -1,6 +1,6 @@
 buildscript {
     ext{
-        kotlin = '1.4.20'
+        kotlin = '1.7.10'
         dimensionDefault = 'default'
     }
     repositories {
@@ -11,12 +11,11 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
-        classpath 'com.google.gms:google-services:4.3.4'
+        classpath 'com.android.tools.build:gradle:7.2.1'
+        classpath 'com.google.gms:google-services:4.3.13'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
         classpath "io.fabric.tools:gradle:1.28.0"
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
     }
 }
 

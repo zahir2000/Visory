@@ -217,8 +217,8 @@ class GetHelpActivity : AppCompatActivity() {
             10000,
             0f,
             object : LocationListener {
-                override fun onLocationChanged(location: Location?) {
-                    lastLocation = LocationClass(location!!.latitude, location.longitude)
+                override fun onLocationChanged(location: Location) {
+                    lastLocation = LocationClass(location.latitude, location.longitude)
 
                     val loggedUser = LoggedUser(applicationContext)
                     val rootRef = FirebaseDatabase.getInstance().getReference("users")
@@ -241,9 +241,6 @@ class GetHelpActivity : AppCompatActivity() {
 
                 override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 
-                override fun onProviderEnabled(provider: String?) {}
-
-                override fun onProviderDisabled(provider: String?) {}
             })
     }
 

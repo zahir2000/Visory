@@ -13,7 +13,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.taruc.visory.jalal.*
@@ -107,8 +106,10 @@ class VolunteerHomeActivity : AppCompatActivity() {
         val loggedUser = LoggedUser(this)
         FirebaseService.sharedPref = this.getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
 
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
-            FirebaseService.token = it.token
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            if(token != null){
+                FirebaseService.token = token
+            }
         }
 
         FirebaseDatabase.getInstance().getReference("Tokens").child(loggedUser.getUserID()).setValue(Token(FirebaseService.token!!))

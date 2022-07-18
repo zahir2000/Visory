@@ -7,13 +7,14 @@ import com.google.mlkit.vision.label.ImageLabeling
 import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 class MLKitActivityPresenter(val view: View) {
     fun runTextRecognition(selectedImage: Bitmap) {
         view.showImageTextView()
         view.showProgress()
 
-        val recognizer = TextRecognition.getClient()
+        val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
         val image = InputImage.fromBitmap(selectedImage, 0)
         recognizer.process(image)
             .addOnSuccessListener { texts ->

@@ -61,10 +61,10 @@ class SettingsFragment : Fragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-        ): View? {
+        ): View {
             auth = FirebaseAuth.getInstance()
             val view = super.onCreateView(inflater, container, savedInstanceState)
-            view?.setBackgroundColor(Color.rgb(239, 239, 244))
+            view.setBackgroundColor(Color.rgb(239, 239, 244))
             return view
         }
 
@@ -72,8 +72,8 @@ class SettingsFragment : Fragment() {
             setPreferencesFromResource(R.xml.settings_preferences, rootKey)
         }
 
-        override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-            val key = preference?.key
+        override fun onPreferenceTreeClick(preference: Preference): Boolean {
+            val key = preference.key
 
             if(key.equals("logout_button")){
                 logoutFromVisory()
@@ -108,6 +108,8 @@ class SettingsFragment : Fragment() {
                     //Logout from Quickblox
                     logoutFromQuickblox()
 
+                    Log.d("SettingsFragment", loggedUser.getProvider())
+
                     //Determine if Google or Facebook credentials used for login
                     if (loggedUser.getProvider() == getString(R.string.provider_fb)) {
                         logoutFromFacebook()
@@ -138,9 +140,7 @@ class SettingsFragment : Fragment() {
         }
 
         private fun logoutFromFacebook() {
-            if (LoginManager.getInstance() != null){
-                LoginManager.getInstance().logOut()
-            }
+            LoginManager.getInstance().logOut()
         }
 
         private fun logoutFromGoogle() {
@@ -151,7 +151,7 @@ class SettingsFragment : Fragment() {
                     .build()
 
             val mGoogleSignInClient = GoogleSignIn.getClient(this.requireActivity(), gso)
-            mGoogleSignInClient?.signOut()
+            mGoogleSignInClient.signOut()
         }
 
         private fun logoutFromQuickblox() {

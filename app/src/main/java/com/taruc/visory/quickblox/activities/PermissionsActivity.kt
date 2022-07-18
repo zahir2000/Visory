@@ -42,7 +42,7 @@ class PermissionsActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val permissions = getPermissions()
+        val permissions: Array<String> = getPermissions()!!
 
         if (checkPermissions(permissions)) {
             if (intent == null || !intent.hasExtra(EXTRA_PERMISSIONS)) {
@@ -72,7 +72,7 @@ class PermissionsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun checkPermissions() {
-        val permissions = getPermissions()
+        val permissions = getPermissions()!!
         val checkOnlyAudio = getCheckOnlyAudio()
 
         if (checkOnlyAudio) {
@@ -98,7 +98,7 @@ class PermissionsActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun getPermissions(): Array<String> {
+    private fun getPermissions(): Array<String>? {
         return intent.getStringArrayExtra(EXTRA_PERMISSIONS)
     }
 

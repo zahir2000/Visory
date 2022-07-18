@@ -82,7 +82,7 @@ class VolunteerHomeFragment : Fragment(), View.OnClickListener {
                             Log.d("InternetConnection", "Internet is available")
                         }
 
-                        override fun onLost(network: Network?) {
+                        override fun onLost(network: Network) {
                             Log.d("InternetConnection", "Internet is not available")
                         }
                     })

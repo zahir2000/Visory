@@ -109,7 +109,7 @@ class ReportActivity : AppCompatActivity() {
             return super.onOptionsItemSelected(item)
         }
 
-        override fun onPreferenceTreeClick(preference: Preference?): Boolean {
+        override fun onPreferenceTreeClick(preference: Preference): Boolean {
             val key = preference?.key
             val selectedOpts = Array(6){""}
             var index = 0
@@ -120,7 +120,7 @@ class ReportActivity : AppCompatActivity() {
             val feedback = Feedback(ServerValue.TIMESTAMP, "", userId, reportedUserId, callHistory.getCallId(), "new")
 
             if (key.equals("submit_report")) {
-                val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+                val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
                 var feedbackCounter = 0
                 for (keys in prefs.all.entries){
                     if(keysList.contains(keys.key)){
@@ -196,7 +196,7 @@ class ReportActivity : AppCompatActivity() {
         }
 
         private fun resetFeedbackOptions(){
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
             for(keys in prefs.all.entries){
                 if(keysList.contains(keys.key)){
                     if(keys.value is Boolean && keys.value == true){

@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.quickblox.chat.QBChatService
 import com.quickblox.core.QBEntityCallback
@@ -117,7 +116,7 @@ class BlindHomeFragment : Fragment(), View.OnClickListener {
                             Log.d("InternetConnection", "Internet is available")
                         }
 
-                        override fun onLost(network: Network?) {
+                        override fun onLost(network: Network) {
                             Log.d("InternetConnection", "Internet is not available")
                         }
                     })

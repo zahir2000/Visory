@@ -56,7 +56,8 @@
             android:label="Report a Problem" />
         <activity
             android:name=".settings.ChangeEmailActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.taruc.visory.settings.ChangeEmailActivity" />
 
@@ -65,7 +66,8 @@
         </activity>
         <activity
             android:name=".settings.ChangePasswordActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.taruc.visory.settings.ChangePasswordActivity" />
 
@@ -74,7 +76,8 @@
         </activity>
         <activity
             android:name=".settings.PersonalDetailsActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.taruc.visory.settings.PersonalDetailsActivity" />
 
@@ -87,7 +90,8 @@
         <activity
             android:name=".blind.CallEndActivity"
             android:label="Call Ended" />
-        <activity android:name=".ui.SplashActivity">
+        <activity android:name=".ui.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -130,7 +134,8 @@
         <service android:name=".quickblox.services.LoginService" />
         <service android:name=".quickblox.services.CallService" />
         <service android:name=".jalal.FirebaseService"
-            android:permission="com.google.android.c2dm.permission.SEND">
+            android:permission="com.google.android.c2dm.permission.SEND"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -140,6 +145,10 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_application_id" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_login_client_token" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
