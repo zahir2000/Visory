@@ -176,7 +176,7 @@ class LoginActivity : AppCompatActivity() {
                 val account = task.getResult(ApiException::class.java)
                 loginWithGoogle(account!!)
             } catch (e: ApiException) {
-                Log.e(TAG, "onActivityResult:${e.message}")
+                Log.e(TAG, "onActivityResult:${e}")
             }
         }
     }
@@ -389,8 +389,7 @@ class LoginActivity : AppCompatActivity() {
                             try {
                                 viewDialog.hideDialog()
                                 onLoginSuccessful()
-                            } catch (e: Exception) {
-                            }
+                            } catch (e: Exception) { }
                         }, 2000)
                     }
                     task.isCanceled -> {

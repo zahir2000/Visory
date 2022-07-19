@@ -46,6 +46,13 @@
             {
               "client_id": "243602294589-c4v67ff7gq82nod8gtsbjr70rmjllm91.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "243602294589-npqpfekcg8q57i29kr3d34vhdvkq1l6d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ios.zahir.Visory"
+              }
             }
           ]
         }
